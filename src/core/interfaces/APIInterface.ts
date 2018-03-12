@@ -14,7 +14,7 @@ type CallbackFunc = {
 }
 
 // 项目基础对外API
-export interface BasicAPI {
+export interface GraphAPI {
     /**
      * 获得图像数据
      * @returns Graph
@@ -158,4 +158,4 @@ export interface EventAPI {
     onMouseUpPoint(callback: CallbackFunc): void;
 }
 
-// export default interface APIInterface extends BasicAPI, OperationAPI, ActionAPI, EventAPI {}
+// export default interface APIInterface extends GraphAPI, OperationAPI, ActionAPI, EventAPI {}

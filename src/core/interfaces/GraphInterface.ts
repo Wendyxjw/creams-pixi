@@ -1,10 +1,8 @@
 import { Shape } from './Graph';
-import { ActionManager, Action } from './ActionInterface';
-import { OperationManager } from './OperationInterface';
-import { StateManager } from './StateInterface';
+import { GraphAPI } from './APIInterface';
 
 // 
-export interface GraphManager {
+export interface GraphManager extends GraphAPI {
     // 用于绘制基本线条
     tmpShapes: Array<Shape>;
 }

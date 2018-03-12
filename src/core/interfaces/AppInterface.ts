@@ -1,12 +1,12 @@
-import { Shape } from './Graph';
 import { GraphManager } from './GraphInterface';
-import { ActionManager, Action } from './ActionInterface';
+import { ActionManager } from './ActionInterface';
 import { OperationManager } from './OperationInterface';
 import { StateManager } from './StateInterface';
+import { EventManager } from './EventInterface';
 
 
 // 项目主控制类，单例模式
-interface AppInterface {
+export default interface AppInterface {
     // 底层绘图接口
     graphManager: GraphManager;
 
@@ -16,26 +16,9 @@ interface AppInterface {
     // 管理用户普通行为
     operationManager: OperationManager;
 
+    // 事件管理
+    eventManager: EventManager;
+
     // app状态管理
     stateManager: StateManager;
 }
-
-class App implements AppInterface {
-
-    actionManager: ActionManager;
-    graphManager: GraphManager;
-    operationManager: OperationManager;
-    stateManager: StateManager;
-
-    onZoomIn() { }
-}
-
-
-
-let app = new App();
-
-app.onZoomIn()
-// app.onShapeDeleted()
-// app.onShapeMoveEnd((roomId, shapeIndex, graphData) => {
-
-// })
