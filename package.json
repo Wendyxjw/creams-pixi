@@ -10,5 +10,14 @@
     "pixi"
   ],
   "author": "wangdong",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^16.1.1",
+    "gulp": "^3.9.1",
+    "gulp-util": "^3.0.8",
+    "tsify": "^3.0.4",
+    "typescript": "^2.7.2",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.0"
+  }
 }
