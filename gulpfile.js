@@ -16,7 +16,7 @@ var watchedBrowserify = watchify(browserify({
 function bundle() {
     return watchedBrowserify
         .bundle()
-        .pipe(source('bundle.js'))
+        .pipe(source('creams-pixi.js'))
         .pipe(gulp.dest("dist"));
 }
 

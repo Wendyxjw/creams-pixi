@@ -1,3 +1,5 @@
+import * as PIXI from "pixi.js";
+
 import { GraphManager } from './interfaces/GraphInterface';
 import { ActionManager } from './interfaces/ActionInterface';
 import { OperationManager } from './interfaces/OperationInterface';
@@ -7,14 +9,31 @@ import AppInterface from './interfaces/AppInterface';
 
 export class App implements AppInterface {
 
-    pixi: any;
+    _app: PIXI.Application;
+    stateManager: StateManager;
+
     actionManager: ActionManager;
     graphManager: GraphManager;
     operationManager: OperationManager;
-    stateManager: StateManager;
     eventManager: EventManager;
 
-    onZoomIn() { }
+    constructor(el: HTMLElement) {
+        this._app = this.init(el);
+
+    }
+
+    init(el: HTMLElement) {
+        const app = new PIXI.Application(
+            el.offsetWidth, el.offsetHeight, { antialias: true }
+        );
+        window.addEventListener("resize", function () {
+            app.renderer.resize(el.offsetWidth, el.offsetHeight);
+        });
+        el.appendChild(app.view);
+
+        return app;
+    }
+
 }
 
 

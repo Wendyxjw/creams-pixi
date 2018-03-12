@@ -12,6 +12,7 @@
   "author": "wangdong",
   "license": "ISC",
   "devDependencies": {
+    "@types/pixi.js": "^4.7.2",
     "browserify": "^16.1.1",
     "gulp": "^3.9.1",
     "gulp-util": "^3.0.8",
@@ -19,5 +20,8 @@
     "typescript": "^2.7.2",
     "vinyl-source-stream": "^2.0.0",
     "watchify": "^3.11.0"
+  },
+  "dependencies": {
+    "pixi.js": "^4.7.0"
   }
 }

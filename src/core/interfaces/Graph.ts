@@ -27,9 +27,10 @@ export interface GraphCache extends Graph {
 
 // let aa: Shape = [[2, 2], [2, 2], [2, 2]]
 
-// let a: Graph = { 
+// let a: Graph = {
+//     backgroundPic: '',
 //     shapes: [
-//         [[1, 1, 1], [1, 1], [1, 1]],
+//         [[1, 1], [1, 1], [1, 1]],
 //         [[2, 2], [2, 2], [2, 2]]
 //     ],
 // };
