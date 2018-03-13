@@ -38,13 +38,13 @@ export class App implements AppInterface {
 
 
 
-let app = new App();
+// let app = new App();
 
-app.onZoomIn()
-app.graphManager.render();
-app.eventManager.onClickGraph(() => {
-    alert();
-});
+// app.onZoomIn()
+// app.graphManager.render();
+// app.eventManager.onClickGraph(() => {
+//     alert();
+// });
 // app.onShapeDeleted()
 // app.onShapeMoveEnd((roomId, shapeIndex, graphData) => {
 
