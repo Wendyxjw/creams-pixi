@@ -23,23 +23,3 @@ export interface GraphCache extends Graph {
     // 每一个Shape的绘制样式
     shapesContent: Array<ShapeContent>;
 }
-
-
-// let aa: Shape = [[2, 2], [2, 2], [2, 2]]
-
-// let a: Graph = {
-//     backgroundPic: '',
-//     shapes: [
-//         [[1, 1], [1, 1], [1, 1]],
-//         [[2, 2], [2, 2], [2, 2]]
-//     ],
-// };
-// let c = { roomId: '1' };
-
-// let b = <GraphData<typeof c>>a;
-
-// b.identifiers[0] = { roomId: '1'};
-// b.identifiers[1] = c;
-// b.identifiers[3] = undefined;
-
-// let content = b.identifiers[1];

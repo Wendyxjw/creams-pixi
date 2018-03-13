@@ -1,23 +1,23 @@
-import { GraphManager } from './GraphInterface';
-import { ActionManager } from './ActionInterface';
-import { OperationManager } from './OperationInterface';
+import { GraphAPI } from './GraphInterface';
+import { ActionAPI } from './ActionInterface';
+import { OperationAPI } from './OperationInterface';
 import { StateManager } from './StateInterface';
-import { EventManager } from './EventInterface';
+import { EventAPI } from './EventInterface';
 
 
 // 项目主控制类，单例模式
 export default interface AppInterface {
     // 底层绘图接口
-    graphManager: GraphManager;
+    graphManager: GraphAPI;
 
     // 管理用户操作行为
-    actionManager: ActionManager;
+    actionManager: ActionAPI;
 
     // 管理用户普通行为
-    operationManager: OperationManager;
+    operationManager: OperationAPI;
 
     // 事件管理
-    eventManager: EventManager;
+    eventManager: EventAPI;
 
     // app状态管理
     stateManager: StateManager;
