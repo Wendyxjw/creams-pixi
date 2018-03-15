@@ -1,6 +1,9 @@
+import { ShapeContent, Shape } from "../common/Graph";
+
 // 用户行为
 export type Action = {
-
+    do(data: Array<Shape>): Array<Shape>;
+    unDo(data: Array<Shape>): Array<Shape>;
 }
 
 // Action, 操作行为
@@ -38,13 +41,13 @@ export interface ActionAPI {
      * 撤销
      * @returns void
      */
-    undo(): void;
+    unDo(): void;
 
     /**
      * 重做
      * @returns void
      */
-    redo(): void;
+    reDo(): void;
 
     /**
      * 清空操作记录
