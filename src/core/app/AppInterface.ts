@@ -1,8 +1,8 @@
-import { GraphAPI } from './GraphInterface';
-import { ActionAPI } from './ActionInterface';
-import { OperationAPI } from './OperationInterface';
-import { StateManager } from './StateInterface';
-import { EventAPI } from './EventInterface';
+import { GraphAPI } from '../graph/GraphInterface';
+import { ActionAPI } from '../action/ActionInterface';
+import { OperationAPI } from '../operation/OperationInterface';
+import { StateManager } from '../state/StateInterface';
+import { EventAPI } from '../event/EventInterface';
 
 
 // 项目主控制类，单例模式

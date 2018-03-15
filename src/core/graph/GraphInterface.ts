@@ -1,4 +1,4 @@
-import { Graph, ShapeContent } from './Graph';
+import { Graph, ShapeContent } from '../common/Graph';
 
 // 项目基础对外API
 export interface GraphAPI {

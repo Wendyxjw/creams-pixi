@@ -1,8 +1,8 @@
 import * as PIXI from "pixi.js";
 
-import GraphManager from './GraphManager';
-import { StateManager } from './interfaces/StateInterface';
-import AppInterface from './interfaces/AppInterface';
+import GraphManager from '../graph/GraphManager';
+import { StateManager } from '../state/StateInterface';
+import AppInterface from './AppInterface';
 
 export class App {
 
@@ -20,9 +20,12 @@ export class App {
     }
 
     init(el: HTMLElement) {
-        const app = new PIXI.Application(
-            el.offsetWidth, el.offsetHeight, { antialias: true }
-        );
+        const app = new PIXI.Application({
+            width: el.offsetWidth,
+            height: el.offsetHeight,
+            backgroundColor: 0xffffff,
+            antialias: true 
+        });
         window.addEventListener("resize", function () {
             app.renderer.resize(el.offsetWidth, el.offsetHeight);
         });
