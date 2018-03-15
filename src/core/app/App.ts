@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js";
 import GraphManager from '../graph/GraphManager';
 import { StateManager } from '../state/StateInterface';
 import AppInterface from './AppInterface';
+import OperationManager from '../operation/OperationManager';
 
 export class App {
 
@@ -11,12 +12,13 @@ export class App {
 
     // actionManager: ActionManager;
     graphManager: GraphManager;
-    // operationManager: OperationManager;
+    operationManager: OperationManager;
     // eventManager: EventManager;
 
     constructor(el: HTMLElement) {
         this.pixiApp = this.init(el);
         this.graphManager = new GraphManager(this);
+        this.operationManager=new OperationManager(this);
     }
 
     init(el: HTMLElement) {
