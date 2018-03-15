@@ -1,5 +1,5 @@
-var app = new CreamsPIXI(document.body);
+var app = new CreamsPIXI(document.getElementById('creams-pixi'));
 app.graphManager.setGraph({
-    backgroundPic: '',
+    backgroundPic: '/res/Model.jpg',
     shapes: data,
 })
