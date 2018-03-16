@@ -7,7 +7,7 @@ import GraphHelper from "./GraphHelper";
 export default class GraphManager implements GraphAPI {
     private _app: App;
     private _graph: Graph;
-    private _graphContainer: PIXI.Container;
+    public _graphContainer: PIXI.Container;
 
     constructor(app: App) {
         this._app = app;
