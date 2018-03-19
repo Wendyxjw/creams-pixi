@@ -15,4 +15,15 @@ $(function () {
     $(dom.find("span")[2]).click(function () {
         app.operationManager.zoomOut(2)
     })
+
+    let eraser=$("#eraser");
+    $(eraser.find("span")[0]).click(function () {
+        app.operationManager.enableEraser(true);
+    })
+    $(eraser.find('span')[1]).click(()=>{
+        app.operationManager.setEraserSize($(eraser.find("input")).val())
+    })
+    $(eraser.find("span")[2]).click(function () {
+        app.operationManager.enableEraser(false);
+    })
 })
