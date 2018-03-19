@@ -26,4 +26,10 @@ $(function () {
     $(eraser.find("span")[2]).click(function () {
         app.operationManager.enableEraser(false);
     })
+    app.eventManager.onClickGraph((index,event)=>{
+        console.log(index+";x:"+event.x+"y:"+event.y)
+    })
+    app.eventManager.onMouseEnterShape((index,event)=>{
+        console.log(index+";x:"+event.x+"y:"+event.y)
+    })
 })

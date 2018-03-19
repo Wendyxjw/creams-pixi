@@ -1,5 +1,5 @@
 import { GraphAPI } from "./GraphInterface";
-import { Graph, ShapeContent, Shape } from "../common/Graph";
+import { Graph, ShapeContent, Shape,GraphicsWithIndex } from "../common/Graph";
 import { App } from "../app/App";
 import GraphHelper from "./GraphHelper";
 
@@ -12,6 +12,7 @@ export default class GraphManager implements GraphAPI {
     constructor(app: App) {
         this._app = app;
         this._graphContainer = new PIXI.Container();
+        this._graphContainer.interactive=true;
         GraphHelper.enableDrag(this._graphContainer);
         app.pixiApp.stage.addChild(this._graphContainer);
     }
@@ -22,8 +23,8 @@ export default class GraphManager implements GraphAPI {
         this._graphContainer.addChild(background);
     }
 
-    private _buildGraphics(shape: Shape) {
-        let graphics = new PIXI.Graphics();
+    private _buildGraphics(shape: Shape,i:string) {
+        let graphics = new GraphicsWithIndex();
 
         // set a fill and line style
         graphics.beginFill(0xD1D8DF, 1);
@@ -39,7 +40,7 @@ export default class GraphManager implements GraphAPI {
 
         graphics.interactive = true;
         graphics.buttonMode = true;
-
+        graphics.shapeIndex=i;
         this._graphContainer.addChild(graphics);
     }
     
@@ -52,7 +53,7 @@ export default class GraphManager implements GraphAPI {
         const app = this._app.pixiApp;
         this._buildBackground(graph.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {
-            this._buildGraphics(graph.shapes[i])
+            this._buildGraphics(graph.shapes[i],"graph"+i)
         }
     }
 

@@ -1,11 +1,8 @@
 import { OperationAPI } from "./OperationInterface"
-import { Graph, ShapeContent, Shape } from "../common/Graph";
 import { App } from "../app/App";
 // implements 实现，必须实现完后面的interface，不然会报错； functionName（）：返回类型
-//工具的dom 调用页面写 ；然后具体里面实现的放大画布什么的 写在helper
 export default class OperationManager implements OperationAPI {
     private _app: App;
-    private _graph: Graph;
     private _circleCursor:PIXI.Sprite;//橡皮擦
     private _cursorTicker:PIXI.ticker.Ticker;//监听橡皮擦
 
