@@ -31,9 +31,9 @@ export interface ActionAPI {
      */
     addShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent): void;
 
-    copyShape(index: Array<number>): void;
+    copyShape(index: string): void;
 
-    deleteShape(index: Array<number>): void;
+    deleteShape(index: string): void;
 
     addPoint(index: Array<number>): void;
 

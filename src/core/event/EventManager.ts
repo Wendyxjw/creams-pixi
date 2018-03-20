@@ -28,8 +28,8 @@ export default class EventManager implements EventAPI {
             if (item.shapeIndex) {
                 item.on('mouseover', (event) => {
                     callback([item.shapeIndex], {
-                        x: item.x,//todo x,y 目前是0 why？？
-                        y: item.y,
+                        x: event.data.global.x,//触发事件位置
+                        y: event.data.global.y,
                         width: item.width,
                         height: item.height
                     })
@@ -42,7 +42,21 @@ export default class EventManager implements EventAPI {
 
     onMouseDownShape(callback: CallbackFunc): void { };
 
-    onMouseUpShape(callback: CallbackFunc): void { };
+    onMouseUpShape(callback: CallbackFunc): void {
+        this._app.graphManager._graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
+            //console.log(item)
+            if (item.shapeIndex) {
+                item.on('mouseup', (event) => {
+                    callback([item.shapeIndex], {
+                        x: event.data.global.x,//触发事件位置
+                        y: event.data.global.y,
+                        width: item.width,
+                        height: item.height
+                    })
+                })
+            }
+        })
+     };
 
     onMouseDownLine(callback: CallbackFunc): void { };
 
