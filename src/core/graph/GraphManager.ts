@@ -64,7 +64,7 @@ export default class GraphManager implements GraphAPI {
         //save graphdata ；todo 默认的是否存？不存的话 actionManager的clone获取index需要改写
         content.shapeIndex=graphics.shapeIndex;
         this._graphCache.shapes.push(shape);
-        this._graphCache.shapesContent.push(content);
+        this._graphCache.shapesContent.push(JSON.parse(JSON.stringify(content)));//深拷贝
         
     }
 

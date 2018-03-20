@@ -110,6 +110,11 @@ export default class ActionManager extends Manager implements ActionAPI {
     deleteShape(index: string) {
         let curConIndex=this._findGraphIndex(this._app.graphManager._graphContainer.children,index);
         this._app.graphManager._graphContainer.removeChildAt(curConIndex);
+        
+        //删除指定位置的数据
+        let shapeIndex=this._findGraphIndex(this._app.graphManager._graphCache.shapesContent,index);
+        this._app.graphManager._graphCache.shapes.splice(shapeIndex,1);
+        this._app.graphManager._graphCache.shapesContent.splice(shapeIndex,1);
     };
 
     addPoint(index: Array<number>) {
