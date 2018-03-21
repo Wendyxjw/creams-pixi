@@ -4,21 +4,25 @@ import GraphManager from '../graph/GraphManager';
 import { StateManager } from '../state/StateInterface';
 import AppInterface from './AppInterface';
 import OperationManager from '../operation/OperationManager';
+import EventManager from '../event/EventManager';
+import ActionManager from '../action/ActionManager'
 
 export class App {
 
     pixiApp: PIXI.Application;
     stateManager: StateManager;
 
-    // actionManager: ActionManager;
+    actionManager: ActionManager;
     graphManager: GraphManager;
     operationManager: OperationManager;
-    // eventManager: EventManager;
+    eventManager: EventManager;
 
     constructor(el: HTMLElement) {
         this.pixiApp = this.init(el);
         this.graphManager = new GraphManager(this);
         this.operationManager=new OperationManager(this);
+        this.eventManager=new EventManager(this);
+        this.actionManager=new ActionManager(this);
     }
 
     init(el: HTMLElement) {

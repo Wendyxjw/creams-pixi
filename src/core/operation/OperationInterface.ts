@@ -27,7 +27,7 @@ export interface OperationAPI {
 
     /**
      * 设置橡皮擦大小
-     * @param  {number} size
+     * @param  {number} size,半径
      * @returns void
      */
     setEraserSize(size: number): void;
