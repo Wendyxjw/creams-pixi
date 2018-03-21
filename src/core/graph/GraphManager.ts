@@ -1,5 +1,5 @@
 import { GraphAPI } from "./GraphInterface";
-import { Graph, ShapeContent, Shape, GraphicsWithIndex,GraphCache } from "../common/Graph";
+import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point } from "../common/Graph";
 import { App } from "../app/App";
 import GraphHelper from "./GraphHelper";
 //设置默认颜色
@@ -12,12 +12,12 @@ const defultGraphStyle: ShapeContent = {
     font: "",
     content: "",
     hasMark: false,
-    shapeIndex:""
+    shapeIndex: ""
 }
 export default class GraphManager implements GraphAPI {
     private _app: App;
     private _graph: Graph;
-    public _graphCache:GraphCache;//保存修改的graph
+    private _graphCache: GraphCache;//保存修改的graph
     public _graphContainer: PIXI.Container;
     private _shapeIndex: number = 0//记录graph编号
 
@@ -27,10 +27,10 @@ export default class GraphManager implements GraphAPI {
         this._graphContainer.interactive = true;
         GraphHelper.enableDrag(this._graphContainer);
         app.pixiApp.stage.addChild(this._graphContainer);
-        this._graphCache={
-            shapes:[],
-            backgroundPic:"",
-            shapesContent:[]
+        this._graphCache = {
+            shapes: [],
+            backgroundPic: "",
+            shapesContent: []
         }
     }
 
@@ -39,8 +39,8 @@ export default class GraphManager implements GraphAPI {
         background.alpha = 0.3;
         this._graphContainer.addChild(background);
     }
-
-    public _buildGraphics(shape: Shape, content: ShapeContent = defultGraphStyle) {
+    //shape
+    private _buildShapes(shape: Shape, content: ShapeContent = defultGraphStyle) {
         let graphics = new GraphicsWithIndex();
 
         // set a fill and line style
@@ -55,37 +55,88 @@ export default class GraphManager implements GraphAPI {
         graphics.endFill();
         graphics.interactive = true;
         graphics.buttonMode = true;
-        
+
         this._shapeIndex++;
         graphics.shapeIndex = "shape" + this._shapeIndex;
 
         this._graphContainer.addChild(graphics);
-
         //save graphdata ；todo 默认的是否存？不存的话 actionManager的clone获取index需要改写
-        content.shapeIndex=graphics.shapeIndex;
-        this._graphCache.shapes.push(shape);
-        this._graphCache.shapesContent.push(JSON.parse(JSON.stringify(content)));//深拷贝
-        
+        //content.shapeIndex=graphics.shapeIndex;
+        //this._graphCache.shapes.push(shape);
+        //this._graphCache.shapesContent.push(JSON.parse(JSON.stringify(content)));//深拷贝
+
+    }
+    //line
+    private _buildLine(shape: Shape) {
+
+        for (let i = 0; i < shape.length; i++) {
+            let graphics = new GraphicsWithIndex();
+            graphics.beginFill(0x1db745, 1);
+            graphics.lineStyle(5, 0x1db745, 1);
+            graphics.moveTo(shape[i][0], shape[i][1]);
+            if (shape.length == i + 1) {
+                graphics.lineTo(shape[0][0], shape[0][1]);
+            } {
+                graphics.lineTo(shape[i + 1][0], shape[i + 1][1]);
+            }
+            graphics.endFill();
+            this._graphContainer.addChild(graphics);
+        }
+    }
+    //point
+    private _buildPoint(point: Point) {
+        let graphics = new GraphicsWithIndex();
+        graphics.lineStyle(0);
+        graphics.beginFill(0xcccccc, 1)
+        graphics.drawCircle(point[0], point[1], 5);
+        graphics.endFill();
+        this._graphContainer.addChild(graphics);
+    }
+    //编辑状态下重绘 点击保存只需要画shape
+    public _renderCanves() {
+        let graph = this._graphCache;
+        //重置画布
+        this._shapeIndex = 0;
+        this._graphContainer.removeChildren();
+
+        this._buildBackground(graph.backgroundPic);
+        for (let i = 0; i < graph.shapes.length; i++) {
+            this._buildShapes(graph.shapes[i], graph.shapesContent[i])
+        }
+        //this._buildLine(graph.line)
+        // for (let i = 0; i < graph.point.length; i++) {
+        //     this._buildPoint(graph.point[i])
+        // }
     }
 
-    getGraph(): Graph {
-        return this._graph;
+    public get graphShape(): Array<Shape> {
+        return this._graphCache.shapes;
     }
+
+    public set graphShape(v: Array<Shape>) {
+        this._graphCache.shapes = v;
+        this._renderCanves()
+    }
+
 
     setGraph(graph: Graph): void {
-        this._graph = graph;
-        this._graphCache.backgroundPic=graph.backgroundPic;
+        //this._graph = graph;
+        this._graphCache = {
+            shapes: graph.shapes,
+            backgroundPic: graph.backgroundPic,
+            shapesContent: []
+        };//初始化数据
         const app = this._app.pixiApp;
         this._buildBackground(graph.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {
-            this._buildGraphics(graph.shapes[i])
+            this._buildShapes(graph.shapes[i])
+            this._graphCache.shapesContent.push(undefined)
         }
-    }
-
-
-    enableEdit(isEnabled: boolean): void {
 
     }
+
+
+
 
     setShapeContent(index: Array<number>, content: ShapeContent): void {
 

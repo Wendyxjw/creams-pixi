@@ -10,6 +10,7 @@
 </head>
 
 <body>
+
     <div id="operation">
         <span>放大</span>
         <span>适配居中</span>
@@ -29,6 +30,11 @@
         <span>删除</span>
         <span>开启橡皮擦</span>
         <span>拷贝</span>
+    </div>
+    <div>
+        <p>撤销编辑需要先点击 启用编辑（先凑合一下）</p>
+        <input type="button" id="edit" value="启用编辑">
+        <span  id="undo">撤销</span><br><span id="redo">重做</span>
     </div>
     <div id='creams-pixi' style="height: 1200px;"></div>
     <script type="text/javascript" src="/dist/creams-pixi.js" charset="utf-8"></script>

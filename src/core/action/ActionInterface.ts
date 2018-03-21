@@ -1,11 +1,15 @@
-import { ShapeContent, Shape } from "../common/Graph";
+import { ShapeContent, Shape, GraphCache, Point } from "../common/Graph";
 
 // 用户行为
 export type Action = {
-    do(data: Array<Shape>): Array<Shape>;
-    unDo(data: Array<Shape>): Array<Shape>;
+    do(data: GraphEdit): GraphEdit;
+    unDo(data: GraphEdit): GraphEdit;
 }
-
+export interface GraphEdit {
+    shapes: Array<Shape>;
+    line: Shape;
+    point: Array<Point>;
+}
 // Action, 操作行为
 export interface ActionAPI {
     // Actions

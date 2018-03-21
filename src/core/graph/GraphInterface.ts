@@ -6,7 +6,7 @@ export interface GraphAPI {
      * 获得图像数据
      * @returns Graph
      */
-    getGraph(): Graph;
+    // getGraph(): Graph;
 
     /**
      * 设置图像数据
@@ -14,13 +14,6 @@ export interface GraphAPI {
      * @returns void
      */
     setGraph(graph: Graph): void;
-
-    /**
-     * 是否开启编辑状态
-     * @param  {boolean} isEnabled
-     * @returns void
-     */
-    enableEdit(isEnabled: boolean): void;
 
     /**
      * 给图块设置显示参数

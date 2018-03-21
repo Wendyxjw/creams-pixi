@@ -38,4 +38,11 @@ export interface OperationAPI {
      * @returns void
      */
     enableEraser(isEnabled: boolean): void;
+
+    /**
+     * 是否开启编辑状态
+     * @param  {boolean} isEnabled
+     * @returns void
+     */
+    enableEdit(isEnabled: boolean): void;
 }

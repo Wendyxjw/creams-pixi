@@ -66,6 +66,15 @@ $(function () {
             graphToolbar.hide();
         })
     }
-
-
+    //do undo
+    $("#undo").click(function(){
+        app.actionManager.unDo()
+    })
+    $("#redo").click(function(){
+        app.actionManager.reDo()
+    })
+    //编辑状态
+    $("#edit").click(()=>{
+        app.operationManager.enableEdit(true)
+    })
 })
