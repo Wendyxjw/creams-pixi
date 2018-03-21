@@ -16,7 +16,8 @@ export type ShapeContent = {
     border: string; // size, color, style
     font: string; // size, color
     content: string; // 显示的文字内容
-    hasMark: boolean; // 是否需要角标
+    hasMark?: boolean; // 是否需要角标
+    alpha?: number; // 透明度
 }
 
 export interface GraphCache extends Graph {
