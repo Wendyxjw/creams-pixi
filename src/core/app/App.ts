@@ -7,7 +7,6 @@ import OperationManager from '../operation/OperationManager';
 import EventManager from '../event/EventManager';
 
 import ActionManager from '../action/ActionManager';
-import { Actions } from '../action/Action'
 
 export default class App implements AppInterface {
 
@@ -18,7 +17,6 @@ export default class App implements AppInterface {
     graphManager: GraphManager;
     operationManager: OperationManager;
     eventManager: EventManager;
-    actions: Actions
 
     constructor(el: HTMLElement) {
         this.pixiApp = this.init(el);
@@ -26,7 +24,6 @@ export default class App implements AppInterface {
         this.operationManager = new OperationManager(this);
         this.eventManager = new EventManager(this);
         this.actionManager = new ActionManager(this);
-        this.actions = new Actions(this);
     }
 
     init(el: HTMLElement) {

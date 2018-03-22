@@ -1,4 +1,5 @@
-import { ActionAPI, Action } from "./ActionInterface";
+import ActionAPI from "./ActionAPI"
+import { ActionInterface, Action } from "./ActionInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache } from "../common/Graph";
 import { CreateShapeAction, DeleteShapeAction, CopyShapeAction } from "./Action"
 import AppInterface from "../app/AppInterface";
@@ -69,7 +70,7 @@ export default class ActionManager extends Manager implements ActionAPI {
     addShape(x: number, y: number, width: number, height: number) {
         let pointArr: Shape;
         pointArr = [[x, y], [x, y + height], [x + width, y + height], [x + width, y]];
-        let action: Action = new CreateShapeAction(pointArr);
+        let action: Action = new CreateShapeAction(pointArr, this._app);
         this.addAction(action)
     };
 
@@ -78,7 +79,7 @@ export default class ActionManager extends Manager implements ActionAPI {
     };
 
     copyShape(index: string) {
-        let action: Action = new CopyShapeAction(index);
+        let action: Action = new CopyShapeAction(index, this._app);
         this.addAction(action);
         //let graphCache = this._app.graphManager.getGraph();
         //let shapeIndex = this._findGraphIndex(graphCache.shapesContent, index)
@@ -86,7 +87,7 @@ export default class ActionManager extends Manager implements ActionAPI {
     };
 
     deleteShape(index: string) {
-        let action: Action = new DeleteShapeAction(index);
+        let action: Action = new DeleteShapeAction(index, this._app);
         this.addAction(action);
     };
 

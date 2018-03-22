@@ -66,7 +66,7 @@ export default class GraphManager implements GraphManagerInterface {
         this.graphContainer.addChild(background);
     }
     //shape
-    public _buildShapes(shape: Shape, content: ShapeContent = defultGraphStyle): string {
+    buildShapes(shape: Shape, content: ShapeContent = defultGraphStyle): string {
         let graphics = new GraphicsWithIndex();
 
         // set a fill and line style
@@ -91,11 +91,11 @@ export default class GraphManager implements GraphManagerInterface {
         let indexNum = this._findShapeIndex(shapeIndex)
         this.graphContainer.removeChildAt(indexNum);
     }
-    public _hideShapes(shapeIndex: string) {
+    hideShapes(shapeIndex: string): void {
         let indexNum = this._findShapeIndex(shapeIndex)
         this.graphContainer.children[indexNum].visible = false;
     }
-    public _showShapes(shapeIndex: string) {
+    showShapes(shapeIndex: string): void {
         let indexNum = this._findShapeIndex(shapeIndex)
         this.graphContainer.children[indexNum].visible = true;
     }
@@ -134,7 +134,7 @@ export default class GraphManager implements GraphManagerInterface {
 
         this._buildBackground(graph.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {
-            this._buildShapes(graph.shapes[i], graph.shapesContent[i])
+            this.buildShapes(graph.shapes[i], graph.shapesContent[i])
         }
         //this._buildLine(graph.line)
         // for (let i = 0; i < graph.point.length; i++) {
@@ -152,7 +152,7 @@ export default class GraphManager implements GraphManagerInterface {
         const app = this._app.pixiApp;
         this._buildBackground(graph.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {
-            this._buildShapes(graph.shapes[i])
+            this.buildShapes(graph.shapes[i])
             this._graphCache.shapesContent.push(undefined)
         }
 

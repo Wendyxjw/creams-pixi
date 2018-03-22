@@ -1,4 +1,4 @@
-import { Graph, ShapeContent, GraphCache } from '../common/Graph';
+import { Graph, ShapeContent, GraphCache, Shape } from '../common/Graph';
 import { SelectEnum } from '../state/StateInterface';
 
 // 项目基础对外API
@@ -52,4 +52,24 @@ export interface GraphManagerInterface {
      * @returns void
      */
     removeLayer(): void;
+    /**
+     * 新建shape
+     * @param  {Shape} shape 
+     * @param  {ShapeContent} content?
+     * @returns string
+     */
+    buildShapes(shape: Shape, content?: ShapeContent): string;
+    /**
+     * 隐藏shape
+     * @param  {string} shapeIndex
+     * @returns void
+     */
+    hideShapes(shapeIndex: string): void
+    /**
+     * 显示shape
+     * @param  {string} shapeIndex
+     * @returns void
+     */
+    showShapes(shapeIndex: string): void
 }
+
