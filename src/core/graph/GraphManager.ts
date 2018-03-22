@@ -42,14 +42,6 @@ export default class GraphManager implements GraphAPI {
         this._renderCanves()
     }
 
-    public get graph(): GraphCache {
-        return this._graphCache;
-    }
-
-    public set graph(v: GraphCache) {
-        this._graphCache = v;
-    }
-
     private _buildBackground(url: string) {
         let background = PIXI.Sprite.fromImage(url);
         background.alpha = 0.3;
