@@ -1,5 +1,6 @@
 import OperationAPI from "./OperationAPI"
 import AppInterface from "../app/AppInterface";
+import { ShapeContent } from "../common/Graph";
 // implements 实现，必须实现完后面的interface，不然会报错； functionName（）：返回类型
 export default class OperationManager implements OperationAPI {
     private _app: AppInterface;
@@ -85,18 +86,21 @@ export default class OperationManager implements OperationAPI {
         this._circleCursor.removeChildren();
         this._circleCursor.addChild(this._drawCircle(size))
     }
+    
     enableEraser(isEnabled: boolean): void {
-        if (isEnabled) {
-            this._drawCursor();
-        } else {
-            this._destroyMosueCursor();
-        }
-
+        // if (isEnabled) {
+        //     this._drawCursor();
+        // } else {
+        //     this._destroyMosueCursor();
+        // }
+        this._app.stateManager.enableEraser(isEnabled);
     }
 
     enableEdit(isEnabled: boolean): void {
-        if (isEnabled) {
-            // this._app.actionManager.init(this._app.graphManager.graph)
-        }
+        this._app.stateManager.enableEdit(isEnabled);
+    }
+
+    setShapeContent(index: Array<number>, content: ShapeContent): void {
+        this._app.graphManager.setShapeContent(index, content);
     }
 }

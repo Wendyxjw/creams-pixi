@@ -1,3 +1,5 @@
+import { ShapeContent } from "../common/Graph";
+
 // 用户普通行为
 export type Operation = {
 
@@ -45,4 +47,12 @@ export default interface OperationAPI {
      * @returns void
      */
     enableEdit(isEnabled: boolean): void;
+
+    /**
+     * 给图块设置显示参数
+     * @param  {Array<number>} index, 图块序号
+     * @param  {ShapeContent} content, 显示参数
+     * @returns void
+     */
+    setShapeContent(index: Array<number>, content: ShapeContent): void;
 }
