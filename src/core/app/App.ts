@@ -13,7 +13,8 @@ import EventManager from '../event/EventManager';
 import ActionManager from '../action/ActionManager';
 import StateManager from "../state/StateManager";
 import { Graph, GraphCache } from "../common/Graph";
-interface ActionCombine extends ActionAPI, ActionManagerInterface {} 
+interface ActionCombine extends ActionAPI, ActionManagerInterface { }
+
 
 export default class App implements AppInterface, AppAPI {
     private _graph: Graph;
@@ -32,6 +33,7 @@ export default class App implements AppInterface, AppAPI {
         this.eventManager = new EventManager(this);
         this.actionManager = new ActionManager(this);
         this.stateManager = new StateManager(this);
+
     }
 
     private init(el: HTMLElement) {

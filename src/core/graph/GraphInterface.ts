@@ -47,6 +47,7 @@ export interface GraphManagerInterface {
      * @returns void
      */
     removeLayer(): void;
+
     /**
      * 新建shape
      * @param  {Shape} shape 
@@ -54,17 +55,27 @@ export interface GraphManagerInterface {
      * @returns string
      */
     buildShapes(shape: Shape, content?: ShapeContent): string;
+
     /**
      * 隐藏shape
      * @param  {string} shapeIndex
      * @returns void
      */
     hideShapes(shapeIndex: string): void
+
     /**
      * 显示shape
      * @param  {string} shapeIndex
      * @returns void
      */
     showShapes(shapeIndex: string): void
+
+    /**
+     * @param  {Shape} shape
+     * @param  {string} shapeIndex
+     * @returns void
+     */
+    updateShapes(shape: Shape, shapeIndex: string): void
+
 }
 

@@ -1,13 +1,12 @@
 import ActionAPI from "./ActionAPI"
 import { ActionInterface, ActionManagerInterface } from "./ActionInterface";
-import { Graph, ShapeContent, Shape, GraphCache } from "../common/Graph";
-import { CreateShapeAction, DeleteShapeAction, CopyShapeAction } from "./Action"
+import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache } from "../common/Graph";
+import { CreateShapeAction, DeleteShapeAction, CopyShapeAction, UpdateShapeAction } from "./Action"
 import AppInterface from "../app/AppInterface";
 
 class Manager {
-    //private _data: GraphCache;
-    protected _currentData: GraphCache;//因为还是需要删除shape的时候 清空con
-
+    protected _data: Graph;
+    protected _currentData: Graph; //因为还是需要删除shape的时候 清空con
     protected _actionIndex: number;
     protected _actionList: Array<ActionInterface>
     public _app: AppInterface;
@@ -16,7 +15,6 @@ class Manager {
         this._actionIndex = -1;
         this._actionList = [];
         this._app = app;
-
     }
     protected addAction(action: ActionInterface) {
         try {
@@ -58,13 +56,14 @@ class Manager {
 
 export default class ActionManager extends Manager implements ActionAPI, ActionManagerInterface {
     //启用编辑模式时 执行;保存后 是否清空修改记录？？
-    init(data: GraphCache): void {
-        this._currentData = data;//编辑的原始数据
-        this._actionIndex = -1;//当前的操作步骤
-        this._actionList = [];//?? 记录的应该是 操作类型（添加／删除／修改），shapeIndex和修改前、后的shapedata
+    init(data: Graph): void {
+        this._data = data;
+        this._currentData = data; //编辑的原始数据
+        this._actionIndex = -1; //当前的操作步骤
+        this._actionList = []; //?? 记录的应该是 操作类型（添加／删除／修改），shapeIndex和修改前、后的shapedata
     }
 
-    getCurrentData(): GraphCache {
+    getCurrentData(): Graph {
         return this._currentData;
     }
 
@@ -75,26 +74,22 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
         this.addAction(action)
     };
 
-    addShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
-
-    };
-
     copyShape(index: string) {
         let action: ActionInterface = new CopyShapeAction(index, this._app);
         this.addAction(action);
-        //let graphCache = this._app.graphManager.getGraph();
-        //let shapeIndex = this._findGraphIndex(graphCache.shapesContent, index)
-        //this._app.graphManager._buildShapes(graphCache.shapes[shapeIndex], graphCache.shapesContent[shapeIndex]);
     };
 
     deleteShape(index: string) {
         let action: ActionInterface = new DeleteShapeAction(index, this._app);
         this.addAction(action);
     };
-    updateShape(shape: Shape, shapeIndex: string) { };
-    addPoint(index: Array<number>) {
-
+    updateShape(shape: Shape, shapeIndex: string) {
+        let action: ActionInterface = new UpdateShapeAction(shape, shapeIndex, this._app);
+        this.addAction(action);
     };
+    // addPoint(index: Array<number>) {
+
+    // };
 
 
 }
