@@ -9,7 +9,7 @@ export default class OperationManager implements OperationAPI {
 
     constructor(app: AppInterface) {
         this._app = app;
-        this._graphCon = this._app.graphManager._graphContainer;
+        this._graphCon = this._app.graphManager.graphContainer;
     }
     private _drawCircle(radius: number = 10) {
         //画个圆

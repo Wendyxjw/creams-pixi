@@ -19,15 +19,15 @@ export default class GraphManager implements GraphManagerInterface {
     private _app: AppInterface;
     private _graph: Graph;
     private _graphCache: GraphCache;//保存修改的graph
-    public _graphContainer: PIXI.Container;
+    public graphContainer: PIXI.Container;
     private _shapeIndex: number = 0//记录graph编号
 
     constructor(app: AppInterface) {
         this._app = app;
-        this._graphContainer = new PIXI.Container();
-        this._graphContainer.interactive = true;
-        GraphHelper.enableDrag(this._graphContainer);
-        app.pixiApp.stage.addChild(this._graphContainer);
+        this.graphContainer = new PIXI.Container();
+        this.graphContainer.interactive = true;
+        GraphHelper.enableDrag(this.graphContainer);
+        app.pixiApp.stage.addChild(this.graphContainer);
         this._graphCache = {
             shapes: [],
             backgroundPic: "",
@@ -46,7 +46,7 @@ export default class GraphManager implements GraphManagerInterface {
     private _buildBackground(url: string) {
         let background = PIXI.Sprite.fromImage(url);
         background.alpha = 0.3;
-        this._graphContainer.addChild(background);
+        this.graphContainer.addChild(background);
     }
     //shape
     private _buildShapes(shape: Shape, content: ShapeContent = defultGraphStyle) {
@@ -68,7 +68,7 @@ export default class GraphManager implements GraphManagerInterface {
         this._shapeIndex++;
         graphics.shapeIndex = "shape" + this._shapeIndex;
 
-        this._graphContainer.addChild(graphics);
+        this.graphContainer.addChild(graphics);
         //save graphdata ；todo 默认的是否存？不存的话 actionManager的clone获取index需要改写
         //content.shapeIndex=graphics.shapeIndex;
         //this._graphCache.shapes.push(shape);
@@ -89,7 +89,7 @@ export default class GraphManager implements GraphManagerInterface {
                 graphics.lineTo(shape[i + 1][0], shape[i + 1][1]);
             }
             graphics.endFill();
-            this._graphContainer.addChild(graphics);
+            this.graphContainer.addChild(graphics);
         }
     }
     //point
@@ -99,14 +99,14 @@ export default class GraphManager implements GraphManagerInterface {
         graphics.beginFill(0xcccccc, 1)
         graphics.drawCircle(point[0], point[1], 5);
         graphics.endFill();
-        this._graphContainer.addChild(graphics);
+        this.graphContainer.addChild(graphics);
     }
     //编辑状态下重绘 点击保存只需要画shape
     public _renderCanves() {
         let graph = this._graphCache;
         //重置画布
         this._shapeIndex = 0;
-        this._graphContainer.removeChildren();
+        this.graphContainer.removeChildren();
 
         this._buildBackground(graph.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {

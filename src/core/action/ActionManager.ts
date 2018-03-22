@@ -88,7 +88,7 @@ export default class ActionManager extends Manager implements ActionAPI {
         let curIndex: number;
         let shapeNum: number = 0//统计shape个数
         //todo 待优化 需要跳出循环
-        this._app.graphManager._graphContainer.children.forEach((item: GraphicsWithIndex, index: number) => {
+        this._app.graphManager.graphContainer.children.forEach((item: GraphicsWithIndex, index: number) => {
             if (item.shapeIndex == shapeIndex) {
                 curIndex = shapeNum;
             }
@@ -127,8 +127,8 @@ export default class ActionManager extends Manager implements ActionAPI {
 
     deleteShape(index: string) {
         //let graphCache = this._app.graphManager._graphCache;
-        //  let curConIndex = this._findGraphIndex(this._app.graphManager._graphContainer.children, index);
-        // this._app.graphManager._graphContainer.removeChildAt(curConIndex);
+        //  let curConIndex = this._findGraphIndex(this._app.graphManager.graphContainer.children, index);
+        // this._app.graphManager.graphContainer.removeChildAt(curConIndex);
 
         //删除指定位置的数据
         //let shapeIndex = this._findGraphIndex(graphCache.shapesContent, index);

@@ -4,14 +4,12 @@ import { SelectEnum } from '../state/StateInterface';
 // 项目基础对外API
 export interface GraphManagerInterface {
 
-    _graphContainer: PIXI.Container;
+    graphContainer: PIXI.Container;
 
-    graph: GraphCache;
     /**
      * 获得图像数据
-     * @returns Graph
      */
-    // getGraph(): Graph;
+    graph: GraphCache;
 
     /**
      * 设置图像数据
