@@ -1,4 +1,4 @@
-import { ShapeContent, Shape, GraphCache, Point } from "../common/Graph";
+import { ShapeContent, Graph } from "../common/Graph";
 
 
 // Action, 操作行为
@@ -15,22 +15,11 @@ export default interface ActionAPI {
      */
     addShape(x: number, y: number, width: number, height: number, content?: ShapeContent): void;
 
-    /**
-     * 添加阴影图块，释放鼠标即销毁
-     * @param  {number} x
-     * @param  {number} y
-     * @param  {number} width
-     * @param  {number} height
-     * @param  {ShapeContent} content?
-     * @returns void
-     */
-    addShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent): void;
-
     copyShape(index: string): void;
 
     deleteShape(index: string): void;
 
-    addPoint(index: Array<number>): void;
+    // addPoint(index: Array<number>): void;
 
     /**
      * 撤销
@@ -45,20 +34,14 @@ export default interface ActionAPI {
     reDo(): void;
 
     /**
-     * 清空操作记录
-     * @returns void
-     */
-    emptyDoingList(): void;
-
-    /**
      * @returns GraphCache
      */
-    getCurrentData(): GraphCache;
+    getCurrentData(): Graph;
 
     /**
      * 启用编辑模式
      * @param  {GraphCache} data
      * @returns void
      */
-    init(data: GraphCache): void
+    init(data: Graph): void
 }

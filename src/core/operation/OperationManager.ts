@@ -87,7 +87,7 @@ export default class OperationManager implements OperationAPI {
         this._circleCursor.removeChildren();
         this._circleCursor.addChild(this._drawCircle(size))
     }
-    
+
     enableEraser(isEnabled: boolean): void {
         // if (isEnabled) {
         //     this._drawCursor();
@@ -104,4 +104,7 @@ export default class OperationManager implements OperationAPI {
     setShapeContent(index: Array<number>, content: ShapeContent): void {
         this._app.graphManager.setShapeContent(index, content);
     }
+    addShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
+
+    };
 }

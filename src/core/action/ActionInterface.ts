@@ -1,8 +1,8 @@
-import { ShapeContent, Shape, GraphCache, Point } from "../common/Graph";
+import { Shape, Graph } from "../common/Graph";
 // 用户行为
 export type ActionInterface = {
-    do(data: GraphCache): GraphCache;
-    unDo(data: GraphCache): GraphCache;
+    do(data: Graph): Graph;
+    unDo(data: Graph): Graph;
 }
 
 export interface ActionManagerInterface {
