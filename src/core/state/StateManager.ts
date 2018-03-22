@@ -34,6 +34,8 @@ export default class StateManager implements StateManagerInterface {
 
     enableEdit(isEnabled: boolean) {
         this._editEnum = isEnabled ? EditEnum.Editing : EditEnum.Nomal;
+        this._selectEnum = SelectEnum.None;
+        this._selectIndex = [];
         this._activeState();
     }
 

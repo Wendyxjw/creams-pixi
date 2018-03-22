@@ -11,12 +11,7 @@ export interface GraphManagerInterface {
      */
     graph: GraphCache;
 
-    /**
-     * 设置图像数据
-     * @param  {Graph} graph
-     * @returns void
-     */
-    setGraph(graph: Graph): void;
+    setGraph(graph: Graph, cache: GraphCache): void;
 
     /**
      * 给图块设置显示参数

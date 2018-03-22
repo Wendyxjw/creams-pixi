@@ -152,30 +152,31 @@ export default class GraphManager implements GraphManagerInterface {
         // }
     }
 
-    setGraph(graph: Graph): void {
-        //this._graph = graph;
-        // this._graphCache = {
-        //     backgroundPic: graph.backgroundPic,
-        //     shapesContent: []
-        // };//初始化数据
+
+    setGraph(graph: Graph, cache: GraphCache): void {
+        //初始化数据
+        this._graphCache = cache;
         const app = this._app.pixiApp;
-        //this._buildBackground(graph.backgroundPic);
+        this._buildBackground(cache.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {
-            this.buildShapes(graph.shapes[i])
-            //this._graphCache.shapesContent.push(undefined)
+            this.buildShapes(graph.shapes[i], cache.shapesContent[i]);
         }
-
     }
-
-
-
 
     setShapeContent(index: Array<number>, content: ShapeContent): void {
 
     }
 
     render(): void {
+        let graph = this._graphCache;
+        //重置画布
+        this._shapeIndex = 0;
+        this.graphContainer.removeChildren();
 
+        this._buildBackground(graph.backgroundPic);
+        for (let i = 0; i < graph.shapes.length; i++) {
+            this.buildShapes(graph.shapes[i], graph.shapesContent[i])
+        }
     }
 
     addDisplayLayer(index: Array<number>): void {
