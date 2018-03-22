@@ -14,7 +14,7 @@ export type CallbackFunc = {
 }
 
 // 事件接口
-export interface EventAPI {
+export default interface EventAPI {
     /**
      * 整个图形 click
      * @param  {CallbackFunc} callback

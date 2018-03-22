@@ -65,6 +65,7 @@ class Manager {
 }
 
 export default class ActionManager extends Manager implements ActionAPI {
+
     addShape(x: number, y: number, width: number, height: number) {
         let pointArr: Shape;
         pointArr = [[x, y], [x, y + height], [x + width, y + height], [x + width, y]];
@@ -87,7 +88,6 @@ export default class ActionManager extends Manager implements ActionAPI {
     deleteShape(index: string) {
         let action: Action = new DeleteShapeAction(index);
         this.addAction(action);
-
     };
 
     addPoint(index: Array<number>) {
