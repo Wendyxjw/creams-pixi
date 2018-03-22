@@ -33,6 +33,14 @@ export default class GraphManager implements GraphAPI {
             shapesContent: []
         }
     }
+    public get graph(): GraphCache {
+        return this._graphCache;
+    }
+
+    public set graph(v: GraphCache) {
+        this._graphCache = v;
+        this._renderCanves()
+    }
 
     private _buildBackground(url: string) {
         let background = PIXI.Sprite.fromImage(url);
@@ -108,16 +116,6 @@ export default class GraphManager implements GraphAPI {
         //     this._buildPoint(graph.point[i])
         // }
     }
-
-    public get graphShape(): Array<Shape> {
-        return this._graphCache.shapes;
-    }
-
-    public set graphShape(v: Array<Shape>) {
-        this._graphCache.shapes = v;
-        this._renderCanves()
-    }
-
 
     setGraph(graph: Graph): void {
         //this._graph = graph;

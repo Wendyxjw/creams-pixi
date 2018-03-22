@@ -96,7 +96,7 @@ export default class OperationManager implements OperationAPI {
 
     enableEdit(isEnabled: boolean): void {
         if (isEnabled) {
-            this._app.actionManager.init(this._app.graphManager.graphShape)
+            this._app.actionManager.init(this._app.graphManager.graph)
         }
     }
 }
