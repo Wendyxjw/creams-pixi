@@ -30,7 +30,6 @@ export default class GraphManager implements GraphManagerInterface {
         GraphHelper.enableDrag(this.graphContainer);
         app.pixiApp.stage.addChild(this.graphContainer);
         this._graphCache = {
-            shapes: [],
             backgroundPic: "",
             shapesContent: []
         }
@@ -57,18 +56,8 @@ export default class GraphManager implements GraphManagerInterface {
         }
         return curIndex;
     }
-
-
-
-    private _buildBackground(url: string) {
-        let background = PIXI.Sprite.fromImage(url);
-        background.alpha = 0.3;
-        this.graphContainer.addChild(background);
-    }
-    //shape
-    buildShapes(shape: Shape, content: ShapeContent = defultGraphStyle): string {
-        let graphics = new GraphicsWithIndex();
-
+    //画shape 新增和修改shape调用
+    private _drawShape(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent = defultGraphStyle) {
         // set a fill and line style
         graphics.beginFill(content.backgroundColor, 1);
         graphics.lineStyle(content.border.lineWidth, content.border.color, 1);
@@ -81,6 +70,20 @@ export default class GraphManager implements GraphManagerInterface {
         graphics.endFill();
         graphics.interactive = true;
         graphics.buttonMode = true;
+        return graphics
+    }
+
+    private _buildBackground(url: string) {
+        let background = PIXI.Sprite.fromImage(url);
+        background.alpha = 0.3;
+        this.graphContainer.addChild(background);
+    }
+    //shape
+    buildShapes(shape: Shape, content: ShapeContent = defultGraphStyle): string {
+        let graphics = new GraphicsWithIndex();
+
+        graphics = this._drawShape(graphics, shape, content);
+
         graphics.shapeIndex = "shape" + this._shapeIndex;
         this.graphContainer.addChild(graphics);
         this._shapeIndex++;
@@ -98,6 +101,13 @@ export default class GraphManager implements GraphManagerInterface {
     showShapes(shapeIndex: string): void {
         let indexNum = this._findShapeIndex(shapeIndex)
         this.graphContainer.children[indexNum].visible = true;
+    }
+    updateShapes(shape: Shape, shapeIndex: string) {
+        let indexNum = this._findShapeIndex(shapeIndex)
+        let curShape: PIXI.Graphics;
+        curShape = <PIXI.Graphics>this.graphContainer.children[indexNum];
+        curShape.clear();
+        curShape = this._drawShape(curShape, shape, this._graphCache.shapesContent[indexNum])
     }
     //line
     private _buildLine(shape: Shape) {
@@ -126,15 +136,15 @@ export default class GraphManager implements GraphManagerInterface {
         this.graphContainer.addChild(graphics);
     }
     //编辑状态下重绘 点击保存只需要画shape
-    public _renderCanves() {
-        let graph = this._graphCache;
+    public _renderCanves(graph: Graph, graphCache: GraphCache) {
+        //let graph = this._graphCache;
         //重置画布
         this._shapeIndex = 0;
         this.graphContainer.removeChildren();
 
-        this._buildBackground(graph.backgroundPic);
+        this._buildBackground(graphCache.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {
-            this.buildShapes(graph.shapes[i], graph.shapesContent[i])
+            this.buildShapes(graph.shapes[i], graphCache.shapesContent[i])
         }
         //this._buildLine(graph.line)
         // for (let i = 0; i < graph.point.length; i++) {
@@ -144,16 +154,15 @@ export default class GraphManager implements GraphManagerInterface {
 
     setGraph(graph: Graph): void {
         //this._graph = graph;
-        this._graphCache = {
-            shapes: graph.shapes,
-            backgroundPic: graph.backgroundPic,
-            shapesContent: []
-        };//初始化数据
+        // this._graphCache = {
+        //     backgroundPic: graph.backgroundPic,
+        //     shapesContent: []
+        // };//初始化数据
         const app = this._app.pixiApp;
-        this._buildBackground(graph.backgroundPic);
+        //this._buildBackground(graph.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {
             this.buildShapes(graph.shapes[i])
-            this._graphCache.shapesContent.push(undefined)
+            //this._graphCache.shapesContent.push(undefined)
         }
 
     }

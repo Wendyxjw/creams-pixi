@@ -12,7 +12,7 @@ import OperationManager from '../operation/OperationManager';
 import EventManager from '../event/EventManager';
 import ActionManager from '../action/ActionManager';
 import StateManager from "../state/StateManager";
-interface ActionCombine extends ActionAPI, ActionManagerInterface {} 
+interface ActionCombine extends ActionAPI, ActionManagerInterface { }
 
 export default class App implements AppInterface, AppAPI {
     pixiApp: PIXI.Application;
@@ -29,6 +29,7 @@ export default class App implements AppInterface, AppAPI {
         this.eventManager = new EventManager(this);
         this.actionManager = new ActionManager(this);
         this.stateManager = new StateManager(this);
+
     }
 
     init(el: HTMLElement) {
@@ -45,4 +46,5 @@ export default class App implements AppInterface, AppAPI {
 
         return app;
     }
+
 }
