@@ -22,7 +22,7 @@ export default class GraphManager implements GraphManagerInterface {
     private _app: App;
     private _graph: Graph;
     private _graphCache: GraphCache;//保存修改的graph
-    public _graphContainer: PIXI.Container;
+    public graphContainer: PIXI.Container;
     private _shapeIndex: number = 0//记录graph编号
 
     constructor(app: App) {
@@ -47,11 +47,11 @@ export default class GraphManager implements GraphManagerInterface {
     }
 
     //工具方法
-    //查找 shapeIndex对应在_graphContainer的位置
+    //查找 shapeIndex对应在graphContainer的位置
     private _findShapeIndex(shapeIndex: string): number {
         let curIndex: number;
-        for (let i = 0; i < this._graphContainer.children.length; i++) {
-            let item: GraphWithIndexType = this._graphContainer.children[i];
+        for (let i = 0; i < this.graphContainer.children.length; i++) {
+            let item: GraphWithIndexType = this.graphContainer.children[i];
             if (item.shapeIndex == shapeIndex) {
                 curIndex = i;
                 break;
@@ -91,15 +91,15 @@ export default class GraphManager implements GraphManagerInterface {
     }
     public _deleteShapes(shapeIndex: string) {
         let indexNum = this._findShapeIndex(shapeIndex)
-        this._graphContainer.removeChildAt(indexNum);
+        this.graphContainer.removeChildAt(indexNum);
     }
     public _hideShapes(shapeIndex: string) {
         let indexNum = this._findShapeIndex(shapeIndex)
-        this._graphContainer.children[indexNum].visible = false;
+        this.graphContainer.children[indexNum].visible = false;
     }
     public _showShapes(shapeIndex: string) {
         let indexNum = this._findShapeIndex(shapeIndex)
-        this._graphContainer.children[indexNum].visible = true;
+        this.graphContainer.children[indexNum].visible = true;
     }
     //line
     private _buildLine(shape: Shape) {

@@ -45,7 +45,7 @@ export interface GraphManagerInterface {
      * @param  {SelectEnum} select
      * @returns void
      */
-    addEditLayer(index: Array < number >, select: SelectEnum): void;
+    addEditLayer(index: Array<number>, select: SelectEnum): void;
 
     /**
      * 删除图层
