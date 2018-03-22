@@ -4,11 +4,11 @@ import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache } from "../co
 import { CreateShapeAction, DeleteShapeAction, CopyShapeAction } from "./Action"
 import AppInterface from "../app/AppInterface";
 
-class Manager {
+class Manager implements ActionInterface {
     //private _data: GraphCache;
-    private _currentData: GraphCache;//因为还是需要删除shape的时候 清空con
-    private _actionIndex: number;
-    private _actionList: Array<Action>
+    protected _currentData: GraphCache;//因为还是需要删除shape的时候 清空con
+    protected _actionIndex: number;
+    protected _actionList: Array<Action>
     public _app: AppInterface;
 
     constructor(app: AppInterface) {
@@ -17,18 +17,7 @@ class Manager {
         this._app = app;
 
     }
-    //启用编辑模式时 执行;保存后 是否清空修改记录？？
-    init(data: GraphCache) {
-        this._currentData = data;//编辑的原始数据
-        this._actionIndex = -1;//当前的操作步骤
-        this._actionList = [];//?? 记录的应该是 操作类型（添加／删除／修改），shapeIndex和修改前、后的shapedata
-    }
-
-    getCurrentData() {
-        return this._currentData;
-    }
-
-    addAction(action: Action) {
+    protected addAction(action: Action) {
         try {
             this._currentData = action.do(this._currentData);
         } catch (error) {
@@ -39,7 +28,6 @@ class Manager {
         this._actionList.splice(this._actionIndex); // delete the orig actions
         this._actionList.push(action);
     }
-
     unDo() {
         let index = this._actionIndex;
         let list = this._actionList;
@@ -62,10 +50,23 @@ class Manager {
         this._actionIndex++;
         this._currentData = action.do(this._currentData);
     }
+    emptyDoingList() {
 
+    };
+    updateShape(shape: Shape, shapeIndex: string) { }
 }
 
 export default class ActionManager extends Manager implements ActionAPI {
+    //启用编辑模式时 执行;保存后 是否清空修改记录？？
+    init(data: GraphCache): void {
+        this._currentData = data;//编辑的原始数据
+        this._actionIndex = -1;//当前的操作步骤
+        this._actionList = [];//?? 记录的应该是 操作类型（添加／删除／修改），shapeIndex和修改前、后的shapedata
+    }
+
+    getCurrentData(): GraphCache {
+        return this._currentData;
+    }
 
     addShape(x: number, y: number, width: number, height: number) {
         let pointArr: Shape;
@@ -95,7 +96,5 @@ export default class ActionManager extends Manager implements ActionAPI {
 
     };
 
-    emptyDoingList() {
 
-    };
 }

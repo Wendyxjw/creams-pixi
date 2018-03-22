@@ -49,4 +49,16 @@ export default interface ActionAPI {
      * @returns void
      */
     emptyDoingList(): void;
+
+    /**
+     * @returns GraphCache
+     */
+    getCurrentData(): GraphCache;
+
+    /**
+     * 启用编辑模式
+     * @param  {GraphCache} data
+     * @returns void
+     */
+    init(data: GraphCache): void
 }
