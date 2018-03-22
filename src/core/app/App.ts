@@ -12,6 +12,7 @@ import OperationManager from '../operation/OperationManager';
 import EventManager from '../event/EventManager';
 import ActionManager from '../action/ActionManager';
 import StateManager from "../state/StateManager";
+import { Graph, GraphCache } from "../common/Graph";
 interface ActionCombine extends ActionAPI, ActionManagerInterface {} 
 
 export default class App implements AppInterface, AppAPI {
@@ -31,7 +32,7 @@ export default class App implements AppInterface, AppAPI {
         this.stateManager = new StateManager(this);
     }
 
-    init(el: HTMLElement) {
+    private init(el: HTMLElement) {
         const app = new PIXI.Application({
             width: el.offsetWidth,
             height: el.offsetHeight,
@@ -44,5 +45,10 @@ export default class App implements AppInterface, AppAPI {
         el.appendChild(app.view);
 
         return app;
+    }
+
+    setGraph(graph: Graph, options: GraphCache) {
+        this.actionManager.init(graph);
+        this.graphManager.setGraph(graph, options);
     }
 }

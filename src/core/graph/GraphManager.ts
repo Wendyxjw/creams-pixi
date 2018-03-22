@@ -125,8 +125,22 @@ export default class GraphManager implements GraphManagerInterface {
         graphics.endFill();
         this.graphContainer.addChild(graphics);
     }
-    //编辑状态下重绘 点击保存只需要画shape
-    public _renderCanves() {
+
+    setGraph(graph: Graph, cache: GraphCache): void {
+        //初始化数据
+        this._graphCache = cache;
+        const app = this._app.pixiApp;
+        this._buildBackground(cache.backgroundPic);
+        for (let i = 0; i < graph.shapes.length; i++) {
+            this.buildShapes(graph.shapes[i], cache.shapesContent[i]);
+        }
+    }
+
+    setShapeContent(index: Array<number>, content: ShapeContent): void {
+
+    }
+
+    render(): void {
         let graph = this._graphCache;
         //重置画布
         this._shapeIndex = 0;
@@ -136,37 +150,6 @@ export default class GraphManager implements GraphManagerInterface {
         for (let i = 0; i < graph.shapes.length; i++) {
             this.buildShapes(graph.shapes[i], graph.shapesContent[i])
         }
-        //this._buildLine(graph.line)
-        // for (let i = 0; i < graph.point.length; i++) {
-        //     this._buildPoint(graph.point[i])
-        // }
-    }
-
-    setGraph(graph: Graph): void {
-        //this._graph = graph;
-        this._graphCache = {
-            shapes: graph.shapes,
-            backgroundPic: graph.backgroundPic,
-            shapesContent: []
-        };//初始化数据
-        const app = this._app.pixiApp;
-        this._buildBackground(graph.backgroundPic);
-        for (let i = 0; i < graph.shapes.length; i++) {
-            this.buildShapes(graph.shapes[i])
-            this._graphCache.shapesContent.push(undefined)
-        }
-
-    }
-
-
-
-
-    setShapeContent(index: Array<number>, content: ShapeContent): void {
-
-    }
-
-    render(): void {
-
     }
 
     addDisplayLayer(index: Array<number>): void {
