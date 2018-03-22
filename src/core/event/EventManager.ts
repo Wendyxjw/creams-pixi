@@ -1,5 +1,5 @@
 // 绑定传入事件
-import { EventAPI, CallbackFunc } from "./EventInterface"
+import EventAPI, { CallbackFunc } from "./EventAPI"
 import { GraphWithIndexType } from "../common/Graph"
 import AppInterface from "../app/AppInterface";
 
