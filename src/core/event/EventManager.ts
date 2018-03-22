@@ -1,6 +1,6 @@
 // 绑定传入事件
 import { EventAPI, CallbackFunc } from "./EventInterface"
-import { App } from "../app/App";
+import App from "../app/App";
 import { GraphWithIndexType } from "../common/Graph"
 
 export default class EventManager implements EventAPI {
@@ -11,7 +11,7 @@ export default class EventManager implements EventAPI {
     }
 
     onClickGraph(callback: CallbackFunc): void {
-        this._app.graphManager.graphContainer.on("click", (event) => {
+        this._app.graphManager._graphContainer.on("click", (event) => {
             //console.log(event)
             callback([], {
                 x: event.data.global.x,//触发事件位置
@@ -21,7 +21,7 @@ export default class EventManager implements EventAPI {
     };
 
     onMouseEnterShape(callback: CallbackFunc): void {
-        this._app.graphManager.graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
+        this._app.graphManager._graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
             //console.log(item)
             if (item.shapeIndex) {
                 item.on('mouseover', (event) => {
@@ -39,7 +39,7 @@ export default class EventManager implements EventAPI {
     onMouseDownShape(callback: CallbackFunc): void { };
 
     onMouseUpShape(callback: CallbackFunc): void {
-        this._app.graphManager.graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
+        this._app.graphManager._graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
             //console.log(item)
             if (item.shapeIndex) {
                 item.on('mouseup', (event) => {

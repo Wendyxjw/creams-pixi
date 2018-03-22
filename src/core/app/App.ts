@@ -1,16 +1,18 @@
 import * as PIXI from "pixi.js";
 
 import GraphManager from '../graph/GraphManager';
-import { StateManager } from '../state/StateInterface';
+import { StateManagerInterface } from '../state/StateInterface';
 import AppInterface from './AppInterface';
 import OperationManager from '../operation/OperationManager';
 import EventManager from '../event/EventManager';
+
 import ActionManager from '../action/ActionManager';
 import { Actions } from '../action/Action'
-export class App {
+
+export default class App implements AppInterface {
 
     pixiApp: PIXI.Application;
-    stateManager: StateManager;
+    stateManager: StateManagerInterface;
 
     actionManager: ActionManager;
     graphManager: GraphManager;

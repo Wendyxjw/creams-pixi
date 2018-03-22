@@ -1,6 +1,6 @@
 import { Action } from "./ActionInterface";
 import { ShapeContent, Shape, GraphCache } from "../common/Graph";
-import { App } from "../app/App";
+import App from "../app/App";
 
 let deleteData = {}
 

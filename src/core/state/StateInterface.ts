@@ -1,9 +1,23 @@
-// app状态
-export type State = {
+import { GraphManagerInterface } from "../graph/GraphInterface";
 
+export enum EditEnum {
+    Nomal = 'Nomal',
+    Editing = 'Editing',
 }
 
-// app状态管理
-export interface StateManager {
+export enum SelectEnum {
+    None = 'None',
+    Shape = 'Shape',
+    Line = 'Line',
+    Point = 'Point',
+}
 
+export interface StateManagerInterface {
+    enableEdit(isEnabled: boolean): void;
+    enableEraser(isEnabled: boolean): void;
+    select(state: SelectEnum, index: Array<number>): void;
+}
+
+export interface StateInterface {
+    processGraph(graphManager: GraphManagerInterface): void;
 }

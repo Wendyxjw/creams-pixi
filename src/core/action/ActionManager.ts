@@ -1,7 +1,8 @@
 import { ActionAPI, Action } from "./ActionInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache } from "../common/Graph";
-import { App } from "../app/App";
+import App from "../app/App";
 import { CreateShapeAction, DeleteShapeAction, CopyShapeAction } from "./Action"
+
 class Manager {
     //private _data: GraphCache;
     private _currentData: GraphCache;//因为还是需要删除shape的时候 清空con

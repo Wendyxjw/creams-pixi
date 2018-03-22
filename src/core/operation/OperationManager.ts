@@ -1,15 +1,15 @@
-import { OperationAPI } from "./OperationInterface"
-import { App } from "../app/App";
+import OperationAPI from "./OperationAPI"
+import AppInterface from "../app/AppInterface";
 // implements 实现，必须实现完后面的interface，不然会报错； functionName（）：返回类型
 export default class OperationManager implements OperationAPI {
-    private _app: App;
+    private _app: AppInterface;
     private _circleCursor: PIXI.Sprite;//橡皮擦
     private _cursorTicker: PIXI.ticker.Ticker;//监听橡皮擦
     private _graphCon: PIXI.Container
 
-    constructor(app: App) {
+    constructor(app: AppInterface) {
         this._app = app;
-        this._graphCon = this._app.graphManager.graphContainer;
+        this._graphCon = this._app.graphManager._graphContainer;
     }
     private _drawCircle(radius: number = 10) {
         //画个圆
@@ -96,7 +96,7 @@ export default class OperationManager implements OperationAPI {
 
     enableEdit(isEnabled: boolean): void {
         if (isEnabled) {
-            this._app.actionManager.init(this._app.graphManager.graph)
+            // this._app.actionManager.init(this._app.graphManager.graph)
         }
     }
 }

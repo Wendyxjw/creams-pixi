@@ -1,4 +1,4 @@
-import { App } from './core/app/App';
+import App from './core/app/App';
 
 export { App }
 

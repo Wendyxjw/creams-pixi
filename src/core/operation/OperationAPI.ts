@@ -4,7 +4,7 @@ export type Operation = {
 }
 
 // Operations, 普通行为
-export interface OperationAPI {
+export default interface OperationAPI {
     /**
      * 图像放大
      * @param  {number} level?, 放大等级，不填则放大一级
