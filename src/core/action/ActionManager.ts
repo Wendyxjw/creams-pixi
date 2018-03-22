@@ -1,12 +1,13 @@
 import ActionAPI from "./ActionAPI"
 import { ActionInterface, ActionManagerInterface } from "./ActionInterface";
-import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache } from "../common/Graph";
+import { Graph, ShapeContent, Shape, GraphCache } from "../common/Graph";
 import { CreateShapeAction, DeleteShapeAction, CopyShapeAction } from "./Action"
 import AppInterface from "../app/AppInterface";
 
 class Manager {
     //private _data: GraphCache;
     protected _currentData: GraphCache;//因为还是需要删除shape的时候 清空con
+
     protected _actionIndex: number;
     protected _actionList: Array<ActionInterface>
     public _app: AppInterface;

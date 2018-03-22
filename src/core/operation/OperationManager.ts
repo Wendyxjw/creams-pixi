@@ -2,6 +2,7 @@ import OperationAPI from "./OperationAPI"
 import AppInterface from "../app/AppInterface";
 import { ShapeContent } from "../common/Graph";
 // implements 实现，必须实现完后面的interface，不然会报错； functionName（）：返回类型
+
 export default class OperationManager implements OperationAPI {
     private _app: AppInterface;
     private _circleCursor: PIXI.Sprite;//橡皮擦

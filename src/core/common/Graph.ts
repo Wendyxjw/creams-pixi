@@ -6,7 +6,6 @@ export type Shape = Array<Point>;
 // 图
 export type Graph = {
     shapes: Array<Shape>;
-    backgroundPic: string;
 }
 
 // 缓存数据结构，运行时的数据结构，用于展示。
@@ -25,12 +24,11 @@ export type ShapeContent = {
     shapeIndex: String; //与Graph匹配
 }
 
-export interface GraphCache extends Graph {
+export interface GraphCache {
     // 每一个Shape的绘制样式
-    shapesContent?: Array<ShapeContent>;
+    backgroundPic: string;
+    shapesContent: Array<ShapeContent>;
 }
-
-
 
 //graph添加shapeIndex属性，用于识别graphContainer.children类型
 export interface GraphWithIndexType extends PIXI.DisplayObject {
