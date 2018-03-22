@@ -2,6 +2,7 @@ import { GraphAPI } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point } from "../common/Graph";
 import { App } from "../app/App";
 import GraphHelper from "./GraphHelper";
+import { SelectEnum } from "../state/State";
 //设置默认颜色
 const defultGraphStyle: ShapeContent = {
     backgroundColor: 0xD1D8DF,
@@ -152,5 +153,17 @@ export default class GraphManager implements GraphAPI {
 
     render(): void {
 
+    }
+    
+    addDisplayLayer(index: Array<number>): void {
+
+    }
+
+    addEditLayer(index: Array<number>, select: SelectEnum): void {
+
+    }
+
+    removeLayer(): void {
+        
     }
 }
