@@ -1,8 +1,8 @@
-import { Action } from "./ActionInterface";
+import { ActionInterface } from "./ActionInterface";
 import { ShapeContent, Shape, GraphCache } from "../common/Graph";
 import AppInterface from "../app/AppInterface";
 
-export class CreateShapeAction implements Action {
+export class CreateShapeAction implements ActionInterface {
     private _pointArr: Shape;
     private _addShapeIndex: string;
     private _app: AppInterface;
@@ -26,7 +26,7 @@ export class CreateShapeAction implements Action {
     };
 }
 
-export class DeleteShapeAction implements Action {
+export class DeleteShapeAction implements ActionInterface {
     private _deleteShapeIndex: string;
     private _pointArr: Shape;
     private _indexNum: number;
@@ -54,7 +54,7 @@ export class DeleteShapeAction implements Action {
     };
 }
 
-export class CopyShapeAction implements Action {
+export class CopyShapeAction implements ActionInterface {
     private _copyShapeIndex: string;
     private _addShapeIndex: string;
     private _indexNum: number

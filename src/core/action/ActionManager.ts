@@ -1,14 +1,14 @@
 import ActionAPI from "./ActionAPI"
-import { ActionInterface, Action } from "./ActionInterface";
+import { ActionInterface, ActionManagerInterface } from "./ActionInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache } from "../common/Graph";
 import { CreateShapeAction, DeleteShapeAction, CopyShapeAction } from "./Action"
 import AppInterface from "../app/AppInterface";
 
-class Manager implements ActionInterface {
+class Manager {
     //private _data: GraphCache;
     protected _currentData: GraphCache;//因为还是需要删除shape的时候 清空con
     protected _actionIndex: number;
-    protected _actionList: Array<Action>
+    protected _actionList: Array<ActionInterface>
     public _app: AppInterface;
 
     constructor(app: AppInterface) {
@@ -17,7 +17,7 @@ class Manager implements ActionInterface {
         this._app = app;
 
     }
-    protected addAction(action: Action) {
+    protected addAction(action: ActionInterface) {
         try {
             this._currentData = action.do(this._currentData);
         } catch (error) {
@@ -51,12 +51,11 @@ class Manager implements ActionInterface {
         this._currentData = action.do(this._currentData);
     }
     emptyDoingList() {
-
-    };
-    updateShape(shape: Shape, shapeIndex: string) { }
+        this._actionList = [];
+    }
 }
 
-export default class ActionManager extends Manager implements ActionAPI {
+export default class ActionManager extends Manager implements ActionAPI, ActionManagerInterface {
     //启用编辑模式时 执行;保存后 是否清空修改记录？？
     init(data: GraphCache): void {
         this._currentData = data;//编辑的原始数据
@@ -71,7 +70,7 @@ export default class ActionManager extends Manager implements ActionAPI {
     addShape(x: number, y: number, width: number, height: number) {
         let pointArr: Shape;
         pointArr = [[x, y], [x, y + height], [x + width, y + height], [x + width, y]];
-        let action: Action = new CreateShapeAction(pointArr, this._app);
+        let action: ActionInterface = new CreateShapeAction(pointArr, this._app);
         this.addAction(action)
     };
 
@@ -80,7 +79,7 @@ export default class ActionManager extends Manager implements ActionAPI {
     };
 
     copyShape(index: string) {
-        let action: Action = new CopyShapeAction(index, this._app);
+        let action: ActionInterface = new CopyShapeAction(index, this._app);
         this.addAction(action);
         //let graphCache = this._app.graphManager.getGraph();
         //let shapeIndex = this._findGraphIndex(graphCache.shapesContent, index)
@@ -88,10 +87,10 @@ export default class ActionManager extends Manager implements ActionAPI {
     };
 
     deleteShape(index: string) {
-        let action: Action = new DeleteShapeAction(index, this._app);
+        let action: ActionInterface = new DeleteShapeAction(index, this._app);
         this.addAction(action);
     };
-
+    updateShape(shape: Shape, shapeIndex: string) { };
     addPoint(index: Array<number>) {
 
     };
