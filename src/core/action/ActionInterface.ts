@@ -6,6 +6,15 @@ export type Action = {
 }
 
 export interface ActionInterface {
-    do(data: GraphCache): GraphCache;
-    unDo(data: GraphCache): GraphCache;
+    /**
+     * 清空操作记录
+     * @returns void
+     */
+    emptyDoingList(): void;
+    /**
+     * 重绘shape
+     * @param  {Shape} shape
+     * @param  {string} shapeIndex
+     */
+    updateShape(shape: Shape, shapeIndex: string)
 }
