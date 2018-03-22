@@ -4,24 +4,15 @@ import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point, Graph
 import GraphHelper from "./GraphHelper";
 import { SelectEnum } from "../state/StateInterface";
 import AppInterface from "../app/AppInterface";
-//设置默认颜色
-const defultGraphStyle: ShapeContent = {
-    backgroundColor: 0xD1D8DF,
-    border: {
-        lineWidth: 1,
-        color: 0xA7ACB2,
-    },
-    font: "",
-    content: "",
-    hasMark: false,
-    shapeIndex: ""
-}
+import { defultGraphStyle } from "./constant";
+
 export default class GraphManager implements GraphManagerInterface {
     private _app: AppInterface;
-    private _graph: Graph;
-    private _graphCache: GraphCache;//保存修改的graph
+    private _graphCache: GraphCache; //保存修改的graph
+    private _shapeIndex: number = 0; //记录graph编号
+    private _extraLayer: PIXI.Container;
+
     public graphContainer: PIXI.Container;
-    private _shapeIndex: number = 0//记录graph编号
 
     constructor(app: AppInterface) {
         this._app = app;
@@ -30,7 +21,6 @@ export default class GraphManager implements GraphManagerInterface {
         GraphHelper.enableDrag(this.graphContainer);
         app.pixiApp.stage.addChild(this.graphContainer);
         this._graphCache = {
-            shapes: [],
             backgroundPic: "",
             shapesContent: []
         }
@@ -57,8 +47,6 @@ export default class GraphManager implements GraphManagerInterface {
         }
         return curIndex;
     }
-
-
 
     private _buildBackground(url: string) {
         let background = PIXI.Sprite.fromImage(url);
@@ -128,8 +116,9 @@ export default class GraphManager implements GraphManagerInterface {
 
     setGraph(graph: Graph, cache: GraphCache): void {
         //初始化数据
+        this._shapeIndex = 0;
         this._graphCache = cache;
-        const app = this._app.pixiApp;
+        this.graphContainer.removeChildren();
         this._buildBackground(cache.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {
             this.buildShapes(graph.shapes[i], cache.shapesContent[i]);
@@ -141,15 +130,7 @@ export default class GraphManager implements GraphManagerInterface {
     }
 
     render(): void {
-        let graph = this._graphCache;
-        //重置画布
-        this._shapeIndex = 0;
-        this.graphContainer.removeChildren();
-
-        this._buildBackground(graph.backgroundPic);
-        for (let i = 0; i < graph.shapes.length; i++) {
-            this.buildShapes(graph.shapes[i], graph.shapesContent[i])
-        }
+        
     }
 
     addDisplayLayer(index: Array<number>): void {

@@ -16,6 +16,8 @@ import { Graph, GraphCache } from "../common/Graph";
 interface ActionCombine extends ActionAPI, ActionManagerInterface {} 
 
 export default class App implements AppInterface, AppAPI {
+    private _graph: Graph;
+    private _cache: GraphCache;
     pixiApp: PIXI.Application;
     actionManager: ActionCombine;
     stateManager: StateManagerInterface;
@@ -47,8 +49,18 @@ export default class App implements AppInterface, AppAPI {
         return app;
     }
 
-    setGraph(graph: Graph, options: GraphCache) {
+    public get graph(): Graph {
+        return this._graph;
+    }
+    
+    public get cache(): GraphCache {
+        return this._cache;
+    }
+
+    setGraph(graph: Graph, cache: GraphCache) {
+        this._graph = graph;
+        this._cache = cache;
         this.actionManager.init(graph);
-        this.graphManager.setGraph(graph, options);
+        this.graphManager.setGraph(graph, cache);
     }
 }

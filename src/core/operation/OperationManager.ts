@@ -59,7 +59,6 @@ export default class OperationManager implements OperationAPI {
         this._graphCon.y -= this._graphCon.height * (level - 1) / 2;
         this._graphCon.scale.x *= level;
         this._graphCon.scale.y *= level;
-
     }
     zoomOut(level: number = 1.25): void {
         this._graphCon.x += this._graphCon.width * (1 - 1 / level) / 2;

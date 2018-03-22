@@ -27,7 +27,7 @@ export type ShapeContent = {
 export interface GraphCache {
     // 每一个Shape的绘制样式
     backgroundPic: string;
-    shapesContent: Array<ShapeContent>;
+    shapesContent?: Array<ShapeContent>;
 }
 
 //graph添加shapeIndex属性，用于识别graphContainer.children类型
