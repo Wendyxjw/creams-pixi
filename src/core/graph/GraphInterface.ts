@@ -2,7 +2,7 @@ import { Graph, ShapeContent } from '../common/Graph';
 import { SelectEnum } from '../state/StateInterface';
 
 // 项目基础对外API
-export interface GraphAPI {
+export interface GraphManagerInterface {
     /**
      * 获得图像数据
      * @returns Graph
