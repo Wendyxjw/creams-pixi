@@ -1,8 +1,8 @@
 import { GraphManagerInterface } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point } from "../common/Graph";
-import { App } from "../app/App";
 import GraphHelper from "./GraphHelper";
 import { SelectEnum } from "../state/StateInterface";
+import AppInterface from "../app/AppInterface";
 //设置默认颜色
 const defultGraphStyle: ShapeContent = {
     backgroundColor: 0xD1D8DF,
@@ -16,13 +16,13 @@ const defultGraphStyle: ShapeContent = {
     shapeIndex: ""
 }
 export default class GraphManager implements GraphManagerInterface {
-    private _app: App;
+    private _app: AppInterface;
     private _graph: Graph;
     private _graphCache: GraphCache;//保存修改的graph
     public _graphContainer: PIXI.Container;
     private _shapeIndex: number = 0//记录graph编号
 
-    constructor(app: App) {
+    constructor(app: AppInterface) {
         this._app = app;
         this._graphContainer = new PIXI.Container();
         this._graphContainer.interactive = true;

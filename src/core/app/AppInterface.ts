@@ -7,6 +7,8 @@ import { EventAPI } from '../event/EventInterface';
 
 // 项目主控制类，单例模式
 export default interface AppInterface {
+    pixiApp: PIXI.Application;
+
     // 底层绘图接口
     graphManager: GraphManagerInterface;
 

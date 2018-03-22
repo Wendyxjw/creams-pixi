@@ -1,8 +1,12 @@
-import { Graph, ShapeContent } from '../common/Graph';
+import { Graph, ShapeContent, GraphCache } from '../common/Graph';
 import { SelectEnum } from '../state/StateInterface';
 
 // 项目基础对外API
 export interface GraphManagerInterface {
+
+    _graphContainer: PIXI.Container;
+
+    graph: GraphCache;
     /**
      * 获得图像数据
      * @returns Graph

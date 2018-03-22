@@ -1,15 +1,16 @@
 import { ActionAPI, Action } from "./ActionInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache } from "../common/Graph";
-import { App } from "../app/App";
 import { CreateShapeAction, DeleteShapeAction } from "./Action"
+import AppInterface from "../app/AppInterface";
+
 class Manager {
     //private _data: GraphCache;
     //public _currentData: GraphEdit;
     private _actionIndex: number;
     private _actionList: Array<Action>
-    public _app: App;
+    public _app: AppInterface;
 
-    constructor(app: App) {
+    constructor(app: AppInterface) {
         this._actionIndex = -1;
         this._actionList = [];
         this._app = app;
