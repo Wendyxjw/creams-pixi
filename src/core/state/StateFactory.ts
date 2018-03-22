@@ -1,12 +1,11 @@
 import {
-    EditEnum,
-    SelectEnum,
     SelectSuperState,
     NomalSelectState,
     EditingSelectState,
     NomalNoneState,
     EditingNoneState,
 } from './State';
+import { EditEnum, SelectEnum } from './StateInterface';
 
 export default function StateFactory(
     eEnum: EditEnum, sEnum: SelectEnum, enableEraser: boolean, index: Array<number>

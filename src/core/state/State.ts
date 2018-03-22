@@ -1,23 +1,12 @@
 import GraphManager from "../graph/GraphManager";
+import { SelectEnum, StateInterface } from "./StateInterface";
 
 const EditBorder = {
     lineWidth: 4,
     color: 0x7ed321,
 };
 
-export enum EditEnum {
-    Nomal = 'Nomal',
-    Editing = 'Editing',
-}
-
-export enum SelectEnum {
-    None = 'None',
-    Shape = 'Shape',
-    Line = 'Line',
-    Point = 'Point',
-}
-
-export abstract class SelectSuperState {
+export abstract class SelectSuperState implements StateInterface {
     protected _index: Array<number>;
     protected _select: SelectEnum;
 

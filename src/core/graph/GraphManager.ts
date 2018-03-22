@@ -1,8 +1,8 @@
-import { GraphAPI } from "./GraphInterface";
+import { GraphManagerInterface } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point } from "../common/Graph";
 import { App } from "../app/App";
 import GraphHelper from "./GraphHelper";
-import { SelectEnum } from "../state/State";
+import { SelectEnum } from "../state/StateInterface";
 //设置默认颜色
 const defultGraphStyle: ShapeContent = {
     backgroundColor: 0xD1D8DF,
@@ -15,7 +15,7 @@ const defultGraphStyle: ShapeContent = {
     hasMark: false,
     shapeIndex: ""
 }
-export default class GraphManager implements GraphAPI {
+export default class GraphManager implements GraphManagerInterface {
     private _app: App;
     private _graph: Graph;
     private _graphCache: GraphCache;//保存修改的graph

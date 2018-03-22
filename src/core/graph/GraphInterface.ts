@@ -1,4 +1,5 @@
 import { Graph, ShapeContent } from '../common/Graph';
+import { SelectEnum } from '../state/StateInterface';
 
 // 项目基础对外API
 export interface GraphAPI {
@@ -28,4 +29,25 @@ export interface GraphAPI {
      * @returns void
      */
     render(): void;
+
+    /**
+     * 增加显示图层
+     * @param  {Array<number>} index
+     * @returns void
+     */
+    addDisplayLayer(index: Array<number>): void;
+
+    /**
+     * 增加编辑图层
+     * @param  {Array<number>} index
+     * @param  {SelectEnum} select
+     * @returns void
+     */
+    addEditLayer(index: Array < number >, select: SelectEnum): void;
+
+    /**
+     * 删除图层
+     * @returns void
+     */
+    removeLayer(): void;
 }

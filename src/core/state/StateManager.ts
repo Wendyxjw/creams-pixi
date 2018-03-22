@@ -1,15 +1,15 @@
 import { App } from "../app/App";
-import { EditEnum, SelectEnum, SelectSuperState } from "./State";
 import StateFactory from './StateFactory';
+import { EditEnum, SelectEnum, StateManagerInterface, StateInterface } from "./StateInterface";
 
 // app状态管理
-export default class StateManager {
+export default class StateManager implements StateManagerInterface {
     private _app: App;
     private _editEnum: EditEnum;
     private _selectEnum: SelectEnum;
     private _isEnableEraser: boolean;
     private _selectIndex: Array<number>;
-    private _currentState: SelectSuperState;
+    private _currentState: StateInterface;
 
     constructor(app: App) {
         this._app = app;
