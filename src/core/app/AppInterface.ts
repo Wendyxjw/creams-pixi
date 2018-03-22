@@ -7,6 +7,7 @@ export default interface AppInterface {
     // pixi对象
     pixiApp: PIXI.Application;
 
+    // 用户操作行为
     actionManager: ActionManagerInterface;
 
     // 底层绘图接口

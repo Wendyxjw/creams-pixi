@@ -1,22 +1,26 @@
 import * as PIXI from "pixi.js";
-
-import GraphManager from '../graph/GraphManager';
-import { StateManagerInterface } from '../state/StateInterface';
 import AppInterface from './AppInterface';
+import AppAPI from "./AppAPI";
+import ActionAPI from "../action/ActionAPI";
+import OperationAPI from "../operation/OperationAPI";
+import EventAPI from "../event/EventAPI";
+import { StateManagerInterface } from '../state/StateInterface';
+import { ActionManagerInterface } from "../action/ActionInterface";
+import { GraphManagerInterface } from "../graph/GraphInterface";
+import GraphManager from '../graph/GraphManager';
 import OperationManager from '../operation/OperationManager';
 import EventManager from '../event/EventManager';
-
 import ActionManager from '../action/ActionManager';
+import StateManager from "../state/StateManager";
+interface ActionCombine extends ActionAPI, ActionManagerInterface {} 
 
-export default class App implements AppInterface {
-
+export default class App implements AppInterface, AppAPI {
     pixiApp: PIXI.Application;
+    actionManager: ActionCombine;
     stateManager: StateManagerInterface;
-
-    actionManager: ActionManager;
-    graphManager: GraphManager;
-    operationManager: OperationManager;
-    eventManager: EventManager;
+    graphManager: GraphManagerInterface;
+    operationManager: OperationAPI;
+    eventManager: EventAPI;
 
     constructor(el: HTMLElement) {
         this.pixiApp = this.init(el);
@@ -24,6 +28,7 @@ export default class App implements AppInterface {
         this.operationManager = new OperationManager(this);
         this.eventManager = new EventManager(this);
         this.actionManager = new ActionManager(this);
+        this.stateManager = new StateManager(this);
     }
 
     init(el: HTMLElement) {
@@ -40,19 +45,4 @@ export default class App implements AppInterface {
 
         return app;
     }
-
 }
-
-
-
-// let app = new App();
-
-// app.onZoomIn()
-// app.graphManager.render();
-// app.eventManager.onClickGraph(() => {
-//     alert();
-// });
-// app.onShapeDeleted()
-// app.onShapeMoveEnd((roomId, shapeIndex, graphData) => {
-
-// })
