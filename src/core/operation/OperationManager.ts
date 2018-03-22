@@ -1,4 +1,4 @@
-import { OperationAPI } from "./OperationInterface"
+import OperationAPI from "./OperationAPI"
 import { App } from "../app/App";
 // implements 实现，必须实现完后面的interface，不然会报错； functionName（）：返回类型
 export default class OperationManager implements OperationAPI {
