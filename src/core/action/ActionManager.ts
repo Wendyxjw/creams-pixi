@@ -1,14 +1,13 @@
-import { ActionAPI, Action, GraphEdit } from "./ActionInterface";
+import { ActionAPI, Action } from "./ActionInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache } from "../common/Graph";
 import { App } from "../app/App";
 import { CreateShapeAction, DeleteShapeAction } from "./Action"
 class Manager {
     //private _data: GraphCache;
-    public _currentData: GraphEdit;
+    //public _currentData: GraphEdit;
     private _actionIndex: number;
     private _actionList: Array<Action>
     public _app: App;
-    public _deleteData: GraphEdit//保存被删除的数据
 
     constructor(app: App) {
         this._actionIndex = -1;
@@ -17,27 +16,22 @@ class Manager {
 
     }
     //启用编辑模式时 执行;保存后 是否清空修改记录？？
-    init(data: Array<Shape>) {
+    init(data: GraphCache) {
         //this._data = data;//编辑的原始数据
-        this._currentData = {
-            shapes: data,
-            line: [],
-            point: []
-        }
         this._actionIndex = -1;//当前的操作步骤
         this._actionList = [];//?? 记录的应该是 操作类型（添加／删除／修改），shapeIndex和修改前、后的shapedata
     }
 
     getCurrentData() {
-        return this._currentData;
+        //return this._currentData;
     }
 
     addAction(action: Action) {
-        let data = this._currentData;
+        let data = this._app.graphManager.graph
         try {
-            this._currentData = action.do(data);
+            // this._currentData = action.do(data);
             //this._app.graphManager._renderCanves();
-            this._app.graphManager.graphShape = this._currentData.shapes;
+            this._app.graphManager.graph = action.do(data);
         } catch (error) {
             console.log(error);
             return;
@@ -50,27 +44,28 @@ class Manager {
     unDo() {
         let index = this._actionIndex;
         let list = this._actionList;
-        let data = this._currentData;
+        let data = this._app.graphManager.graph;
         if (index === -1) {
             return;
         }
         let action = list[index];
-        this._currentData = action.unDo(data);
+        //this._currentData = action.unDo(data);
         this._actionIndex--;
-        this._app.graphManager.graphShape = this._currentData.shapes;
+        this._app.graphManager.graph = action.unDo(data);
     }
 
     reDo() {
         let index = this._actionIndex;
         let list = this._actionList;
-        let data = this._currentData;
+        let data = this._app.graphManager.graph;
+        // let data = this._currentData;
         if (index === list.length - 1) {
             return;
         }
         let action = list[index + 1];
-        this._currentData = action.do(data);
+        //this._currentData = action.do(data);
         this._actionIndex++;
-        this._app.graphManager.graphShape = this._currentData.shapes;
+        this._app.graphManager.graph = action.do(data);
     }
 
 }
