@@ -1,5 +1,5 @@
 import { GraphAPI } from "./GraphInterface";
-import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point } from "../common/Graph";
+import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point, GraphWithIndexType } from "../common/Graph";
 import { App } from "../app/App";
 import GraphHelper from "./GraphHelper";
 //设置默认颜色
@@ -18,7 +18,7 @@ export default class GraphManager implements GraphAPI {
     private _app: App;
     private _graph: Graph;
     private _graphCache: GraphCache;//保存修改的graph
-    public _graphContainer: PIXI.Container;
+    private _graphContainer: PIXI.Container;
     private _shapeIndex: number = 0//记录graph编号
 
     constructor(app: App) {
@@ -33,14 +33,34 @@ export default class GraphManager implements GraphAPI {
             shapesContent: []
         }
     }
+
     public get graph(): GraphCache {
         return this._graphCache;
     }
 
     public set graph(v: GraphCache) {
         this._graphCache = v;
-        this._renderCanves()
     }
+
+    public get graphContainer(): PIXI.Container {
+        return this._graphContainer
+    }
+
+    //工具方法
+    //查找 shapeIndex对应在_graphContainer的位置
+    private _findShapeIndex(shapeIndex: string): number {
+        let curIndex: number;
+        for (let i = 0; i < this._graphContainer.children.length; i++) {
+            let item: GraphWithIndexType = this._graphContainer.children[i];
+            if (item.shapeIndex == shapeIndex) {
+                curIndex = i;
+                break;
+            }
+        }
+        return curIndex;
+    }
+
+
 
     private _buildBackground(url: string) {
         let background = PIXI.Sprite.fromImage(url);
@@ -48,7 +68,7 @@ export default class GraphManager implements GraphAPI {
         this._graphContainer.addChild(background);
     }
     //shape
-    private _buildShapes(shape: Shape, content: ShapeContent = defultGraphStyle) {
+    public _buildShapes(shape: Shape, content: ShapeContent = defultGraphStyle): string {
         let graphics = new GraphicsWithIndex();
 
         // set a fill and line style
@@ -63,16 +83,23 @@ export default class GraphManager implements GraphAPI {
         graphics.endFill();
         graphics.interactive = true;
         graphics.buttonMode = true;
-
-        this._shapeIndex++;
         graphics.shapeIndex = "shape" + this._shapeIndex;
-
+        this._shapeIndex++;
         this._graphContainer.addChild(graphics);
-        //save graphdata ；todo 默认的是否存？不存的话 actionManager的clone获取index需要改写
-        //content.shapeIndex=graphics.shapeIndex;
-        //this._graphCache.shapes.push(shape);
-        //this._graphCache.shapesContent.push(JSON.parse(JSON.stringify(content)));//深拷贝
 
+        return <string>graphics.shapeIndex;
+    }
+    public _deleteShapes(shapeIndex: string) {
+        let indexNum = this._findShapeIndex(shapeIndex)
+        this._graphContainer.removeChildAt(indexNum);
+    }
+    public _hideShapes(shapeIndex: string) {
+        let indexNum = this._findShapeIndex(shapeIndex)
+        this._graphContainer.children[indexNum].visible = false;
+    }
+    public _showShapes(shapeIndex: string) {
+        let indexNum = this._findShapeIndex(shapeIndex)
+        this._graphContainer.children[indexNum].visible = true;
     }
     //line
     private _buildLine(shape: Shape) {

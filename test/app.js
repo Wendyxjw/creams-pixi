@@ -27,10 +27,10 @@ $(function () {
         app.operationManager.enableEraser(false);
     })
     app.eventManager.onClickGraph((index, event) => {
-       // console.log(index + ";x:" + event.x + "y:" + event.y)
+        // console.log(index + ";x:" + event.x + "y:" + event.y)
     })
     app.eventManager.onMouseEnterShape((index, event) => {
-       // console.log(index + ";x:" + event.x + "y:" + event.y)
+        // console.log(index + ";x:" + event.x + "y:" + event.y)
     })
     //添加graph
     $("#addGraph").click(() => {
@@ -44,37 +44,40 @@ $(function () {
         app.actionManager.addShape(100, 100, 100, 100, defultGraphStyle)
     })
     //graph工具栏   
-    $("#creams-pixi").mouseover(()=>{
+    $("#creams-pixi").mouseover(() => {
         app.eventManager.onMouseUpShape((index, event) => {
             bindTool(index)
         })
     })
 
-    var bindTool=(i)=>{
+    var bindTool = (i) => {
         let graphToolbar = $("#graphToolbar");
-        graphToolbar.css({"left":event.x,"top":event.y}).show();
-        $(graphToolbar.find('span')[0]).unbind().bind("click",() => {
-            app.actionManager.deleteShape(i);
+        graphToolbar.css({
+            "left": event.x,
+            "top": event.y
+        }).show();
+        $(graphToolbar.find('span')[0]).unbind().bind("click", () => {
+            app.actionManager.deleteShape(i[0]);
             graphToolbar.hide();
         })
-        $(graphToolbar.find('span')[1]).unbind().bind("click",() => {
+        $(graphToolbar.find('span')[1]).unbind().bind("click", () => {
             app.operationManager.enableEraser(true);
             graphToolbar.hide();
         })
-        $(graphToolbar.find('span')[2]).unbind().bind("click",() => {
-            app.actionManager.copyShape(i);
+        $(graphToolbar.find('span')[2]).unbind().bind("click", () => {
+            app.actionManager.copyShape(i[0]);
             graphToolbar.hide();
         })
     }
     //do undo
-    $("#undo").click(function(){
+    $("#undo").click(function () {
         app.actionManager.unDo()
     })
-    $("#redo").click(function(){
+    $("#redo").click(function () {
         app.actionManager.reDo()
     })
     //编辑状态
-    $("#edit").click(()=>{
+    $("#edit").click(() => {
         app.operationManager.enableEdit(true)
     })
 })

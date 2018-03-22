@@ -11,27 +11,23 @@ export default class EventManager implements EventAPI {
     }
 
     onClickGraph(callback: CallbackFunc): void {
-        this._app.graphManager._graphContainer.on("click", (event) => {
+        this._app.graphManager.graphContainer.on("click", (event) => {
             //console.log(event)
             callback([], {
                 x: event.data.global.x,//触发事件位置
-                y: event.data.global.y,
-                width: 1,
-                height: 1
+                y: event.data.global.y
             })
         })
     };
 
     onMouseEnterShape(callback: CallbackFunc): void {
-        this._app.graphManager._graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
+        this._app.graphManager.graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
             //console.log(item)
             if (item.shapeIndex) {
                 item.on('mouseover', (event) => {
                     callback([item.shapeIndex], {
                         x: event.data.global.x,//触发事件位置
-                        y: event.data.global.y,
-                        width: item.width,
-                        height: item.height
+                        y: event.data.global.y
                     })
                 })
             }
@@ -43,20 +39,18 @@ export default class EventManager implements EventAPI {
     onMouseDownShape(callback: CallbackFunc): void { };
 
     onMouseUpShape(callback: CallbackFunc): void {
-        this._app.graphManager._graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
+        this._app.graphManager.graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
             //console.log(item)
             if (item.shapeIndex) {
                 item.on('mouseup', (event) => {
                     callback([item.shapeIndex], {
                         x: event.data.global.x,//触发事件位置
-                        y: event.data.global.y,
-                        width: item.width,
-                        height: item.height
+                        y: event.data.global.y
                     })
                 })
             }
         })
-     };
+    };
 
     onMouseDownLine(callback: CallbackFunc): void { };
 

@@ -5,8 +5,8 @@ import { StateManager } from '../state/StateInterface';
 import AppInterface from './AppInterface';
 import OperationManager from '../operation/OperationManager';
 import EventManager from '../event/EventManager';
-import ActionManager from '../action/ActionManager'
-
+import ActionManager from '../action/ActionManager';
+import { Actions } from '../action/Action'
 export class App {
 
     pixiApp: PIXI.Application;
@@ -16,13 +16,15 @@ export class App {
     graphManager: GraphManager;
     operationManager: OperationManager;
     eventManager: EventManager;
+    actions: Actions
 
     constructor(el: HTMLElement) {
         this.pixiApp = this.init(el);
         this.graphManager = new GraphManager(this);
-        this.operationManager=new OperationManager(this);
-        this.eventManager=new EventManager(this);
-        this.actionManager=new ActionManager(this);
+        this.operationManager = new OperationManager(this);
+        this.eventManager = new EventManager(this);
+        this.actionManager = new ActionManager(this);
+        this.actions = new Actions(this);
     }
 
     init(el: HTMLElement) {
@@ -30,7 +32,7 @@ export class App {
             width: el.offsetWidth,
             height: el.offsetHeight,
             backgroundColor: 0xffffff,
-            antialias: true 
+            antialias: true
         });
         window.addEventListener("resize", function () {
             app.renderer.resize(el.offsetWidth, el.offsetHeight);

@@ -1,9 +1,7 @@
 type MouseEvent = {
     // TODO: 应该外部定义导入
     x: number,//shape的定位
-    y: number,
-    width:number,
-    height:number
+    y: number
 }
 
 export type CallbackFunc = {
