@@ -1,5 +1,5 @@
 import { ActionInterface } from "./ActionInterface";
-import { ShapeContent, Shape, Graph } from "../common/Graph";
+import { ShapeContent, Shape, Graph, Point } from "../common/Graph";
 import AppInterface from "../app/AppInterface";
 
 export class CreateShapeAction implements ActionInterface {
@@ -65,15 +65,16 @@ export class CopyShapeAction implements ActionInterface {
 
     do(data: Graph): Graph {
         this._indexNum = <number><any>this._copyShapeIndex.slice(5, this._copyShapeIndex.length)
-        let pointArr = data.shapes[this._indexNum];
+        const pointArr: Shape = data.shapes[this._indexNum];
+        let newPointArr: Shape;
         //拷贝图片添加偏移量：x+20,y+20
-        pointArr = pointArr.map((item) => {
-            item[0] += 20;
-            item[1] += 20;
-            return item;
+        newPointArr = pointArr.map((item) => {
+            let newItem: Point;
+            newItem = [item[0] + 20, item[1] + 20]
+            return newItem;
         })
-        this._addShapeIndex = this._app.graphManager.buildShapes(pointArr)
-        data.shapes.push(pointArr);
+        this._addShapeIndex = this._app.graphManager.buildShapes(newPointArr)
+        data.shapes.push(newPointArr);
         return data;
     };
     unDo(data: Graph): Graph {
