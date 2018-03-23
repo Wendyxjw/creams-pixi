@@ -1,21 +1,27 @@
 
-import { GraphManagerInterface } from "./GraphInterface";
+import { GraphManagerInterface, EraserInterface } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point, GraphWithIndexType } from "../common/Graph";
 import GraphHelper from "./GraphHelper";
 import { SelectEnum } from "../state/StateInterface";
 import AppInterface from "../app/AppInterface";
 import { defultGraphStyle } from "./constant";
-
-class Eraser {
-    public circleCursor: PIXI.Sprite;//橡皮擦
-    private _cursorTicker: PIXI.ticker.Ticker;//监听橡皮擦
-
+import Eraser from "./Eraser"
+export default class GraphManager implements GraphManagerInterface {
     protected _app: AppInterface;
     protected _graphCache: GraphCache; //保存修改的graph
     protected _shapeIndex: number = 0; //记录graph编号
     protected _extraLayer: PIXI.Container;
 
+    public eraser: EraserInterface;
     public graphContainer: PIXI.Container;
+
+    public get graph(): GraphCache {
+        return this._graphCache;
+    }
+
+    public set graph(v: GraphCache) {
+        this._graphCache = v;
+    }
 
     constructor(app: AppInterface) {
         this._app = app;
@@ -26,61 +32,8 @@ class Eraser {
         this._graphCache = {
             backgroundPic: "",
             shapesContent: []
-        }
-    }
-
-    drawEraserCircle(radius: number = 10): PIXI.Graphics {
-        //画个圆
-        let circle = new PIXI.Graphics();
-        circle.beginFill(0xffffff, 0);
-        circle.lineStyle(1, 0x000, 1);
-        circle.drawCircle(0, 0, radius);
-        circle.endFill();
-        return circle;
-    }
-    buildMosueCursor(): void {
-        //开启前先销毁 避免生成多个
-        this.destroyMosueCursor()
-        this.circleCursor = new PIXI.Sprite();
-        this.circleCursor.addChild(this.drawEraserCircle());
-        this.circleCursor.x = -10; //让初始化位置在stage外
-        this.circleCursor.y = -10;
-        //todo 放置位置
-        this._app.pixiApp.stage.addChild(this.circleCursor);
-
-        //隐藏默认的鼠标指针 修改的其实是css
-        var interaction = this._app.pixiApp.renderer.plugins.interaction;
-        interaction.cursorStyles.default = "none";
-        //跟着鼠标走
-        this._cursorTicker = new PIXI.ticker.Ticker();
-        this._cursorTicker.add(() => {
-            let mousePosition = interaction.mouse.global;
-            this.circleCursor.x = mousePosition.x;
-            this.circleCursor.y = mousePosition.y;
-        }).start();
-    }
-    destroyMosueCursor(): void {
-        if (!this._cursorTicker) {
-            return
-        }
-        if (!this._cursorTicker.started) {
-            return
-        }
-        this._app.pixiApp.renderer.plugins.interaction.cursorStyles.default = "auto";
-        this._cursorTicker.destroy();
-        this.circleCursor.destroy();
-    }
-}
-
-export default class GraphManager extends Eraser implements GraphManagerInterface {
-
-
-    public get graph(): GraphCache {
-        return this._graphCache;
-    }
-
-    public set graph(v: GraphCache) {
-        this._graphCache = v;
+        };
+        this.eraser = new Eraser(this._app.pixiApp.renderer.plugins.interaction, this._extraLayer);
     }
 
     //工具方法
@@ -227,12 +180,6 @@ export default class GraphManager extends Eraser implements GraphManagerInterfac
 
     }
 
-    private _enableEraser() {
 
-    }
-
-    private _disableEraser() {
-
-    }
 
 }

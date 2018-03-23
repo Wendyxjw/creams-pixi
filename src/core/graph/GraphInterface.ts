@@ -3,9 +3,8 @@ import { SelectEnum } from '../state/StateInterface';
 
 // 项目基础对外API
 export interface GraphManagerInterface {
-
+    eraser: EraserInterface;
     graphContainer: PIXI.Container;
-    circleCursor: PIXI.Sprite;
     /**
      * 获得图像数据
      */
@@ -78,24 +77,24 @@ export interface GraphManagerInterface {
      */
     updateShapes(shape: Shape, shapeIndex: string): void
 
-    /**
-     * 橡皮擦：设置圆圈的大小
-     * @param  {number} radius
-     * @returns PIXI
-     */
-    drawEraserCircle(radius: number): PIXI.Graphics
+}
 
+export interface EraserInterface {
     /**
      * 初始化鼠标指针样式
      * @returns void
      */
-    buildMosueCursor(): void
+    enable(): void
 
     /**
      * 退出橡皮擦模式
      * @returns void
      */
-    destroyMosueCursor(): void
+    disable(): void
 
+    /**
+     * @param  {number} size
+     * @returns void
+     */
+    setSize(size: number): void
 }
-
