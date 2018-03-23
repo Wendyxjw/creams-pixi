@@ -15,10 +15,10 @@ export interface GraphManagerInterface {
     /**
      * 给图块设置显示参数
      * @param  {Array<number>} index, 图块序号
-     * @param  {ShapeContent} content, 显示参数
+     * @param  {ShapeContent} content?, 显示参数
      * @returns void
      */
-    setShapeContent(index: Array<number>, content: ShapeContent): void;
+    setShapeContent(index: Array<number>, content?: ShapeContent): void;
 
     /**
      * 触发绘图
@@ -49,33 +49,34 @@ export interface GraphManagerInterface {
 
     /**
      * 新建shape
-     * @param  {Shape} shape 
+     * @param  {Shape} shape
+     * @param  {number} index
      * @param  {ShapeContent} content?
-     * @returns string
+     * @returns void
      */
-    buildShapes(shape: Shape, content?: ShapeContent): string;
+    buildShapes(shape: Shape, index: number, content?: ShapeContent): void;
 
     /**
      * 隐藏shape
-     * @param  {string} shapeIndex
+     * @param  {number} shapeIndex
      * @returns void
      */
-    hideShapes(shapeIndex: string): void
+    hideShapes(shapeIndex: number): void
 
     /**
      * 显示shape
-     * @param  {string} shapeIndex
+     * @param  {number} shapeIndex
      * @returns void
      */
-    showShapes(shapeIndex: string): void
+    showShapes(shapeIndex: number): void
 
     /**
      * 更新shape
      * @param  {Shape} shape
-     * @param  {string} shapeIndex
+     * @param  {number} shapeIndex
      * @returns void
      */
-    updateShapes(shape: Shape, shapeIndex: string): void
+    updateShapes(shape: Shape, shapeIndex: number): void
 
 }
 

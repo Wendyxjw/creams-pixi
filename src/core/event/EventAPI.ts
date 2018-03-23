@@ -6,11 +6,11 @@ type MouseEvent = {
 
 export type CallbackFunc = {
     /**
-     * @param  {Array<string>} index, target对象的index数组
+     * @param  {Array<number>} index, target对象的index数组
      * @param  {MouseEvent} event, PIXI的点击事件
      * @returns void
      */
-    (index: Array<string>, event: MouseEvent): void;
+    (index: Array<number>, event: MouseEvent): void;
 }
 
 // 事件接口
