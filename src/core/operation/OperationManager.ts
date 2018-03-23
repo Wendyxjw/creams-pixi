@@ -105,5 +105,5 @@ export default class OperationManager implements OperationAPI {
     }
     addShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
 
-    };
+    }
 }
