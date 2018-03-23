@@ -5,7 +5,7 @@ import { SelectEnum } from '../state/StateInterface';
 export interface GraphManagerInterface {
 
     graphContainer: PIXI.Container;
-
+    circleCursor: PIXI.Sprite;
     /**
      * 获得图像数据
      */
@@ -71,11 +71,31 @@ export interface GraphManagerInterface {
     showShapes(shapeIndex: string): void
 
     /**
+     * 更新shape
      * @param  {Shape} shape
      * @param  {string} shapeIndex
      * @returns void
      */
     updateShapes(shape: Shape, shapeIndex: string): void
+
+    /**
+     * 橡皮擦：设置圆圈的大小
+     * @param  {number} radius
+     * @returns PIXI
+     */
+    drawEraserCircle(radius: number): PIXI.Graphics
+
+    /**
+     * 初始化鼠标指针样式
+     * @returns void
+     */
+    buildMosueCursor(): void
+
+    /**
+     * 退出橡皮擦模式
+     * @returns void
+     */
+    destroyMosueCursor(): void
 
 }
 
