@@ -17,6 +17,8 @@ export default class GraphManager implements GraphManagerInterface {
     constructor(app: AppInterface) {
         this._app = app;
         this.graphContainer = new PIXI.Container();
+        this._extraLayer = new PIXI.Container();
+        this._extraLayer.visible = false;
         this.graphContainer.interactive = true;
         GraphHelper.enableDrag(this.graphContainer);
         app.pixiApp.stage.addChild(this.graphContainer);
