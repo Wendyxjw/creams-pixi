@@ -1,16 +1,17 @@
 
 import { GraphManagerInterface, EraserInterface } from "./GraphInterface";
-import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point, GraphWithIndexType } from "../common/Graph";
+import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point, } from "../common/Graph";
 import GraphHelper from "./GraphHelper";
 import { SelectEnum } from "../state/StateInterface";
 import AppInterface from "../app/AppInterface";
 import { defultGraphStyle } from "./constant";
 import Eraser from "./Eraser"
 export default class GraphManager implements GraphManagerInterface {
-    protected _app: AppInterface;
-    protected _graphCache: GraphCache; //保存修改的graph
-    protected _shapeIndex: number = 0; //记录graph编号
-    protected _extraLayer: PIXI.Container;
+    private _app: AppInterface;
+    private _graphCache: GraphCache; //保存修改的graph
+    private _extraLayer: PIXI.Container;
+    private _shapeLayer: PIXI.Container;
+    private _backgroundLayer: PIXI.Container;
 
     public eraser: EraserInterface;
     public graphContainer: PIXI.Container;
@@ -25,7 +26,16 @@ export default class GraphManager implements GraphManagerInterface {
 
     constructor(app: AppInterface) {
         this._app = app;
+        this._backgroundLayer = new PIXI.Container();
+        this._shapeLayer = new PIXI.Container();
+        this._extraLayer = new PIXI.Container();
+
         this.graphContainer = new PIXI.Container();
+        this.graphContainer.addChild(this._backgroundLayer);
+        this.graphContainer.addChild(this._shapeLayer);
+        this.graphContainer.addChild(this._extraLayer);
+
+        this._extraLayer.visible = false;
         this.graphContainer.interactive = true;
         GraphHelper.enableDrag(this.graphContainer);
         app.pixiApp.stage.addChild(this.graphContainer);
@@ -36,18 +46,10 @@ export default class GraphManager implements GraphManagerInterface {
         this.eraser = new Eraser(this._app.pixiApp.renderer.plugins.interaction, this._extraLayer);
     }
 
-    //工具方法
-    //查找 shapeIndex对应在graphContainer的位置
-    private _findShapeIndex(shapeIndex: string): number {
-        let curIndex: number;
-        for (let i = 0; i < this.graphContainer.children.length; i++) {
-            let item: GraphWithIndexType = this.graphContainer.children[i];
-            if (item.shapeIndex == shapeIndex) {
-                curIndex = i;
-                break;
-            }
-        }
-        return curIndex;
+    private _buildBackground(url: string) {
+        let background = PIXI.Sprite.fromImage(url);
+        background.alpha = 0.3;
+        this._backgroundLayer.addChild(background);
     }
 
     //画shape 新增和修改shape调用
@@ -62,46 +64,40 @@ export default class GraphManager implements GraphManagerInterface {
         }
         graphics.lineTo(shape[0][0], shape[0][1]);
         graphics.endFill();
-        graphics.interactive = true;
-        graphics.buttonMode = true;
         return graphics
     }
 
-    private _buildBackground(url: string) {
-        let background = PIXI.Sprite.fromImage(url);
-        background.alpha = 0.3;
-        this.graphContainer.addChild(background);
+    private _addSelectHandler(graphics: PIXI.Graphics, index: Array<number>) {
+        graphics.interactive = true;
+        graphics.on('click', (e) => {
+            this._app.stateManager.select(SelectEnum.Shape, index);
+        })
     }
-    //shape
-    buildShapes(shape: Shape, content: ShapeContent = defultGraphStyle): string {
+
+    buildShapes(shape: Shape, index: number, content: ShapeContent = defultGraphStyle): void {
         let graphics = new GraphicsWithIndex();
 
         graphics = this._drawShape(graphics, shape, content);
+        this._addSelectHandler(graphics, [index]);
+        graphics.shapeIndex = index;
+        this._shapeLayer.addChild(graphics);
+    }
 
-        graphics.shapeIndex = "shape" + this._shapeIndex;
-        this.graphContainer.addChild(graphics);
-        this._shapeIndex++;
+    hideShapes(shapeIndex: number): void {
+        this._shapeLayer.children[shapeIndex].visible = false;
+    }
 
-        return <string>graphics.shapeIndex;
+    showShapes(shapeIndex: number): void {
+        this._shapeLayer.children[shapeIndex].visible = true;
     }
-    public _deleteShapes(shapeIndex: string) {
-        let indexNum = this._findShapeIndex(shapeIndex)
-        this.graphContainer.removeChildAt(indexNum);
-    }
-    hideShapes(shapeIndex: string): void {
-        let indexNum = this._findShapeIndex(shapeIndex)
-        this.graphContainer.children[indexNum].visible = false;
-    }
-    showShapes(shapeIndex: string): void {
-        let indexNum = this._findShapeIndex(shapeIndex)
-        this.graphContainer.children[indexNum].visible = true;
-    }
-    updateShapes(shape: Shape, shapeIndex: string) {
-        let indexNum = this._findShapeIndex(shapeIndex)
+
+    updateShapes(shape: Shape, shapeIndex: number) {
         let curShape: PIXI.Graphics;
-        curShape = <PIXI.Graphics>this.graphContainer.children[indexNum];
+        curShape = <PIXI.Graphics>this._shapeLayer.children[shapeIndex];
         curShape.clear();
-        curShape = this._drawShape(curShape, shape, this._graphCache.shapesContent[indexNum])
+        curShape = this._drawShape(curShape, shape, this._graphCache.shapesContent[shapeIndex])
+    }
+
     //shadowShape
     buildShadowShapes(shape: Shape, content: ShapeContent = defultGraphStyle): PIXI.Graphics {
         let graphics = new PIXI.Graphics();
@@ -111,6 +107,7 @@ export default class GraphManager implements GraphManagerInterface {
         this.graphContainer.addChild(graphics);
         return graphics;
     }
+
     //line
     private _buildLine(shape: Shape) {
 
@@ -125,7 +122,7 @@ export default class GraphManager implements GraphManagerInterface {
                 graphics.lineTo(shape[i + 1][0], shape[i + 1][1]);
             }
             graphics.endFill();
-            this.graphContainer.addChild(graphics);
+            this._shapeLayer.addChild(graphics);
         }
     }
     //point
@@ -135,38 +132,19 @@ export default class GraphManager implements GraphManagerInterface {
         graphics.beginFill(0xcccccc, 1)
         graphics.drawCircle(point[0], point[1], 5);
         graphics.endFill();
-        this.graphContainer.addChild(graphics);
+        this._shapeLayer.addChild(graphics);
     }
-    //编辑状态下重绘 点击保存只需要画shape
-    public _renderCanves(graph: Graph, graphCache: GraphCache) {
-        //let graph = this._graphCache;
-        //重置画布
-        this._shapeIndex = 0;
-        this.graphContainer.removeChildren();
-
-        this._buildBackground(graphCache.backgroundPic);
-        for (let i = 0; i < graph.shapes.length; i++) {
-            this.buildShapes(graph.shapes[i], graphCache.shapesContent[i])
-        }
-        //this._buildLine(graph.line)
-        // for (let i = 0; i < graph.point.length; i++) {
-        //     this._buildPoint(graph.point[i])
-        // }
-    }
-
 
     setGraph(graph: Graph, cache: GraphCache): void {
-        //初始化数据
-        this._shapeIndex = 0;
         this._graphCache = cache;
-        this.graphContainer.removeChildren();
+        this._shapeLayer.removeChildren();
         this._buildBackground(cache.backgroundPic);
         for (let i = 0; i < graph.shapes.length; i++) {
-            this.buildShapes(graph.shapes[i], cache.shapesContent[i]);
+            this.buildShapes(graph.shapes[i], i, cache.shapesContent[i]);
         }
     }
 
-    setShapeContent(index: Array<number>, content: ShapeContent): void {
+    setShapeContent(index: Array<number>, content?: ShapeContent): void {
 
     }
 
@@ -187,7 +165,4 @@ export default class GraphManager implements GraphManagerInterface {
     removeLayer(): void {
 
     }
-
-
-
 }
