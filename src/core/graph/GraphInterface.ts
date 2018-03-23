@@ -51,31 +51,38 @@ export interface GraphManagerInterface {
      * 新建shape
      * @param  {Shape} shape 
      * @param  {ShapeContent} content?
-     * @returns string
      */
-    buildShapes(shape: Shape, content?: ShapeContent): string;
+    buildShapes(shape: Shape, shapeIndex: number, content?: ShapeContent);
 
     /**
      * 隐藏shape
-     * @param  {string} shapeIndex
+     * @param  {number} shapeIndex
      * @returns void
      */
-    hideShapes(shapeIndex: string): void
+    hideShapes(shapeIndex: number): void
 
     /**
      * 显示shape
-     * @param  {string} shapeIndex
+     * @param  {number} shapeIndex
      * @returns void
      */
-    showShapes(shapeIndex: string): void
+    showShapes(shapeIndex: number): void
 
     /**
      * 更新shape
      * @param  {Shape} shape
-     * @param  {string} shapeIndex
+     * @param  {number} shapeIndex
      * @returns void
      */
-    updateShapes(shape: Shape, shapeIndex: string): void
+    updateShapes(shape: Shape, shapeIndex: number): void
+
+    /**
+     * 新建shadow：用于店铺匹配
+     * @param  {Shape} shape
+     * @param  {ShapeContent} content?
+     * @returns PIXI
+     */
+    buildShadowShapes(shape: Shape, content?: ShapeContent): PIXI.Graphics
 
 }
 

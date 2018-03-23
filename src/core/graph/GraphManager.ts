@@ -102,6 +102,14 @@ export default class GraphManager implements GraphManagerInterface {
         curShape = <PIXI.Graphics>this.graphContainer.children[indexNum];
         curShape.clear();
         curShape = this._drawShape(curShape, shape, this._graphCache.shapesContent[indexNum])
+    //shadowShape
+    buildShadowShapes(shape: Shape, content: ShapeContent = defultGraphStyle): PIXI.Graphics {
+        let graphics = new PIXI.Graphics();
+        graphics = this._drawShape(graphics, shape, content);
+        graphics.x = -1000;
+        graphics.y = -1000;
+        this.graphContainer.addChild(graphics);
+        return graphics;
     }
     //line
     private _buildLine(shape: Shape) {

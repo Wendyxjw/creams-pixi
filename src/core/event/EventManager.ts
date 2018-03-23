@@ -22,15 +22,12 @@ export default class EventManager implements EventAPI {
 
     onMouseEnterShape(callback: CallbackFunc): void {
         this._app.graphManager.graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
-            //console.log(item)
-            if (item.shapeIndex) {
-                item.on('mouseover', (event) => {
-                    callback([item.shapeIndex], {
-                        x: event.data.global.x,//触发事件位置
-                        y: event.data.global.y
-                    })
+            item.on('mouseover', (event) => {
+                callback([item.shapeIndex], {
+                    x: event.data.global.x,//触发事件位置
+                    y: event.data.global.y
                 })
-            }
+            })
         })
     };
 
@@ -40,15 +37,12 @@ export default class EventManager implements EventAPI {
 
     onMouseUpShape(callback: CallbackFunc): void {
         this._app.graphManager.graphContainer.children.forEach((item: GraphWithIndexType, index: number) => {
-            //console.log(item)
-            if (item.shapeIndex) {
-                item.on('mouseup', (event) => {
-                    callback([item.shapeIndex], {
-                        x: event.data.global.x,//触发事件位置
-                        y: event.data.global.y
-                    })
+            item.on('mouseup', (event) => {
+                callback([item.shapeIndex], {
+                    x: event.data.global.x,//触发事件位置
+                    y: event.data.global.y
                 })
-            }
+            })
         })
     };
 

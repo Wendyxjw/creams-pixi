@@ -32,8 +32,8 @@ export interface GraphCache {
 
 //graph添加shapeIndex属性，用于识别graphContainer.children类型
 export interface GraphWithIndexType extends PIXI.DisplayObject {
-    shapeIndex?: string,
+    shapeIndex?: number,
 }
 export class GraphicsWithIndex extends PIXI.Graphics {
-    public shapeIndex?: String//第几个
+    public shapeIndex?: number//第几个
 }
