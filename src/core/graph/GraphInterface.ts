@@ -3,9 +3,8 @@ import { SelectEnum } from '../state/StateInterface';
 
 // 项目基础对外API
 export interface GraphManagerInterface {
-
+    eraser: EraserInterface;
     graphContainer: PIXI.Container;
-
     /**
      * 获得图像数据
      */
@@ -71,6 +70,7 @@ export interface GraphManagerInterface {
     showShapes(shapeIndex: string): void
 
     /**
+     * 更新shape
      * @param  {Shape} shape
      * @param  {string} shapeIndex
      * @returns void
@@ -79,3 +79,22 @@ export interface GraphManagerInterface {
 
 }
 
+export interface EraserInterface {
+    /**
+     * 初始化鼠标指针样式
+     * @returns void
+     */
+    enable(): void
+
+    /**
+     * 退出橡皮擦模式
+     * @returns void
+     */
+    disable(): void
+
+    /**
+     * @param  {number} size
+     * @returns void
+     */
+    setSize(size: number): void
+}

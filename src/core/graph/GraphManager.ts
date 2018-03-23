@@ -1,18 +1,27 @@
 
-import { GraphManagerInterface } from "./GraphInterface";
+import { GraphManagerInterface, EraserInterface } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache, Point, GraphWithIndexType } from "../common/Graph";
 import GraphHelper from "./GraphHelper";
 import { SelectEnum } from "../state/StateInterface";
 import AppInterface from "../app/AppInterface";
 import { defultGraphStyle } from "./constant";
-
+import Eraser from "./Eraser"
 export default class GraphManager implements GraphManagerInterface {
-    private _app: AppInterface;
-    private _graphCache: GraphCache; //保存修改的graph
-    private _shapeIndex: number = 0; //记录graph编号
-    private _extraLayer: PIXI.Container;
+    protected _app: AppInterface;
+    protected _graphCache: GraphCache; //保存修改的graph
+    protected _shapeIndex: number = 0; //记录graph编号
+    protected _extraLayer: PIXI.Container;
 
+    public eraser: EraserInterface;
     public graphContainer: PIXI.Container;
+
+    public get graph(): GraphCache {
+        return this._graphCache;
+    }
+
+    public set graph(v: GraphCache) {
+        this._graphCache = v;
+    }
 
     constructor(app: AppInterface) {
         this._app = app;
@@ -25,15 +34,8 @@ export default class GraphManager implements GraphManagerInterface {
         this._graphCache = {
             backgroundPic: "",
             shapesContent: []
-        }
-    }
-
-    public get graph(): GraphCache {
-        return this._graphCache;
-    }
-
-    public set graph(v: GraphCache) {
-        this._graphCache = v;
+        };
+        this.eraser = new Eraser(this._app.pixiApp.renderer.plugins.interaction, this._extraLayer);
     }
 
     //工具方法
@@ -163,7 +165,7 @@ export default class GraphManager implements GraphManagerInterface {
     }
 
     render(): void {
-        
+
     }
 
     addDisplayLayer(index: Array<number>): void {
@@ -180,12 +182,6 @@ export default class GraphManager implements GraphManagerInterface {
 
     }
 
-    private _enableEraser() {
 
-    }
-
-    private _disableEraser() {
-        
-    }
 
 }

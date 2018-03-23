@@ -5,7 +5,7 @@ import { CreateShapeAction, DeleteShapeAction, CopyShapeAction, UpdateShapeActio
 import AppInterface from "../app/AppInterface";
 
 class Manager {
-    protected _data: Graph;
+    //protected _data: Graph;
     protected _currentData: Graph; //因为还是需要删除shape的时候 清空con
     protected _actionIndex: number;
     protected _actionList: Array<ActionInterface>
@@ -57,7 +57,7 @@ class Manager {
 export default class ActionManager extends Manager implements ActionAPI, ActionManagerInterface {
     //启用编辑模式时 执行;保存后 是否清空修改记录？？
     init(data: Graph): void {
-        this._data = data;
+        //this._data = data;
         this._currentData = data; //编辑的原始数据
         this._actionIndex = -1; //当前的操作步骤
         this._actionList = []; //?? 记录的应该是 操作类型（添加／删除／修改），shapeIndex和修改前、后的shapedata

@@ -1,9 +1,12 @@
 $(function () {
     var app = new CreamsPIXI(document.getElementById('creams-pixi'));
-    app.graphManager.setGraph({
+    app.setGraph({
+        shapes: data
+    }, {
         backgroundPic: '/res/Model.jpg',
-        shapes: data,
+        shapesContent: []
     })
+
     //放大缩小居中
     let dom = $("#operation");
     $(dom.find("span")[0]).click(function () {
@@ -76,8 +79,5 @@ $(function () {
     $("#redo").click(function () {
         app.actionManager.reDo()
     })
-    //编辑状态
-    $("#edit").click(() => {
-        app.operationManager.enableEdit(true)
-    })
+
 })
