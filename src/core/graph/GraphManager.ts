@@ -168,11 +168,22 @@ export default class GraphManager implements GraphManagerInterface {
 
     }
 
-    addEditLayer(index: Array<number>, select: SelectEnum): void {
+    addEditLayer(
+        index: Array<number>, select: SelectEnum, eraser: boolean = false
+    ): void {
 
     }
 
     removeLayer(): void {
 
     }
+
+    private _enableEraser() {
+
+    }
+
+    private _disableEraser() {
+        
+    }
+
 }

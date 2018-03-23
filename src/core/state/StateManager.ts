@@ -41,6 +41,7 @@ export default class StateManager implements StateManagerInterface {
 
     enableEraser(isEnabled: boolean) {
         this._isEnableEraser = isEnabled;
+        this._selectEnum = SelectEnum.Shape;
         this._activeState();
     }
 

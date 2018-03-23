@@ -38,6 +38,13 @@ export class EditingSelectState extends SelectSuperState {
     }
 }
 
+export class EditingEraserState extends SelectSuperState {
+    processLayer(graphManager: GraphManagerInterface): void {
+        const enableEraser = true;
+        graphManager.addEditLayer(this._index, this._select, enableEraser);
+    }
+}
+
 // 展示
 export class NomalNoneState extends SelectSuperState {
     processGraph(graphManager: GraphManagerInterface): void {

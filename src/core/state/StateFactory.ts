@@ -4,6 +4,7 @@ import {
     EditingSelectState,
     NomalNoneState,
     EditingNoneState,
+    EditingEraserState,
 } from './State';
 import { EditEnum, SelectEnum } from './StateInterface';
 
@@ -14,7 +15,7 @@ export default function StateFactory(
     const se = SelectEnum;
     switch (true) {
         case ((eEnum === ee.Editing) && enableEraser):
-            return;
+            return new EditingEraserState(index, sEnum);
         case ((eEnum === ee.Editing) && (sEnum === se.None)):
             return new EditingNoneState(index, sEnum);
         case ((eEnum === ee.Editing) && (sEnum === se.Shape)):
