@@ -15,9 +15,9 @@ export default interface ActionAPI {
      */
     addShape(x: number, y: number, width: number, height: number, content?: ShapeContent): void;
 
-    copyShape(index: string): void;
+    copyShape(shapeIndex: number): void;
 
-    deleteShape(index: string): void;
+    deleteShape(shapeIndex: number): void;
 
     // addPoint(index: Array<number>): void;
 

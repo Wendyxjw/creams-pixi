@@ -64,6 +64,14 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
     }
 
     getCurrentData(): Graph {
+        let newCurrentData: Array<Shape>;
+        for (let i = 0; i < this._currentData.shapes.length; i++) {
+            let item: Shape = this._currentData.shapes[i];
+            //删除空数组
+            if (item.length != 0) {
+                newCurrentData.push(item);
+            }
+        }
         return this._currentData;
     }
 
@@ -74,22 +82,25 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
         this.addAction(action)
     };
 
-    copyShape(index: string) {
-        let action: ActionInterface = new CopyShapeAction(index, this._app);
+    copyShape(shapeIndex: number) {
+        let action: ActionInterface = new CopyShapeAction(shapeIndex, this._app);
         this.addAction(action);
     };
 
-    deleteShape(index: string) {
-        let action: ActionInterface = new DeleteShapeAction(index, this._app);
+    deleteShape(shapeIndex: number) {
+        let action: ActionInterface = new DeleteShapeAction(shapeIndex, this._app);
         this.addAction(action);
     };
-    updateShape(shape: Shape, shapeIndex: string) {
+    updateShape(shape: Shape, shapeIndex: number) {
         let action: ActionInterface = new UpdateShapeAction(shape, shapeIndex, this._app);
         this.addAction(action);
     };
     // addPoint(index: Array<number>) {
 
     // };
+    getCurrentShape(shapeIndex: number) {
+        return this._currentData.shapes[shapeIndex];
+    }
 
 
 }

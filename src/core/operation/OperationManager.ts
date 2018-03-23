@@ -1,11 +1,13 @@
 import OperationAPI from "./OperationAPI"
 import AppInterface from "../app/AppInterface";
-import { ShapeContent } from "../common/Graph";
+import { ShapeContent, Shape } from "../common/Graph";
 // implements 实现，必须实现完后面的interface，不然会报错； functionName（）：返回类型
 
 export default class OperationManager implements OperationAPI {
     private _app: AppInterface;
     private _graphCon: PIXI.Container
+    private _shadowShape: PIXI.Graphics;
+    private _shadowTicker: PIXI.ticker.Ticker;
 
     constructor(app: AppInterface) {
         this._app = app;
@@ -41,11 +43,7 @@ export default class OperationManager implements OperationAPI {
         this._graphCon.y = appScreen.height / 2 - this._graphCon.height / 2;
     }
     setEraserSize(size: number): void {
-        let circleCursor: PIXI.Sprite = this._app.graphManager.circleCursor;
-        let newCicel: PIXI.Graphics;
-        circleCursor.removeChildren();
-        newCicel = this._app.graphManager.drawEraserCircle(size);
-        circleCursor.addChild(newCicel)
+        this._app.graphManager.eraser.setSize(size);
     }
 
     enableEraser(isEnabled: boolean): void {
@@ -61,10 +59,37 @@ export default class OperationManager implements OperationAPI {
         this._app.stateManager.enableEdit(isEnabled);
     }
 
-    setShapeContent(index: Array<number>, content: ShapeContent): void {
+    setShapeContent(index: Array<number>, content?: ShapeContent): void {
         this._app.graphManager.setShapeContent(index, content);
     }
+
     addShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
+        let shape: Shape;
+        shape.push([0, 0], [0, height], [width, height], [width, 0]);
+
+        this._shadowShape = this._app.graphManager.buildShadowShapes(shape, content);
+        this._shadowShape.on("mouseup", (e) => {
+            this.deleteShadowShape();
+        })
+        this._app.graphManager.graphContainer.addChild(this._shadowShape);
+        //跟着鼠标走
+        this._shadowTicker = new PIXI.ticker.Ticker();
+        this._shadowTicker.add(() => {
+            let mousePosition = this._app.pixiApp.renderer.plugins.interaction.mouse.global;
+            this._shadowShape.x = mousePosition.x;
+            this._shadowShape.y = mousePosition.y;
+        }).start();
 
     }
+    private deleteShadowShape() {
+        if (!this._shadowTicker) {
+            return
+        }
+        if (!this._shadowTicker.started) {
+            return
+        }
+        this._shadowTicker.destroy();
+        this._shadowShape.destroy();
+    }
+
 }

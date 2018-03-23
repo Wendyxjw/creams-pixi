@@ -11,10 +11,18 @@ export interface ActionManagerInterface {
      * @returns void
      */
     emptyDoingList(): void;
+
     /**
      * 重绘shape
      * @param  {Shape} shape
-     * @param  {string} shapeIndex
+     * @param  {number} shapeIndex
      */
-    updateShape(shape: Shape, shapeIndex: string)
+    updateShape(shape: Shape, shapeIndex: number): void;
+
+    /**
+     * 获取指定shape
+     * @param  {number} shapeIndex
+     * @returns void
+     */
+    getCurrentShape(shapeIndex: number): void
 }

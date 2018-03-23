@@ -26,7 +26,7 @@ export default class Eraser implements EraserInterface {
         this._circleCursor.addChild(this.buildCircle());
         this._circleCursor.x = -1000; //让初始化位置在屏幕外
         this._circleCursor.y = -1000;
-        //todo 放置位置
+        //放置在编辑层
         this._extraLayer.addChild(this._circleCursor);
 
         //隐藏默认的鼠标指针 修改的其实是css

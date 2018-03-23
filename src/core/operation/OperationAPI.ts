@@ -51,10 +51,10 @@ export default interface OperationAPI {
     /**
      * 给图块设置显示参数
      * @param  {Array<number>} index, 图块序号
-     * @param  {ShapeContent} content, 显示参数
+     * @param  {ShapeContent} content?, 显示参数
      * @returns void
      */
-    setShapeContent(index: Array<number>, content: ShapeContent): void;
+    setShapeContent(index: Array<number>, content?: ShapeContent): void;
 
     /**
      * 添加阴影图块，释放鼠标即销毁
