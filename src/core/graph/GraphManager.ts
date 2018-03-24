@@ -12,8 +12,8 @@ export default class GraphManager implements GraphManagerInterface {
     private _extraLayer: PIXI.Container;
     private _shapeLayer: PIXI.Container;
     private _backgroundLayer: PIXI.Container;
+    private _eraser: EraserInterface;
 
-    public eraser: EraserInterface;
     public graphContainer: PIXI.Container;
 
     public get graph(): GraphCache {
@@ -43,7 +43,7 @@ export default class GraphManager implements GraphManagerInterface {
             backgroundPic: "",
             shapesContent: []
         };
-        this.eraser = new Eraser(this._app.pixiApp.renderer.plugins.interaction, this._extraLayer);
+        this._eraser = new Eraser(this._app.pixiApp.renderer.plugins.interaction, this._extraLayer);
     }
 
     private _buildBackground(url: string) {
@@ -164,5 +164,9 @@ export default class GraphManager implements GraphManagerInterface {
 
     removeLayer(): void {
 
+    }
+
+    setEraserSize(size: number): void {
+        this._eraser.setSize(size);
     }
 }

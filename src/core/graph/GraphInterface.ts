@@ -3,7 +3,7 @@ import { SelectEnum } from '../state/StateInterface';
 
 // 项目基础对外API
 export interface GraphManagerInterface {
-    eraser: EraserInterface;
+
     graphContainer: PIXI.Container;
     /**
      * 获得图像数据
@@ -46,7 +46,14 @@ export interface GraphManagerInterface {
      * @returns void
      */
     removeLayer(): void;
-
+    
+    /**
+     * 设置橡皮擦大小
+     * @param  {number} size
+     * @returns void
+     */
+    setEraserSize(size: number): void;
+    
     /**
      * 新建shape
      * @param  {Shape} shape

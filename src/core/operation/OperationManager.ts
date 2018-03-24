@@ -43,15 +43,10 @@ export default class OperationManager implements OperationAPI {
         this._graphCon.y = appScreen.height / 2 - this._graphCon.height / 2;
     }
     setEraserSize(size: number): void {
-        this._app.graphManager.eraser.setSize(size);
+        this._app.graphManager.setEraserSize(size);
     }
 
     enableEraser(isEnabled: boolean): void {
-        // if (isEnabled) {
-        //     this._drawCursor();
-        // } else {
-        //     this._destroyMosueCursor();
-        // }
         this._app.stateManager.enableEraser(isEnabled);
     }
 
