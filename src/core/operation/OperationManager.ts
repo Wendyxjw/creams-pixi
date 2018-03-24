@@ -43,15 +43,10 @@ export default class OperationManager implements OperationAPI {
         this._graphCon.y = appScreen.height / 2 - this._graphCon.height / 2;
     }
     setEraserSize(size: number): void {
-        this._app.graphManager.eraser.setSize(size);
+        this._app.graphManager.setEraserSize(size);
     }
 
     enableEraser(isEnabled: boolean): void {
-        // if (isEnabled) {
-        //     this._drawCursor();
-        // } else {
-        //     this._destroyMosueCursor();
-        // }
         this._app.stateManager.enableEraser(isEnabled);
     }
 
@@ -68,7 +63,7 @@ export default class OperationManager implements OperationAPI {
         shape.push([0, 0], [0, height], [width, height], [width, 0]);
 
         this._shadowShape = this._app.graphManager.buildShadowShapes(shape, content);
-        this._shadowShape.on("mouseup", (e) => {
+        this._shadowShape.on("mouseup", () => {
             this.deleteShadowShape();
         })
         this._app.graphManager.graphContainer.addChild(this._shadowShape);

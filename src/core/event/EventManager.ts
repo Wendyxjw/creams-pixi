@@ -11,7 +11,7 @@ export default class EventManager implements EventAPI {
     }
 
     onClickGraph(callback: CallbackFunc): void {
-        this._app.graphManager.graphContainer.on("click", (event) => {
+        this._app.graphManager.graphContainer.on("click", (event: PIXI.interaction.InteractionEvent) => {
             //console.log(event)
             callback([], {
                 x: event.data.global.x,//触发事件位置
@@ -22,7 +22,7 @@ export default class EventManager implements EventAPI {
 
     onMouseEnterShape(callback: CallbackFunc): void {
         this._app.graphManager.graphContainer.children.forEach((item: ShapeGraphics, index: number) => {
-            item.on('mouseover', (event) => {
+            item.on('mouseover', (event: PIXI.interaction.InteractionEvent) => {
                 callback([item.shapeIndex], {
                     x: event.data.global.x,//触发事件位置
                     y: event.data.global.y
@@ -38,7 +38,7 @@ export default class EventManager implements EventAPI {
 
     onMouseUpShape(callback: CallbackFunc): void {
         this._app.graphManager.graphContainer.children.forEach((item: ShapeGraphics, index: number) => {
-            item.on('mouseup', (event) => {
+            item.on('mouseup', (event: PIXI.interaction.InteractionEvent) => {
                 callback([item.shapeIndex], {
                     x: event.data.global.x,//触发事件位置
                     y: event.data.global.y
