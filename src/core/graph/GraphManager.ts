@@ -43,7 +43,7 @@ export default class GraphManager implements GraphManagerInterface {
             backgroundPic: "",
             shapesContent: []
         };
-        this._eraser = new Eraser(this._app.pixiApp.renderer.plugins.interaction, this._extraLayer);
+        this._eraser = new Eraser(this._app.pixiApp.renderer.plugins.interaction, this._extraLayer, (deletePointArr: Array<number>) => { });
     }
 
     private _buildBackground(url: string) {
