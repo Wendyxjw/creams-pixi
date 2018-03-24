@@ -1,6 +1,6 @@
 // 绑定传入事件
 import EventAPI, { CallbackFunc } from "./EventAPI"
-import { GraphicsWithIndex } from "../common/Graph"
+import { ShapeGraphics } from "../common/Graph"
 import AppInterface from "../app/AppInterface";
 
 export default class EventManager implements EventAPI {
@@ -21,7 +21,7 @@ export default class EventManager implements EventAPI {
     };
 
     onMouseEnterShape(callback: CallbackFunc): void {
-        this._app.graphManager.graphContainer.children.forEach((item: GraphicsWithIndex, index: number) => {
+        this._app.graphManager.graphContainer.children.forEach((item: ShapeGraphics, index: number) => {
             item.on('mouseover', (event: PIXI.interaction.InteractionEvent) => {
                 callback([item.shapeIndex], {
                     x: event.data.global.x,//触发事件位置
@@ -37,7 +37,7 @@ export default class EventManager implements EventAPI {
     onMouseDownShape(callback: CallbackFunc): void { };
 
     onMouseUpShape(callback: CallbackFunc): void {
-        this._app.graphManager.graphContainer.children.forEach((item: GraphicsWithIndex, index: number) => {
+        this._app.graphManager.graphContainer.children.forEach((item: ShapeGraphics, index: number) => {
             item.on('mouseup', (event: PIXI.interaction.InteractionEvent) => {
                 callback([item.shapeIndex], {
                     x: event.data.global.x,//触发事件位置

@@ -1,6 +1,6 @@
 import ActionAPI from "./ActionAPI"
 import { ActionInterface, ActionManagerInterface } from "./ActionInterface";
-import { Graph, ShapeContent, Shape, GraphicsWithIndex, GraphCache } from "../common/Graph";
+import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache } from "../common/Graph";
 import { CreateShapeAction, DeleteShapeAction, CopyShapeAction, UpdateShapeAction } from "./Action"
 import AppInterface from "../app/AppInterface";
 
