@@ -68,7 +68,7 @@ export default class OperationManager implements OperationAPI {
         shape.push([0, 0], [0, height], [width, height], [width, 0]);
 
         this._shadowShape = this._app.graphManager.buildShadowShapes(shape, content);
-        this._shadowShape.on("mouseup", (e) => {
+        this._shadowShape.on("mouseup", () => {
             this.deleteShadowShape();
         })
         this._app.graphManager.graphContainer.addChild(this._shadowShape);

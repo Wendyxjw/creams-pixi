@@ -69,7 +69,7 @@ export default class GraphManager implements GraphManagerInterface {
 
     private _addSelectHandler(graphics: PIXI.Graphics, index: Array<number>) {
         graphics.interactive = true;
-        graphics.on('click', (e) => {
+        graphics.on('click', () => {
             this._app.stateManager.select(SelectEnum.Shape, index);
         })
     }

@@ -53,7 +53,7 @@ export interface GraphManagerInterface {
      * @param  {number} shapeIndex
      * @param  {ShapeContent} content?
      */
-    buildShapes(shape: Shape, shapeIndex: number, content?: ShapeContent);
+    buildShapes(shape: Shape, shapeIndex: number, content?: ShapeContent): void;
 
     /**
      * 隐藏shape
