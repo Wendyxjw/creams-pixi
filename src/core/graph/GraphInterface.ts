@@ -113,3 +113,27 @@ export interface EraserInterface {
      */
     setSize(size: number): void
 }
+
+export interface EditLayerInterface {
+
+    /**
+     * 擦除点，通知action和graph
+     * @param  {Array<number>} points
+     * @returns void
+     */
+    erasePoints(points: Array<number>): void;
+
+    /**
+     * 初始化编辑层，
+     * @param  {Array<Shape>} shape
+     * @param  {boolean} isDisplay? // 是否只是显示
+     * @returns void
+     */
+    init(shape: Array<Shape>, isDisplay?: boolean): void;
+
+    addSelectHandler(): void;
+
+    select(type: SelectEnum, index: number): void;
+
+    destroy(): void;
+}
