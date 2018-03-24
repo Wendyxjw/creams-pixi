@@ -1,7 +1,7 @@
 
 import { GraphManagerInterface, EraserInterface } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache, Point, PointGraphics, } from "../common/Graph";
-import GraphHelper from "./GraphHelper";
+import DragHelper from "./DragHelper";
 import { SelectEnum } from "../state/StateInterface";
 import AppInterface from "../app/AppInterface";
 import Eraser from "./Eraser"
@@ -33,7 +33,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
         this._extraLayer.visible = false;
         this.graphContainer.interactive = true;
-        GraphHelper.enableDrag(this.graphContainer);
+        DragHelper(this.graphContainer);
         app.pixiApp.stage.addChild(this.graphContainer);
         this._graphCache = {
             backgroundPic: "",
@@ -48,34 +48,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._backgroundLayer.addChild(background);
     }
 
-    //line
-    private _buildLine(shape: Shape) {
-
-        for (let i = 0; i < shape.length; i++) {
-            let graphics = new ShapeGraphics();
-            graphics.beginFill(0x1db745, 1);
-            graphics.lineStyle(5, 0x1db745, 1);
-            graphics.moveTo(shape[i][0], shape[i][1]);
-            if (shape.length == i + 1) {
-                graphics.lineTo(shape[0][0], shape[0][1]);
-            } {
-                graphics.lineTo(shape[i + 1][0], shape[i + 1][1]);
-            }
-            graphics.endFill();
-            this._extraLayer.addChild(graphics);
-        }
-    }
-    //point
-    private _buildPoint(point: Point) {
-        let graphics = new PointGraphics();
-        graphics.lineStyle(0);
-        graphics.beginFill(0x548f14, 1)
-        graphics.drawCircle(0, 0, 3);
-        graphics.x = point[0];
-        graphics.y = point[1];
-        graphics.endFill();
-        this._extraLayer.addChild(graphics);
-    }
+   
 
     setGraph(graph: Graph, cache: GraphCache): void {
         this._graphCache = cache;

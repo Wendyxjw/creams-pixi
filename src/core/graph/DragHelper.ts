@@ -51,17 +51,10 @@ function onDragMove(event: PIXI.interaction.InteractionEvent) {
     }
 }
 
-class GraphHelper {
-    constructor() {}
-
-    enableDrag(container: PIXI.Container) {
-        container.interactive = true;
-        container.on('pointerdown', onDragStart)
-            .on('pointerup', onDragEnd)
-            .on('pointerupoutside', onDragEnd)
-            .on('pointermove', onDragMove);
-    }
+export default function DragHelper(container: PIXI.Container) {
+    container.interactive = true;
+    container.on('pointerdown', onDragStart)
+        .on('pointerup', onDragEnd)
+        .on('pointerupoutside', onDragEnd)
+        .on('pointermove', onDragMove);
 }
-
-
-export default new GraphHelper();
