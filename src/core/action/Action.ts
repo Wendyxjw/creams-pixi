@@ -13,13 +13,14 @@ export class CreateShapeAction implements ActionInterface {
     }
 
     do(data: Graph): Graph {
-        this._addShapeIndex = this._app.graphManager.buildShapes(this._pointArr, data.shapes.length)
+        this._addShapeIndex = data.shapes.length;
+        this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
         data.shapes.push(this._pointArr);
         return data;
     };
     unDo(data: Graph): Graph {
         this._app.graphManager.hideShapes(this._addShapeIndex);
-        data.shapes = data.shapes.slice(0, data.shapes.length - 1);
+        data.shapes[this._addShapeIndex] = [];
         return data;
     };
 }
@@ -27,7 +28,6 @@ export class CreateShapeAction implements ActionInterface {
 export class DeleteShapeAction implements ActionInterface {
     private _deleteShapeIndex: number;
     private _pointArr: Shape;
-    // private _indexNum: number;
     private _app: AppInterface;
 
     constructor(shapeIndex: number, app: AppInterface) {
@@ -37,8 +37,7 @@ export class DeleteShapeAction implements ActionInterface {
 
     do(data: Graph): Graph {
         this._app.graphManager.hideShapes(this._deleteShapeIndex);
-        //shapeIndex="shape1" 将对应的点阵置空 保留占位
-        //this._indexNum = <number><any>this._deleteShapeIndex.slice(5, this._deleteShapeIndex.length)
+        //将对应的点阵置空 保留占位
         this._pointArr = data.shapes[this._deleteShapeIndex];//保存删除的点阵
         data.shapes[this._deleteShapeIndex] = [];
         //调用删除 shapeContent
@@ -55,7 +54,6 @@ export class DeleteShapeAction implements ActionInterface {
 export class CopyShapeAction implements ActionInterface {
     private _copyShapeIndex: number;
     private _addShapeIndex: number;
-    // private _indexNum: number
     private _app: AppInterface;
 
     constructor(shapeIndex: number, app: AppInterface) {
@@ -64,7 +62,6 @@ export class CopyShapeAction implements ActionInterface {
     }
 
     do(data: Graph): Graph {
-        //this._indexNum = <number><any>this._copyShapeIndex.slice(5, this._copyShapeIndex.length)
         const pointArr: Shape = data.shapes[this._copyShapeIndex];
         let newPointArr: Shape;
         //拷贝图片添加偏移量：x+20,y+20
@@ -81,7 +78,7 @@ export class CopyShapeAction implements ActionInterface {
     };
     unDo(data: Graph): Graph {
         this._app.graphManager.hideShapes(this._addShapeIndex);
-        data.shapes = data.shapes.slice(0, data.shapes.length - 1);
+        data.shapes[this._addShapeIndex] = [];
         return data;
     };
 }
