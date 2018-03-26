@@ -66,6 +66,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     }
 
     addDisplayLayer(isNeedInit: boolean, index: Array<number>): void {
+        this._extraLayer.visible = true;
         const shape: Shape = this._app.actionManager.getCurrentShape(index[0]);
         const content: ShapeContent = this._graphCache.shapesContent[index[0]];
         this._editTool.init(shape, content, true);
@@ -78,6 +79,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         select: SelectEnum,
         eraser: boolean = false
     ): void {
+        this._extraLayer.visible = true;
         if (isNeedInit) {
             const shapeIndex = index[0];
             const shape: Shape = this._app.actionManager.getCurrentShape(shapeIndex);
@@ -95,6 +97,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     }
 
     removeLayer(): void {
+        this._extraLayer.visible = false;
         this._editTool.destroy();
         this._blur();
     }
