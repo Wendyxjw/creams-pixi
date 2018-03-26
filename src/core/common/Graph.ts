@@ -41,3 +41,7 @@ export class ShapeGraphics extends PIXI.Graphics {
 export class PointGraphics extends PIXI.Graphics {
     public pointIndex?: number//第几个
 }
+
+export interface DisplayObjectWithIndex extends PIXI.DisplayObject {
+    shapeIndex: number
+}

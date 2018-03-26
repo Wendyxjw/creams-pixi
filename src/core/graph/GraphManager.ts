@@ -27,6 +27,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this.graphContainer.interactive = true;
         DragHelper(this.graphContainer);
 
+        this._initEditTool();
         this._eraser = new Eraser(
             this._app.pixiApp.renderer.plugins.interaction,
             this._extraLayer,
