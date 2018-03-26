@@ -6,9 +6,29 @@ import { drawShape } from "./DrawingHelper";
 
 export default class GraphDrawing {
     protected _shapeLayer: PIXI.Container;
-    public graphContainer: PIXI.Container;
     protected _graphCache: GraphCache; //保存修改的graph
     protected _app: AppInterface;
+
+    public graphContainer: PIXI.Container;
+    public get graph(): GraphCache {
+        return this._graphCache;
+    }
+    public set graph(v: GraphCache) {
+        this._graphCache = v;
+    }
+
+    constructor(app: AppInterface) {
+        this._app = app;
+        this._graphCache = {
+            backgroundPic: "",
+            shapesContent: []
+        };
+        this.graphContainer = new PIXI.Container();
+        this._shapeLayer = new PIXI.Container();
+
+        this.graphContainer.addChild(this._shapeLayer);
+        app.pixiApp.stage.addChild(this.graphContainer);
+    }
 
     buildShapes(shape: Shape, index: number, content: ShapeContent = defultGraphStyle): void {
         let graphics = new ShapeGraphics();
