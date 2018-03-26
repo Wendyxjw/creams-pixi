@@ -4,6 +4,7 @@ import AppInterface from "../app/AppInterface";
 import { SelectEnum } from "../state/StateInterface";
 import { drawShape } from "./DrawingHelper";
 import { ShadowShapeInterface } from "./GraphInterface";
+import ShadowShape from "./ShadowShape";
 export default class GraphDrawing {
     protected _shapeLayer: PIXI.Container;
     protected _graphCache: GraphCache; //保存修改的graph
@@ -12,6 +13,26 @@ export default class GraphDrawing {
     public graphContainer: PIXI.Container;
     public mouseHoverShapeIndex: number;
 
+    public get graph(): GraphCache {
+        return this._graphCache;
+    }
+    public set graph(v: GraphCache) {
+        this._graphCache = v;
+    }
+
+    constructor(app: AppInterface) {
+        this._app = app;
+        this._graphCache = {
+            backgroundPic: "",
+            shapesContent: []
+        };
+        this.graphContainer = new PIXI.Container();
+        this._shapeLayer = new PIXI.Container();
+
+        this.graphContainer.addChild(this._shapeLayer);
+        app.pixiApp.stage.addChild(this.graphContainer);
+        this._shadowShape = new ShadowShape(app);
+    }
 
     buildShapes(shape: Shape, index: number, content: ShapeContent = defultGraphStyle): void {
         let graphics = new ShapeGraphics();

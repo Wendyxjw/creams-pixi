@@ -19,5 +19,6 @@ export interface StateManagerInterface {
 }
 
 export interface StateInterface {
+    isChangingSelect: boolean;
     processGraph(graphManager: GraphManagerInterface): void;
 }

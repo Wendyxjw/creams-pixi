@@ -22,14 +22,15 @@ export default class StateManager implements StateManagerInterface {
         );
     }
 
-    private _activeState() {
+    private _activeState(isChange: boolean = true) {
         const tmpState = this._currentState;
         const graphManager = this._app.graphManager;
 
         this._currentState = StateFactory(
             this._editEnum, this._selectEnum, this._isEnableEraser, this._selectIndex
         );
-        this._currentState.processGraph(graphManager)
+        this._currentState.isChangingSelect = isChange;
+        this._currentState.processGraph(graphManager);
     }
 
     enableEdit(isEnabled: boolean) {
@@ -42,13 +43,16 @@ export default class StateManager implements StateManagerInterface {
     enableEraser(isEnabled: boolean) {
         this._isEnableEraser = isEnabled;
         this._selectEnum = SelectEnum.Shape;
-        this._activeState();
+        this._activeState(false);
     }
 
     select(state: SelectEnum, index: Array<number>) {
         this._selectEnum = state;
+        const isEqual = this._selectIndex.length == index.length &&
+            this._selectIndex.every((v, i) => v === index[i]);
+
         this._selectIndex = index;
-        this._activeState();
+        this._activeState(!isEqual);
     }
 
 }

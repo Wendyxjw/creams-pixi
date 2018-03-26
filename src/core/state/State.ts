@@ -10,12 +10,14 @@ export abstract class SelectSuperState implements StateInterface {
     protected _index: Array<number>;
     protected _select: SelectEnum;
 
+    public isChangingSelect: boolean = true;
+
     constructor(index: Array<number>, select: SelectEnum) {
         this._index = index;
         this._select = select;
     }
 
-    processLayer(graphManager: GraphManagerInterface): void {
+    protected processLayer(graphManager: GraphManagerInterface): void {
         return;
     };
 
@@ -26,22 +28,24 @@ export abstract class SelectSuperState implements StateInterface {
 
 // 展示、选中
 export class NomalSelectState extends SelectSuperState {
-    processLayer(graphManager: GraphManagerInterface): void {
-        graphManager.addDisplayLayer(this._index);
+    protected processLayer(graphManager: GraphManagerInterface): void {
+        graphManager.addDisplayLayer(this.isChangingSelect, this._index);
     }
 }
 
 // 编辑、选中
 export class EditingSelectState extends SelectSuperState {
-    processLayer(graphManager: GraphManagerInterface): void {
-        graphManager.addEditLayer(this._index, this._select);
+    protected processLayer(graphManager: GraphManagerInterface): void {
+        graphManager.addEditLayer(
+            this.isChangingSelect, this._index, this._select);
     }
 }
 
 export class EditingEraserState extends SelectSuperState {
-    processLayer(graphManager: GraphManagerInterface): void {
+    protected processLayer(graphManager: GraphManagerInterface): void {
         const enableEraser = true;
-        graphManager.addEditLayer(this._index, this._select, enableEraser);
+        graphManager.addEditLayer(
+            this.isChangingSelect, this._index, this._select, enableEraser);
     }
 }
 
