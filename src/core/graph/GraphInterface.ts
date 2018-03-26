@@ -76,14 +76,14 @@ export interface GraphManagerInterface {
      * @param  {number} shapeIndex
      * @returns void
      */
-    hideShapes(shapeIndex: number): void
+    hideShapes(shapeIndex: number): void;
 
     /**
      * 显示shape
      * @param  {number} shapeIndex
      * @returns void
      */
-    showShapes(shapeIndex: number): void
+    showShapes(shapeIndex: number): void;
 
     /**
      * 更新shape
@@ -92,7 +92,7 @@ export interface GraphManagerInterface {
      * @param  {ShapeContent} content?
      * @returns void
      */
-    updateShapes(shape: Shape, shapeIndex: number, content?: ShapeContent): void
+    updateShapes(shape: Shape, shapeIndex: number, content?: ShapeContent): void;
 
     /**
      * 新建shadow：用于店铺匹配
@@ -100,7 +100,7 @@ export interface GraphManagerInterface {
      * @param  {ShapeContent} content?
      * @returns PIXI
      */
-    buildShadowShapes(shape: Shape, content?: ShapeContent): PIXI.Graphics
+    buildShadowShapes(shape: Shape, content?: ShapeContent): PIXI.Graphics;
 
     /**
      * @param  {number} x
