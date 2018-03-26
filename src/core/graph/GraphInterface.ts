@@ -28,18 +28,26 @@ export interface GraphManagerInterface {
 
     /**
      * 增加显示图层
+     * @param  {boolean} isNeedInit
      * @param  {Array<number>} index
      * @returns void
      */
-    addDisplayLayer(index: Array<number>): void;
+    addDisplayLayer(isNeedInit: boolean, index: Array<number>): void;
 
     /**
      * 增加编辑图层
+     * @param  {boolean} isNeedInit
      * @param  {Array<number>} index
      * @param  {SelectEnum} select
+     * @param  {boolean} enableEraser?
      * @returns void
      */
-    addEditLayer(index: Array<number>, select: SelectEnum, enableEraser?: boolean): void;
+    addEditLayer(
+        isNeedInit: boolean,
+        index: Array<number>,
+        select: SelectEnum,
+        enableEraser?: boolean
+    ): void;
 
     /**
      * 删除图层

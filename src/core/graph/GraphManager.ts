@@ -64,12 +64,15 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
     }
 
-    addDisplayLayer(index: Array<number>): void {
+    addDisplayLayer(isNeedInit: boolean, index: Array<number>): void {
 
     }
 
     addEditLayer(
-        index: Array<number>, select: SelectEnum, eraser: boolean = false
+        isNeedInit: boolean,
+        index: Array<number>,
+        select: SelectEnum,
+        eraser: boolean = false
     ): void {
 
     }
