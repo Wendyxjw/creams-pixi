@@ -98,7 +98,7 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
     // addPoint(index: Array<number>) {
 
     // };
-    getCurrentShape(shapeIndex: number) {
+    getCurrentShape(shapeIndex: number): Shape {
         return this._currentData.shapes[shapeIndex];
     }
 

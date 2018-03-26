@@ -5,6 +5,7 @@ import { SelectEnum } from '../state/StateInterface';
 export interface GraphManagerInterface {
 
     graphContainer: PIXI.Container;
+    mouseHoverShapeIndex: number;
     /**
      * 获得图像数据
      */
@@ -46,14 +47,14 @@ export interface GraphManagerInterface {
      * @returns void
      */
     removeLayer(): void;
-    
+
     /**
      * 设置橡皮擦大小
      * @param  {number} size
      * @returns void
      */
     setEraserSize(size: number): void;
-    
+
     /**
      * 新建shape
      * @param  {Shape} shape
@@ -80,9 +81,10 @@ export interface GraphManagerInterface {
      * 更新shape
      * @param  {Shape} shape
      * @param  {number} shapeIndex
+     * @param  {ShapeContent} content?
      * @returns void
      */
-    updateShapes(shape: Shape, shapeIndex: number): void
+    updateShapes(shape: Shape, shapeIndex: number, content?: ShapeContent): void
 
     /**
      * 新建shadow：用于店铺匹配
@@ -92,6 +94,14 @@ export interface GraphManagerInterface {
      */
     buildShadowShapes(shape: Shape, content?: ShapeContent): PIXI.Graphics
 
+    /**
+     * @param  {number} x
+     * @param  {number} y
+     * @param  {number} width
+     * @param  {number} height
+     * @param  {ShapeContent} content?
+     */
+    setShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent)
 }
 
 export interface EraserInterface {
@@ -136,4 +146,21 @@ export interface EditLayerInterface {
     select(type: SelectEnum, index: number): void;
 
     destroy(): void;
+}
+
+export interface ShadowShapeInterface {
+    /**
+     * @param  {number} x
+     * @param  {number} y
+     * @param  {number} width
+     * @param  {number} height
+     * @param  {ShapeContent} content?
+     */
+    buildShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent);
+
+    shapeOver(shapeIndex: number): void
+
+    shapeOut(shapeIndex: number): void
+
+    shapePionterUp(shapeIndex: number): void
 }

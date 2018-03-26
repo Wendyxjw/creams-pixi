@@ -1,13 +1,9 @@
 import OperationAPI from "./OperationAPI"
 import AppInterface from "../app/AppInterface";
 import { ShapeContent, Shape } from "../common/Graph";
-// implements 实现，必须实现完后面的interface，不然会报错； functionName（）：返回类型
-
 export default class OperationManager implements OperationAPI {
     private _app: AppInterface;
-    private _graphCon: PIXI.Container
-    private _shadowShape: PIXI.Graphics;
-    private _shadowTicker: PIXI.ticker.Ticker;
+    private _graphCon: PIXI.Container;
 
     constructor(app: AppInterface) {
         this._app = app;
@@ -59,32 +55,9 @@ export default class OperationManager implements OperationAPI {
     }
 
     addShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
-        let shape: Shape;
-        shape.push([0, 0], [0, height], [width, height], [width, 0]);
-
-        this._shadowShape = this._app.graphManager.buildShadowShapes(shape, content);
-        this._shadowShape.on("mouseup", () => {
-            this.deleteShadowShape();
-        })
-        this._app.graphManager.graphContainer.addChild(this._shadowShape);
-        //跟着鼠标走
-        this._shadowTicker = new PIXI.ticker.Ticker();
-        this._shadowTicker.add(() => {
-            let mousePosition = this._app.pixiApp.renderer.plugins.interaction.mouse.global;
-            this._shadowShape.x = mousePosition.x;
-            this._shadowShape.y = mousePosition.y;
-        }).start();
-
+        //this._ShadowShape = new ShadowShape(this._app);
+        this._app.graphManager.setShadowShape(x, y, width, height, content)
     }
-    private deleteShadowShape() {
-        if (!this._shadowTicker) {
-            return
-        }
-        if (!this._shadowTicker.started) {
-            return
-        }
-        this._shadowTicker.destroy();
-        this._shadowShape.destroy();
-    }
+
 
 }

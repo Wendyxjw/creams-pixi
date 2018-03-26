@@ -22,7 +22,7 @@ export interface ActionManagerInterface {
     /**
      * 获取指定shape
      * @param  {number} shapeIndex
-     * @returns void
+     * @returns Shape
      */
-    getCurrentShape(shapeIndex: number): void
+    getCurrentShape(shapeIndex: number): Shape
 }

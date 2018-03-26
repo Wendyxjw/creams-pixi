@@ -1,11 +1,13 @@
 
-import { GraphManagerInterface, EraserInterface } from "./GraphInterface";
+import { GraphManagerInterface, EraserInterface, ShadowShapeInterface } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache, Point, PointGraphics, } from "../common/Graph";
 import DragHelper from "./DragHelper";
 import { SelectEnum } from "../state/StateInterface";
 import AppInterface from "../app/AppInterface";
 import Eraser from "./Eraser"
 import GraphDrawing from './GraphDrawing'
+import ShadowShape from "./ShadowShape"
+
 export default class GraphManager extends GraphDrawing implements GraphManagerInterface {
     private _extraLayer: PIXI.Container;
     private _backgroundLayer: PIXI.Container;
@@ -40,6 +42,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
             shapesContent: []
         };
         this._eraser = new Eraser(this._app.pixiApp.renderer.plugins.interaction, this._extraLayer, (deletePointArr: Array<number>) => { });
+        this._shadowShape = new ShadowShape(app);
     }
 
     private _buildBackground(url: string) {
@@ -48,7 +51,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._backgroundLayer.addChild(background);
     }
 
-   
+
 
     setGraph(graph: Graph, cache: GraphCache): void {
         this._graphCache = cache;
@@ -83,5 +86,8 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
     setEraserSize(size: number): void {
         this._eraser.setSize(size);
+    }
+    setShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
+        this._shadowShape.buildShadowShape(x, y, width, height, content);
     }
 }

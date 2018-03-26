@@ -17,7 +17,10 @@ export type ShapeContent = {
         color: number,
         //alpha:number//默认为1
     }; // size, color, style
-    font: string; // size, color
+    font: {
+        fontSize: number,
+        fill: Array<string>,//填充颜色
+    }; // size, color
     content: string; // 显示的文字内容
     hasMark?: boolean; // 是否需要角标
     alpha?: number; // 透明度
