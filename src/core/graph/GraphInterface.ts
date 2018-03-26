@@ -109,13 +109,7 @@ export interface GraphManagerInterface {
      * @param  {number} height
      * @param  {ShapeContent} content?
      */
-    setShadowShape(
-        x: number,
-        y: number,
-        width: number,
-        height: number,
-        content?: ShapeContent
-    ): void;
+    setShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent): void
 }
 
 export interface EraserInterface {
@@ -195,23 +189,34 @@ export interface EditToolInterface {
 
 export interface ShadowShapeInterface {
     /**
+     * 初始化shadowshape
      * @param  {number} x
      * @param  {number} y
      * @param  {number} width
      * @param  {number} height
      * @param  {ShapeContent} content?
      */
-    buildShadowShape(
-        x: number,
-        y: number,
-        width: number,
-        height: number,
-        content?: ShapeContent
-    ): void;
+    buildShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent): void;
 
-    shapeOver(shapeIndex: number): void;
+    /**
+     * 鼠标经过shape
+     * @param  {number} shapeIndex
+     * @returns void
+     */
+    shapeOver(shapeIndex: number): void
 
-    shapeOut(shapeIndex: number): void;
+    /**
+     * 鼠标离开shape
+     * @param  {number} shapeIndex
+     * @returns void
+     */
+    shapeOut(shapeIndex: number): void
 
-    shapePionterUp(shapeIndex: number): void;
+    /**
+     * 在shape上mouseup
+     * @param  {number} shapeIndex
+     * @returns void
+     */
+    shapePionterUp(shapeIndex: number): void
+
 }

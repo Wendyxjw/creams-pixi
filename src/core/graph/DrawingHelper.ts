@@ -22,6 +22,7 @@ export function drawShape(graphics: PIXI.Graphics, shape: Shape, content: ShapeC
     graphics.lineTo(shape[0][0], shape[0][1]);
     graphics.endFill();
 
+    let maskGraph = graphics.clone();
     //文字
     if (content.content) {
         let textStyle = new PIXI.TextStyle({
@@ -34,10 +35,13 @@ export function drawShape(graphics: PIXI.Graphics, shape: Shape, content: ShapeC
         let text = new PIXI.Text(content.content, textStyle);
         text.position.x = (xMin + xMax) / 2 - text.width / 2;
         text.position.y = (yMin + yMax) / 2 - text.height / 2;
+        graphics.addChild(maskGraph)
+        if (!content.hasMark) {
+            //拖出来的shadowshape文字不需要遮住
+            text.mask = maskGraph;
+        }
         graphics.addChild(text);
     }
-    //todo 隐藏超出部分 目前没找到方法
-    // text.parent = graphics;//api parent 必须是container  x,y 相对于parent定位的
 
     //角标
     if (content.hasMark) {

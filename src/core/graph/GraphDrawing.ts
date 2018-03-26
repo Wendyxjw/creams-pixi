@@ -1,4 +1,4 @@
-import { ShapeContent, Shape, ShapeGraphics, GraphCache } from "../common/Graph";
+import { ShapeContent, Shape, ShapeGraphics, GraphCache, DisplayObjectWithIndex } from "../common/Graph";
 import { defultGraphStyle } from "./constant";
 import AppInterface from "../app/AppInterface";
 import { SelectEnum } from "../state/StateInterface";
@@ -72,12 +72,15 @@ export default class GraphDrawing {
         graphics.interactive = true;
         graphics.on('click', () => {
             this._app.stateManager.select(SelectEnum.Shape, index);
-        }).on("mouseover", (event) => {
-            this._shadowShape.shapeOver(event.currentTarget.shapeIndex);
-        }).on("mouseout", (event) => {
-            this._shadowShape.shapeOut(event.currentTarget.shapeIndex);
-        }).on("pointerup", (event) => {
-            this._shadowShape.shapePionterUp(event.currentTarget.shapeIndex);
+        }).on("mouseover", (event: PIXI.interaction.InteractionEvent) => {
+            let curTarget: DisplayObjectWithIndex = <DisplayObjectWithIndex>event.currentTarget;
+            this._shadowShape.shapeOver(curTarget.shapeIndex);
+        }).on("mouseout", (event: PIXI.interaction.InteractionEvent) => {
+            let curTarget: DisplayObjectWithIndex = <DisplayObjectWithIndex>event.currentTarget;
+            this._shadowShape.shapeOut(curTarget.shapeIndex);
+        }).on("pointerup", (event: PIXI.interaction.InteractionEvent) => {
+            let curTarget: DisplayObjectWithIndex = <DisplayObjectWithIndex>event.currentTarget;
+            this._shadowShape.shapePionterUp(curTarget.shapeIndex);
         })
 
     }
