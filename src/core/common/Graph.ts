@@ -38,6 +38,10 @@ export class ShapeGraphics extends PIXI.Graphics {
     public shapeIndex?: number//第几个
 }
 
+export class LineGraphics extends PIXI.Graphics {
+    public lineIndex?: number//第几个
+}
+
 export class PointGraphics extends PIXI.Graphics {
     public pointIndex?: number//第几个
 }

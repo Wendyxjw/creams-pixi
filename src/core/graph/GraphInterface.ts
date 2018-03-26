@@ -138,8 +138,13 @@ export interface EraserInterface {
     setSize(size: number): void
 }
 
-export type SelectHandler = (state: SelectEnum, index: number) => {};
-export type UpdateHandler = () => {};
+export type SelectHandler = {
+    (state: SelectEnum, index: number): void;
+}
+
+export type UpdateHandler = {
+    (): void;
+}
 
 export interface EditToolInterface {
 
@@ -152,11 +157,12 @@ export interface EditToolInterface {
 
     /**
      * 初始化编辑层，
-     * @param  {Array<Shape>} shape
+     * @param  {Shape} shape
+     * @param  {ShapeContent} content
      * @param  {boolean} isDisplay? // 是否只是显示
      * @returns void
      */
-    init(shape: Array<Shape>, isDisplay?: boolean): void;
+    init(shape: Shape, content: ShapeContent, isDisplay?: boolean): void;
 
     /**
      * 选中的回调方法
