@@ -114,11 +114,14 @@ export interface EraserInterface {
     setSize(size: number): void
 }
 
-export interface EditLayerInterface {
+export type SelectHandler = (state: SelectEnum, index: number) => {};
+export type UpdateHandler = () => {};
+
+export interface EditToolInterface {
 
     /**
      * 擦除点，通知action和graph
-     * @param  {Array<number>} points
+     * @param  {Array<number>} points // point index array
      * @returns void
      */
     erasePoints(points: Array<number>): void;
@@ -131,9 +134,31 @@ export interface EditLayerInterface {
      */
     init(shape: Array<Shape>, isDisplay?: boolean): void;
 
-    addSelectHandler(): void;
+    /**
+     * 选中的回调方法
+     * @param  {SelectHandler} handler
+     * @returns void
+     */
+    addSelectHandler(handler: SelectHandler): void;
 
-    select(type: SelectEnum, index: number): void;
+    /**
+     * 更新的回调方法
+     * @param  {UpdateHandler} handler
+     * @returns void
+     */
+    addUpdateHandler(handler: UpdateHandler): void;
 
+    /**
+     * 高亮某一部分，选中整块不需要传index
+     * @param  {SelectEnum} type
+     * @param  {number} index?
+     * @returns void
+     */
+    select(type: SelectEnum, index?: number): void;
+
+    /**
+     * 清空内部元素
+     * @returns void
+     */
     destroy(): void;
 }
