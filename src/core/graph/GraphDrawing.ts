@@ -32,6 +32,8 @@ export default class GraphDrawing {
         this.graphContainer.addChild(this._shapeLayer);
         app.pixiApp.stage.addChild(this.graphContainer);
         this._shadowShape = new ShadowShape(app);
+
+        this._addContainerEvent();
     }
 
     buildShapes(shape: Shape, index: number, content: ShapeContent = defultGraphStyle): void {
@@ -83,5 +85,11 @@ export default class GraphDrawing {
             this._shadowShape.shapePionterUp(curTarget.shapeIndex);
         })
 
+    }
+
+    private _addContainerEvent() {
+        this.graphContainer.on("pointerup", () => {
+            this._shadowShape.deleteShadowShape()
+        })
     }
 }

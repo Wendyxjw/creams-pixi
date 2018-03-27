@@ -213,4 +213,8 @@ export interface ShadowShapeInterface {
      */
     shapePionterUp(shapeIndex: number): void
 
+    /**
+     * @returns void
+     */
+    deleteShadowShape(): void
 }
