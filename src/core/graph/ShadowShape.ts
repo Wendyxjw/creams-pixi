@@ -13,13 +13,17 @@ export default class ShadowShape implements ShadowShapeInterface {
         this._app = app;
     }
     buildShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
+        this.deleteShadowShape();
+
         let shape: Shape;
         shape = [[0, 0], [0, height], [width, height], [width, 0]];
         this._shadowMatching = true;
         this._shadowMatchingCon = content;
 
         this._shadowShape = this._app.graphManager.buildShadowShapes(shape, content);
-
+        this._shadowShape.on("mouseup", () => {
+            console.log(12)
+        })
         this._app.graphManager.graphContainer.addChild(this._shadowShape);
         //跟着鼠标走
         this._shadowTicker = new PIXI.ticker.Ticker();
@@ -59,10 +63,10 @@ export default class ShadowShape implements ShadowShapeInterface {
             //更新数据
             this._app.graphManager.graph.shapesContent[index] = this._shadowMatchingCon;
             this._shadowMatching = false;
-            this._deleteShadowShape();
+            this.deleteShadowShape();
         }
     }
-    private _deleteShadowShape() {
+    deleteShadowShape() {
         if (!this._shadowTicker) {
             return
         }

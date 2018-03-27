@@ -17,6 +17,7 @@ export default class Eraser implements EraserInterface {
     constructor(interaction: PIXI.interaction.InteractionManager, extraLayer: PIXI.Container, callback: CallbackFunc) {
         this._interaction = interaction;
         this._extraLayer = extraLayer;
+        this._callback = callback;
     }
     private buildCircle(radius: number = 10): PIXI.Graphics {
         //画个圆
@@ -47,6 +48,9 @@ export default class Eraser implements EraserInterface {
             this._isErase = false;
             this._callback(this._deletePointArr);
         })
+        //todo 关闭编辑层children interactiveChildren=false
+        this._extraLayer.interactiveChildren = false;
+        //todo 高亮这个shape
 
         //放置在编辑层
         this._extraLayer.addChild(this._circleCursor);
