@@ -80,4 +80,27 @@ $(function () {
         app.actionManager.reDo()
     })
 
+    $("#addShadowShape").mousedown(() => {
+        let con = {
+            backgroundColor: 0xf5eb33,
+            border: {
+                lineWidth: 1,
+                color: 0xFFC107,
+            },
+            font: {
+                fontSize: 14,
+                fill: ["#000000"]
+            },
+            content: "5pluse \n45m/2010室 \n2017.01.12到期",
+            alpha: 0.5,
+            hasMark: true,
+            shapeIndex: ""
+        }
+
+        app.operationManager.addShadowShape(100, 100, 200, 100, con)
+    })
+    //开启编辑模式
+    $("#edit").click(() => {
+        app.operationManager.enableEdit(true);
+    })
 })

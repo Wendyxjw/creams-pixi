@@ -6,37 +6,75 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">
     <title>CREAMS</title>
+    <style>
+        .tool {
+            border: 1px solid #333;
+            border-radius: 10px;
+            background-color: #fff;
+            display: inline-block;
+            widows: 100px;
+            padding: 10px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
 
+        .top1 {
+            top: 50px;
+        }
+
+        .top2 {
+            top: 200px;
+        }
+
+        .zoom {
+            position: absolute;
+            top: 0;
+            right: 100px;
+        }
+    </style>
 </head>
 
 <body>
+    <div id='creams-pixi' style="height: 1200px"></div>
 
-    <div id="operation">
+    <div id="operation" class="tool top1">
         <span>放大</span>
+        <br>
         <span>适配居中</span>
+        <br>
         <span>缩小</span>
     </div>
-    <div id="eraser">
-        设置橡皮擦大小
-        <span>开启橡皮擦模式</span>
-        <input type="text">
-        <span>确认</span>
-        <span>退出橡皮擦模式</span>
+    <div class="zoom">
+        <span id="addGraph">
+            添加方块（点击）
+        </span>
+        &nbsp;&nbsp;&nbsp;
+        <span id="addShadowShape">匹配店铺（点击拖动）</span>&nbsp;&nbsp;&nbsp;
+        <span id="edit">点击开启编辑模式</span>
+        <span id="eraser">
+            <!-- 设置橡皮擦大小 -->
+            <span>开启橡皮擦模式</span>
+            <input type="text" placeholder="输入橡皮擦大小">
+            <span>确认</span>
+            <span>退出橡皮擦模式</span>
+        </span>
     </div>
-    <div id="addGraph">
-        添加graph
-    </div>
+
+
     <div id="graphToolbar" style="display:none;position:absolute">
         <span>删除</span>
         <span>开启橡皮擦</span>
         <span>拷贝</span>
     </div>
-    <div>
+    <div class="tool top2">
         <span id="undo">撤销</span>
         <br>
         <span id="redo">重做</span>
     </div>
-    <div id='creams-pixi' style="height: 1200px;"></div>
+
+
+
     <script type="text/javascript" src="/dist/creams-pixi.js" charset="utf-8"></script>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="/test/data.js" charset="utf-8"></script>
