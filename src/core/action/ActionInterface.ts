@@ -24,5 +24,5 @@ export interface ActionManagerInterface {
      * @param  {number} shapeIndex
      * @returns Shape
      */
-    getCurrentShape(shapeIndex: number): Shape
+    getCurrentShape(shapeIndex: number): Shape;
 }
