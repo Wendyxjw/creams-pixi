@@ -39,11 +39,12 @@ export class ShapeGraphics extends PIXI.Graphics {
 }
 
 export class LineGraphics extends PIXI.Graphics {
-    public lineIndex?: number; //第几个
+    public lineIndex?: number; // 第几个
     public startPoint?: Point; // 起点
     public endPoint?: Point; // 终点
 }
 
 export class PointGraphics extends PIXI.Graphics {
-    public pointIndex?: number//第几个
+    public pointIndex?: number; // 第几个
+    public point?: Point;
 }

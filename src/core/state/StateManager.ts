@@ -23,7 +23,6 @@ export default class StateManager implements StateManagerInterface {
     }
 
     private _activeState(isChange: boolean = true) {
-        const tmpState = this._currentState;
         const graphManager = this._app.graphManager;
 
         this._currentState = StateFactory(

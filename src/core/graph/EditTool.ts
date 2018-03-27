@@ -34,6 +34,11 @@ export default class EditTool implements EditToolInterface {
         const point = new PointGraphics();
         buildPoint(point, element);
         point.pointIndex = index;
+        point.name = `point_${index}`;
+        point.interactive = true;
+        point.on('pointerdown', () => {
+            this._selectHandler(SelectEnum.Point, index);
+        })
         this._layer.addChild(point);
     }
 
@@ -44,6 +49,7 @@ export default class EditTool implements EditToolInterface {
             this._shape[0] : this._shape[index + 1];
         buildLine(line, startPoint, endPoint);
         line.lineIndex = index;
+        line.name = `line_${index}`;
         this._layer.addChild(line);
     }
 
@@ -68,6 +74,20 @@ export default class EditTool implements EditToolInterface {
     }
 
     select(type: SelectEnum, index: number): void {
+        switch (type) {
+            case SelectEnum.Point:
+                const targetPoint = <PointGraphics>this._layer.getChildByName(`point_${index}`);
+                // 只关心在layer里面的队形，不关心name里的index
+                const targetIndex = this._layer.getChildIndex(targetPoint);
+                const preLine = <LineGraphics>this._layer.getChildAt(targetIndex - 1);
+                const nextLine = <LineGraphics>this._layer.getChildAt(targetIndex + 1);
+                addPointDragHandler(preLine, targetPoint, nextLine, ()=>{});
+                break;
+        
+            default:
+                break;
+        }
+        
         
     }
 
@@ -81,14 +101,22 @@ export default class EditTool implements EditToolInterface {
 function addShapeDragHandler(
     shape: PIXI.Container, handler: { (): void }
 ) {
-    DragHelper(shape);
+    // DragHelper(shape);
 }
 
 function addPointDragHandler(
     preLine: LineGraphics, point: PointGraphics, nextLine: LineGraphics,
     handler: { (): void }
 ) {
-
+    DragHelper(point);
+    point.on('pointermove', () => {
+        const preLineStart = preLine.startPoint;
+        preLine.clear();
+        buildLine(preLine, preLineStart, [point.x, point.y]);
+        const nextLineEnd = nextLine.endPoint;
+        nextLine.clear();
+        buildLine(nextLine, [point.x, point.y], nextLineEnd);
+    })
 }
 
 function addLineDragHandler(
