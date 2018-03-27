@@ -67,7 +67,7 @@ export function buildLine(graphics: PIXI.Graphics, start: Point, end: Point) {
 
 //point
 export function buildPoint(graphics: PIXI.Graphics, point: Point) {
-    graphics.beginFill(0x548f14, 1)
+    graphics.beginFill(0xa7acb2, 1)
     graphics.drawCircle(0, 0, 3);
     graphics.x = point[0];
     graphics.y = point[1];
