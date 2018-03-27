@@ -41,24 +41,26 @@ export default class GraphDrawing {
 
         graphics = drawShape(graphics, shape, content);
         this._addSelectHandler(graphics, [index]);
+        graphics.name = index.toString();
         graphics.shapeIndex = index;
         this._shapeLayer.addChild(graphics);
     }
 
     hideShapes(shapeIndex: number): void {
-        this._shapeLayer.children[shapeIndex].visible = false;
+        this._shapeLayer.getChildByName(shapeIndex.toString()).visible = false;
     }
 
     showShapes(shapeIndex: number): void {
-        this._shapeLayer.children[shapeIndex].visible = true;
+        this._shapeLayer.getChildByName(shapeIndex.toString()).visible = true;
     }
 
     updateShapes(shape: Shape, shapeIndex: number, content?: ShapeContent) {
         let curShape: PIXI.Graphics;
-        curShape = <PIXI.Graphics>this._shapeLayer.children[shapeIndex];
+        curShape = <PIXI.Graphics>this._shapeLayer.getChildByName(shapeIndex.toString());
         curShape.clear();
         content = content ? content : this._graphCache.shapesContent[shapeIndex];
         curShape = drawShape(curShape, shape, content);
+        this._shapeLayer.setChildIndex(curShape, this._shapeLayer.children.length - 1);
     }
 
     //shadowShape

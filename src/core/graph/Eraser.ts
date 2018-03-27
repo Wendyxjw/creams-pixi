@@ -57,8 +57,10 @@ export default class Eraser implements EraserInterface {
 
         //隐藏默认的鼠标指针 修改的其实是css
         this._interaction.cursorStyles.default = "none";
+
         //跟着鼠标走
         this._cursorTicker = new PIXI.ticker.Ticker();
+        this._cursorTicker.speed = 0.5;
         this._cursorTicker.add(() => {
             let mousePosition = this._interaction.mouse.global;
             this._circleCursor.x = mousePosition.x;

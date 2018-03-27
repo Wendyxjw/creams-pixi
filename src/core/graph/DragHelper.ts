@@ -1,9 +1,15 @@
+import { Point } from "../common/Graph";
+type CallbackFunc = {
+    (startPoint: PIXI.Point, endPoint: PIXI.Point): void
+}
+let callbackFunc: CallbackFunc;
 interface DragableObj extends PIXI.DisplayObject {
     dragData?: PIXI.interaction.InteractionData,
     dragging?: number,
     dragPointerStart?: PIXI.Point,
     dragObjStart?: PIXI.Point,
     dragGlobalStart?: PIXI.Point,
+    dragGlobalEnd?: PIXI.Point,
 }
 
 function onDragStart(event: PIXI.interaction.InteractionEvent) {
@@ -27,6 +33,8 @@ function onDragEnd(event: PIXI.interaction.InteractionEvent) {
     obj.dragging = 0;
     obj.dragData = null;
     // set the interaction data to null
+    obj.dragGlobalEnd = obj.dragGlobalEnd ? obj.dragGlobalEnd : obj.dragGlobalStart;
+    callbackFunc(obj.dragGlobalStart, obj.dragGlobalEnd)
 }
 
 function onDragMove(event: PIXI.interaction.InteractionEvent) {
@@ -43,6 +51,8 @@ function onDragMove(event: PIXI.interaction.InteractionEvent) {
     }
     if (obj.dragging == 2) {
         let dragPointerEnd = data.getLocalPosition(obj.parent);
+        obj.dragGlobalEnd = new PIXI.Point();
+        obj.dragGlobalEnd.copy(event.data.global);
         // DRAG
         obj.position.set(
             obj.dragObjStart.x + (dragPointerEnd.x - obj.dragPointerStart.x),
@@ -51,7 +61,8 @@ function onDragMove(event: PIXI.interaction.InteractionEvent) {
     }
 }
 
-export default function DragHelper(container: PIXI.Container) {
+export default function DragHelper(container: PIXI.Container, callback?: CallbackFunc) {
+    callbackFunc = callback;
     container.interactive = true;
     container.on('pointerdown', onDragStart)
         .on('pointerup', onDragEnd)

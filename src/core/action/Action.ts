@@ -93,6 +93,7 @@ export class UpdateShapeAction implements ActionInterface {
     constructor(shape: Shape, shapeIndex: number, app: AppInterface) {
         this._newShape = shape;
         this._updateIndex = shapeIndex;
+        this._app = app;
     }
     do(data: Graph): Graph {
         this._app.graphManager.updateShapes(this._newShape, this._updateIndex);

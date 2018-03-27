@@ -27,7 +27,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
         this.graphContainer.interactive = true;
         DragHelper(this.graphContainer);
-        this._editTool = new EditTool(this._extraLayer);
+        this._editTool = new EditTool(this._extraLayer, this._app);
         this._eraser = new Eraser(
             this._app.pixiApp.renderer.plugins.interaction,
             this._extraLayer,
@@ -79,7 +79,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     private _addLayer(shapeIndex: number, isDisplay: boolean) {
         const shape: Shape = this._app.actionManager.getCurrentShape(shapeIndex);
         const content: ShapeContent = this._graphCache.shapesContent[shapeIndex];
-        this._editTool.init(shape, content, isDisplay);
+        this._editTool.init(shape, content, shapeIndex, isDisplay);
         this._focus();
     }
 

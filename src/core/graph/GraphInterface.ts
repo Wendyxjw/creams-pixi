@@ -156,7 +156,7 @@ export interface EditToolInterface {
      * @param  {boolean} isDisplay? // 是否只是显示
      * @returns void
      */
-    init(shape: Shape, content: ShapeContent, isDisplay?: boolean): void;
+    init(shape: Shape, content: ShapeContent, shapeIndex: number, isDisplay?: boolean): void;
 
     /**
      * 选中的回调方法
