@@ -7,6 +7,7 @@ import Eraser from "./Eraser"
 import GraphDrawing from './GraphDrawing'
 import ShadowShape from "./ShadowShape"
 import EditTool from "./EditTool";
+import { addColorFilter, deleteColorFilter } from "./DrawingHelper";
 
 export default class GraphManager extends GraphDrawing implements GraphManagerInterface {
     private _extraLayer: PIXI.Container;
@@ -36,7 +37,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
     private _buildBackground(url: string) {
         let background = PIXI.Sprite.fromImage(url);
-        background.alpha = 0.3;
+        background.alpha = 0.2;
         background.interactive = true;
         background.on('pointerdown', () => {
             this._app.stateManager.select(SelectEnum.None, []);
@@ -48,12 +49,14 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         // 进入选中状态，虚化shapeLayer
         this.graphContainer.interactive = false;
         this._extraLayer.visible = true;
+        addColorFilter(this._shapeLayer);
     }
 
     private _blur() {
         // 释放选中状态，恢复shapeLayer
         this.graphContainer.interactive = true;
         this._extraLayer.visible = false;
+        deleteColorFilter(this._shapeLayer);
     }
 
     setGraph(graph: Graph, cache: GraphCache): void {

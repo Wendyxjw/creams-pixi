@@ -175,7 +175,7 @@ export interface EditToolInterface {
     /**
      * 高亮某一部分，选中整块不需要传index
      * @param  {SelectEnum} type
-     * @param  {number} index?
+     * @param  {number} index? // 边或者点的index
      * @returns void
      */
     select(type: SelectEnum, index?: number): void;

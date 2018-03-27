@@ -1,4 +1,4 @@
-import { Shape, ShapeContent, Point } from "../common/Graph";
+import { Shape, ShapeContent, Point, LineGraphics } from "../common/Graph";
 import { defultGraphStyle } from "./constant";
 
 export function drawShape(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent = defultGraphStyle) {
@@ -58,11 +58,13 @@ export function drawShape(graphics: PIXI.Graphics, shape: Shape, content: ShapeC
     return graphics
 }
 //line
-export function buildLine(graphics: PIXI.Graphics, start: Point, end: Point) {
-    graphics.lineStyle(4, 0xa7acb2, 1);
-    graphics.moveTo(start[0], start[1]);
-    graphics.lineTo(end[0], end[1]);
-    graphics.endFill();
+export function buildLine(line: LineGraphics, start: Point, end: Point) {
+    line.lineStyle(4, 0xa7acb2, 1);
+    line.moveTo(start[0], start[1]);
+    line.lineTo(end[0], end[1]);
+    line.endFill();
+    line.startPoint = start;
+    line.endPoint = end;
 }
 
 //point
