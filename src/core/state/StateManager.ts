@@ -47,6 +47,9 @@ export default class StateManager implements StateManagerInterface {
     }
 
     select(state: SelectEnum, index: Array<number>) {
+        if (this._selectEnum === SelectEnum.None && state === SelectEnum.None) {
+            return;
+        }
         this._selectEnum = state;
         const isEqual = this._selectIndex.length == index.length &&
             this._selectIndex.every((v, i) => v === index[i]);

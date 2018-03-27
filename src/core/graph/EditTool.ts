@@ -19,6 +19,7 @@ export default class EditTool implements EditToolInterface {
     }
 
     init(shape: Shape, content: ShapeContent, isDisplay?: boolean): void {
+        this._layer.removeChildren();
         this._shape = shape;
         this._content = content;
         this._drawEditLayer();
@@ -55,6 +56,6 @@ export default class EditTool implements EditToolInterface {
     }
 
     destroy(): void {
-
+        this._layer.removeChildren();
     }
 }

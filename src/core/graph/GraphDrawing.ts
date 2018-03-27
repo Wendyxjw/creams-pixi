@@ -70,7 +70,8 @@ export default class GraphDrawing {
     }
     private _addSelectHandler(graphics: PIXI.Graphics, index: Array<number>) {
         graphics.interactive = true;
-        graphics.on('click', () => {
+        graphics.on('pointerdown', (event: PIXI.interaction.InteractionEvent) => {
+            event.stopPropagation();
             this._app.stateManager.select(SelectEnum.Shape, index);
         }).on("mouseover", (event: PIXI.interaction.InteractionEvent) => {
             let curTarget: DisplayObjectWithIndex = <DisplayObjectWithIndex>event.currentTarget;
