@@ -30,10 +30,16 @@ $(function () {
         app.operationManager.enableEraser(false);
     })
     app.eventManager.onClickGraph((index, event) => {
-        // console.log(index + ";x:" + event.x + "y:" + event.y)
+        //console.log(index + ";x:" + event.x + "y:" + event.y)
     })
-    app.eventManager.onMouseEnterShape((index, event) => {
-        // console.log(index + ";x:" + event.x + "y:" + event.y)
+    app.eventManager.onMouseMoveShape((index, event) => {
+        // let dom = `
+        // <div style="position:absolute;left:` + event.x + `px;top:` + (event.y + 40) + `px">
+        // 我是第` + index + `个,
+        // 我的坐标是(` + event.x + `,` + event.y + `)
+        // </div>
+        // `
+        // $("#hover").html(dom)
     })
     //添加graph
     $("#addGraph").click(() => {
@@ -47,12 +53,12 @@ $(function () {
         app.actionManager.addShape(100, 100, 100, 100, defultGraphStyle)
     })
     //graph工具栏   
-    $("#creams-pixi").mouseover(() => {
-        app.eventManager.onMouseUpShape((index, event) => {
-            bindTool(index)
-        })
-    })
+    // $("#creams-pixi").mousemove(() => {
 
+    // })
+    app.eventManager.onMouseUpShape((index, position) => {
+        bindTool(index)
+    })
     var bindTool = (i) => {
         let graphToolbar = $("#graphToolbar");
         graphToolbar.css({
