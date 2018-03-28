@@ -61,18 +61,14 @@ export default class EditTool implements EditToolInterface {
             this._drawPoint(i);
             this._drawLine(i);
         }
-        this.addShapeDragHandler(this._layer, (startPoint: PIXI.Point, endPoint: PIXI.Point) => {
-            if (startPoint !== endPoint) {
-                let x = endPoint.x - startPoint.x;
-                let y = endPoint.y - startPoint.y;
-                let newShape: Shape = [];
-                this._shape.forEach((item, i) => {
-                    newShape.push([item[0] + x, item[1] + y]);
-                })
-                this._app.actionManager.updateShape(newShape, this._shapeIndex);
-                //UpdateShapeAction
-            }
-        });
+        let startPoint: PIXI.Point;
+        this._layer.on('pointerup', (event: PIXI.interaction.InteractionEvent) => {
+            startPoint = new PIXI.Point();
+            startPoint.copy(event.data.global);
+        }).on("pointerdown", (event: PIXI.interaction.InteractionEvent) => {
+            this._updateShape(startPoint, event.data.global);
+        })
+        addShapeDragHandler(this._layer, () => { });
     }
 
     addSelectHandler(handler: SelectHandler): void {
@@ -92,13 +88,26 @@ export default class EditTool implements EditToolInterface {
         this._layer = new PIXI.Container();
         this._container.addChild(this._layer);
     }
-    private addShapeDragHandler(
-        shape: PIXI.Container, handler: { (startPoint: PIXI.Point, endPoint: PIXI.Point): void }
-    ) {
-        DragHelper(shape, handler);
+
+    //updateshape
+    private _updateShape(startPoint: PIXI.Point, endPoint: PIXI.Point) {
+        if (startPoint !== endPoint) {
+            let x = endPoint.x - startPoint.x;
+            let y = endPoint.y - startPoint.y;
+            let newShape: Shape = [];
+            this._shape.forEach((item, i) => {
+                newShape.push([item[0] + x, item[1] + y]);
+            })
+            this._app.actionManager.updateShape(newShape, this._shapeIndex);
+        }
     }
 }
 
+function addShapeDragHandler(
+    shape: PIXI.Container, handler: { (): void }
+) {
+    DragHelper(shape);
+}
 
 function addPointDragHandler(
     preLine: LineGraphics, point: PointGraphics, nextLine: LineGraphics,
