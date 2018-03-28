@@ -2,7 +2,6 @@ import { Point } from "../common/Graph";
 type CallbackFunc = {
     (startPoint: PIXI.Point, endPoint: PIXI.Point): void
 }
-let callbackFunc: CallbackFunc;
 interface DragableObj extends PIXI.DisplayObject {
     dragData?: PIXI.interaction.InteractionData,
     dragging?: number,
@@ -34,7 +33,6 @@ function onDragEnd(event: PIXI.interaction.InteractionEvent) {
     obj.dragData = null;
     // set the interaction data to null
     obj.dragGlobalEnd = obj.dragGlobalEnd ? obj.dragGlobalEnd : obj.dragGlobalStart;
-    callbackFunc(obj.dragGlobalStart, obj.dragGlobalEnd)
 }
 
 function onDragMove(event: PIXI.interaction.InteractionEvent) {
@@ -61,8 +59,7 @@ function onDragMove(event: PIXI.interaction.InteractionEvent) {
     }
 }
 
-export default function DragHelper(container: PIXI.Container, callback?: CallbackFunc) {
-    callbackFunc = callback;
+export default function DragHelper(container: PIXI.Container) {
     container.interactive = true;
     container.on('pointerdown', onDragStart)
         .on('pointerup', onDragEnd)
