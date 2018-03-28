@@ -1,4 +1,4 @@
-import { Shape, ShapeContent, Point, LineGraphics } from "../common/Graph";
+import { Shape, ShapeContent, Point, LineGraphics, PointGraphics } from "../common/Graph";
 import { defultGraphStyle } from "./constant";
 
 export function drawShape(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent = defultGraphStyle) {
@@ -68,12 +68,13 @@ export function buildLine(line: LineGraphics, start: Point, end: Point) {
 }
 
 //point
-export function buildPoint(graphics: PIXI.Graphics, point: Point) {
+export function buildPoint(graphics: PointGraphics, point: Point) {
     graphics.beginFill(0xa7acb2, 1)
     graphics.drawCircle(0, 0, 3);
     graphics.x = point[0];
     graphics.y = point[1];
     graphics.endFill();
+    graphics.point = point;
 }
 //编辑状态下 添加灰度
 export function addColorFilter(shapeLayer: PIXI.Container) {
