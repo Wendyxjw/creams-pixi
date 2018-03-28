@@ -67,7 +67,18 @@ export default class EditTool implements EditToolInterface {
             this._drawPoint(i);
             this._drawLine(i);
         }
-        addShapeDragHandler(this._layer, () => { });
+        addShapeDragHandler(this._layer, (startPoint: PIXI.Point, endPoint: PIXI.Point) => {
+            if ((startPoint.x !== endPoint.x) || (startPoint.y != endPoint.y)) {
+                let x = endPoint.x - startPoint.x;
+                let y = endPoint.y - startPoint.y;
+                let newShape: Shape = [];
+                this._shape.forEach((item, i) => {
+                    newShape.push([item[0] + x, item[1] + y]);
+                })
+                this._app.actionManager.updateShape(newShape, this._shapeIndex);
+            }
+
+        });
     }
 
     addSelectHandler(handler: SelectHandler): void {
@@ -100,31 +111,20 @@ export default class EditTool implements EditToolInterface {
         this._container.addChild(this._layer);
     }
 
-    //updateshape
-    private _updateShape(startPoint: PIXI.Point, endPoint: PIXI.Point) {
-        if ((startPoint.x !== endPoint.x) || (startPoint.y !== endPoint.y)) {
-            let x = endPoint.x - startPoint.x;
-            let y = endPoint.y - startPoint.y;
-            let newShape: Shape = [];
-            this._shape.forEach((item, i) => {
-                newShape.push([item[0] + x, item[1] + y]);
-            })
-            this._app.actionManager.updateShape(newShape, this._shapeIndex);
-        }
-
-    }
 }
 
 function addShapeDragHandler(
-    shape: PIXI.Container, handler: { (): void }
+    shape: PIXI.Container, handler: { (startPoint: PIXI.Point, endPoint: PIXI.Point): void }
 ) {
     DragHelper(shape);
     let startPoint: PIXI.Point;
-    shape.on('pointerup', (event: PIXI.interaction.InteractionEvent) => {
+    var that = this;
+    shape.on("pointerdown", (event: PIXI.interaction.InteractionEvent) => {
         startPoint = new PIXI.Point();
         startPoint.copy(event.data.global);
-    }).on("pointerdown", (event: PIXI.interaction.InteractionEvent) => {
-        this._updateShape(startPoint, event.data.global);
+    }).on("pointerup", (event: PIXI.interaction.InteractionEvent) => {
+        startPoint = startPoint ? startPoint : event.data.global
+        handler(startPoint, event.data.global);
     })
 }
 
