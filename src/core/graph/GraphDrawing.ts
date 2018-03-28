@@ -28,6 +28,7 @@ export default class GraphDrawing {
         };
         this.graphContainer = new PIXI.Container();
         this._shapeLayer = new PIXI.Container();
+        this._shapeLayer.name = "shapeLayer";
 
         this.graphContainer.addChild(this._shapeLayer);
         app.pixiApp.stage.addChild(this.graphContainer);

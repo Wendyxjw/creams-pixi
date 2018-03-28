@@ -59,7 +59,11 @@ export default class EditTool implements EditToolInterface {
     }
 
     private _drawEditLayer() {
-        const backShape = new PIXI.Graphics();
+        const backShape = new ShapeGraphics();
+        backShape.name = "editShape";
+        backShape.shapeIndex = this._shapeIndex;
+        backShape.interactive = true;
+
         drawShape(backShape, this._shape, this._content);
         this._layer.addChild(backShape);
 

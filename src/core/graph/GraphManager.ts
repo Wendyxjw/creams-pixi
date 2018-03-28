@@ -21,6 +21,8 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._backgroundLayer = new PIXI.Container();
         this._extraLayer = new PIXI.Container();
         this._extraLayer.visible = false;
+        this._extraLayer.name = "extraLayer";
+        this._extraLayer.interactive = true;
 
         this.graphContainer.addChildAt(this._backgroundLayer, 0);
         this.graphContainer.addChild(this._extraLayer);
