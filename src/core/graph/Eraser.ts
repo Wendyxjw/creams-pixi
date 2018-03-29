@@ -90,6 +90,10 @@ export default class Eraser implements EraserInterface {
 
         for (let i = 0; i < this._extraLayer.children.length; i++) {
             let item: PointGraphics = <PointGraphics>this._extraLayer.children[i];
+            //如果已经是要删除的点 就不需要再次判断
+            if (item.alpha == 0.3) {
+                return;
+            }
             if (item.pointIndex) {
                 let xAbs = Math.abs(x - item.x);
                 let yAbs = Math.abs(y - item.y);
