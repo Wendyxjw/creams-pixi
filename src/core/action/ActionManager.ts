@@ -26,6 +26,11 @@ class Manager {
         this._actionIndex++;
         this._actionList.splice(this._actionIndex); // delete the orig actions
         this._actionList.push(action);
+
+        //最多保留30条记录
+        if (this._actionList.length > 30) {
+            this._actionList = this._actionList.slice(-30);
+        }
     }
     unDo() {
         let index = this._actionIndex;
