@@ -29,7 +29,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
         this.graphContainer.interactive = true;
         DragHelper(this.graphContainer);
-        this._editTool = new EditTool(this._extraLayer, this._app);
+        this._editTool = new EditTool(this._extraLayer);
         this._eraser = new Eraser(
             this._app.pixiApp.renderer.plugins.interaction,
             this._extraLayer,
@@ -81,16 +81,16 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     private _addLayer(shapeIndex: number, isDisplay: boolean) {
         const shape: Shape = this._app.actionManager.getCurrentShape(shapeIndex);
         const content: ShapeContent = this._graphCache.shapesContent[shapeIndex];
-        this._editTool.init(shape, content, shapeIndex, isDisplay);
+        this._editTool.init(shape, content, isDisplay);
         this._focus();
     }
 
     private _addHandler(shapeIndex: number) {
-        this._editTool.addSelectHandler((state: SelectEnum, idx: number) => {
+        this._editTool.addSelectHandler((state: SelectEnum, idx?: number) => {
             this._app.stateManager.select(state, [shapeIndex, idx]);
         });
-        this._editTool.addUpdateHandler(() => {
-            // TODO
+        this._editTool.addUpdateHandler((shape: Shape) => {
+            this._app.actionManager.updateShape(shape, shapeIndex);
         });
     }
 
@@ -104,6 +104,11 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         select: SelectEnum,
         eraser: boolean = false
     ): void {
+        if (eraser) {
+            this._eraser.enable();
+        } else {
+            this._eraser.disable();
+        }
         if (isNeedInit) {
             this._addLayer(index[0], false);
             this._addHandler(index[0]);

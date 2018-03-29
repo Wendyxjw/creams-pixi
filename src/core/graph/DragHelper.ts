@@ -1,4 +1,4 @@
-interface DragableObj extends PIXI.DisplayObject {
+export interface DragableObj extends PIXI.DisplayObject {
     dragData?: PIXI.interaction.InteractionData,
     dragging?: number,
     dragPointerStart?: PIXI.Point,

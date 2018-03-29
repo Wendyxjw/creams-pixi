@@ -133,11 +133,11 @@ export interface EraserInterface {
 }
 
 export type SelectHandler = {
-    (state: SelectEnum, index: number): void;
+    (state: SelectEnum, index?: number): void;
 }
 
 export type UpdateHandler = {
-    (): void;
+    (shape: Shape): void;
 }
 
 export interface EditToolInterface {
@@ -156,7 +156,7 @@ export interface EditToolInterface {
      * @param  {boolean} isDisplay? // 是否只是显示
      * @returns void
      */
-    init(shape: Shape, content: ShapeContent, shapeIndex: number, isDisplay?: boolean): void;
+    init(shape: Shape, content: ShapeContent, isDisplay?: boolean): void;
 
     /**
      * 选中的回调方法
@@ -173,7 +173,7 @@ export interface EditToolInterface {
     addUpdateHandler(handler: UpdateHandler): void;
 
     /**
-     * 高亮某一部分，选中整块不需要传index
+     * 绑定拖拽方法，高亮某一部分，选中整块不需要传index
      * @param  {SelectEnum} type
      * @param  {number} index? // 边或者点的index
      * @returns void
