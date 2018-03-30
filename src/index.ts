@@ -1,6 +1,6 @@
 import App from './core/app/App';
 
-export { App }
+export default App;
 
 declare global {
     interface Window { CreamsPIXI: any; }
