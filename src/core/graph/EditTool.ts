@@ -15,14 +15,16 @@ export default class EditTool implements EditToolInterface {
     private _content: ShapeContent;
     private _container: PIXI.Container;
 
-    constructor(container: PIXI.Container) { 
+    constructor(container: PIXI.Container) {
         this._container = container;
         this._buildLayer();
     }
 
     private _buildLayer() {
         this._pointLayer = new PIXI.Container();
+        this._pointLayer.name = "pointLayer";
         this._lineLayer = new PIXI.Container();
+        this._lineLayer.name = "lineLayer";
         this._layer = new PIXI.Container();
         this._layer.addChild(this._lineLayer);
         this._layer.addChild(this._pointLayer);
@@ -31,10 +33,10 @@ export default class EditTool implements EditToolInterface {
 
     erasePoints(points: Array<number>): void {
         let newShape: Shape = this._shape;
-        points.forEach( item => {
+        points.forEach(item => {
             newShape[item] = null;
         });
-        newShape = newShape.filter(function (n) { return n !== null }); 
+        newShape = newShape.filter(function (n) { return n !== null });
         this.init(newShape, this._content);
         this._updateHandler(newShape);
     }
@@ -174,7 +176,7 @@ export default class EditTool implements EditToolInterface {
                 );
                 break;
             case SelectEnum.Shape:
-                
+
             default:
                 break;
         }
@@ -205,7 +207,7 @@ function addPointDragHandler(
     handler: { (point: Point): void }
 ) {
     DragHelper(point);
-    const onDragMove = function() {
+    const onDragMove = function () {
         const preLineStart = preLine.startPoint;
         preLine.clear();
         buildLine(preLine, preLineStart, [point.x, point.y]);
@@ -213,7 +215,7 @@ function addPointDragHandler(
         nextLine.clear();
         buildLine(nextLine, [point.x, point.y], nextLineEnd);
     }
-    const onDragEnd = function() {
+    const onDragEnd = function () {
         handler([point.x, point.y]);
     }
     point.on('pointermove', onDragMove)
@@ -228,7 +230,7 @@ function addLineDragHandler(
     handler: { (point: Point, nextPoint: Point): void }
 ) {
     DragHelper(line);
-    const onDragMove = function() {
+    const onDragMove = function () {
         const dLine = <DragableObj>line;
         const dx = dLine.x - dLine.dragObjStart.x;
         const dy = dLine.y - dLine.dragObjStart.y;
@@ -244,7 +246,7 @@ function addLineDragHandler(
         nextLine.clear();
         buildLine(nextLine, [nextPoint.x, nextPoint.y], nextLineEnd);
     }
-    const onDragEnd = function() {
+    const onDragEnd = function () {
         line.clear();
         const pP: Point = [prePoint.x, prePoint.y];
         const nP: Point = [nextPoint.x, nextPoint.y];

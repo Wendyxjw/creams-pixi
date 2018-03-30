@@ -150,10 +150,10 @@ export default class EventManager extends EventAPIManager implements EventManage
             }
             item.off("mouseup", func).on("mouseup", func);
             let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
-            let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
-            let curGraph: ShapeGraphics = <ShapeGraphics>layer.getChildByName("editShape");
-            curGraph.off("mouseup", func).on("mouseup", func);
-
+            let curGraph: ShapeGraphics = <ShapeGraphics>extraLayer.getChildByName("editShape");
+            if (curGraph) {
+                curGraph.off("mouseup", func).on("mouseup", func);
+            }
         })
     };
 
@@ -161,7 +161,7 @@ export default class EventManager extends EventAPIManager implements EventManage
     bindMouseDownLine(editType: EditEnum): void {
         this._app.graphManager.graphContainer.getChildByName("shapeLayer").on("mouseup", () => {
             let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
-            let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
+            let layer: PIXI.Container = <PIXI.Container>extraLayer.getChildByName("lineLayer");
             layer.children.forEach((item: LineGraphics, inedex: number) => {
                 let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
                     let index: number = Number(item.name.substring(5));
@@ -181,7 +181,7 @@ export default class EventManager extends EventAPIManager implements EventManage
     bindMouseUpLine(editType: EditEnum): void {
         this._app.graphManager.graphContainer.getChildByName("shapeLayer").on("mouseup", () => {
             let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
-            let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
+            let layer: PIXI.Container = <PIXI.Container>extraLayer.getChildByName("lineLayer");
             layer.children.forEach((item: LineGraphics, inedex: number) => {
                 let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
                     let index: number = Number(item.name.substring(5));
@@ -201,7 +201,7 @@ export default class EventManager extends EventAPIManager implements EventManage
     bindMouseDownPoint(editType: EditEnum): void {
         this._app.graphManager.graphContainer.getChildByName("shapeLayer").on("mouseup", () => {
             let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
-            let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
+            let layer: PIXI.Container = <PIXI.Container>extraLayer.getChildByName("pointLayer");
             layer.children.forEach((item: LineGraphics, inedex: number) => {
                 let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
                     let index: number = Number(item.name.substring(5));
@@ -221,7 +221,7 @@ export default class EventManager extends EventAPIManager implements EventManage
     bindMouseUpPoint(editType: EditEnum): void {
         this._app.graphManager.graphContainer.getChildByName("shapeLayer").on("mouseup", () => {
             let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
-            let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
+            let layer: PIXI.Container = <PIXI.Container>extraLayer.getChildByName("pointLayer");;
             layer.children.forEach((item: LineGraphics, inedex: number) => {
                 let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
                     let index: number = Number(item.name.substring(5));
