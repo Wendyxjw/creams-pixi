@@ -1,159 +1,238 @@
 // 绑定传入事件
-import EventAPI, { CallbackFunc } from "./EventAPI"
-import { ShapeGraphics, LineGraphics } from "../common/Graph"
+import EventAPI, { CallbackFunc, Events } from "./EventAPI"
+import { ShapeGraphics, LineGraphics, EditEnum } from "../common/Graph"
 import AppInterface from "../app/AppInterface";
+import { EventFunc, EventManagerInterface } from "./EventInterface";
 
-export default class EventManager implements EventAPI {
+
+class EventAPIManager implements EventAPI {
+    protected _events: Events;
+
+    onClickGraph(callback: CallbackFunc): void {
+        this._events.clickGraph = callback;
+    };
+
+    onMouseEnterShape(callback: CallbackFunc): void {
+        this._events.mouseEnterShape = callback;
+    };
+
+    onMouseLeaveShape(callback: CallbackFunc): void {
+        this._events.mouseLeaveShape = callback;
+    };
+
+    onMouseMoveShape(callback: CallbackFunc): void {
+        this._events.mouseMoveShape = callback;
+    };
+
+    onMouseDownShape(callback: CallbackFunc): void {
+        this._events.mouseDownShape = callback;
+    };
+
+    onMouseUpShape(callback: CallbackFunc): void {
+        this._events.mouseUpShape = callback;
+    };
+
+    onMouseDownLine(callback: CallbackFunc): void {
+        this._events.mouseDownLine = callback;
+    };
+
+    onMouseUpLine(callback: CallbackFunc): void {
+        this._events.mouseUpLine = callback;
+    };
+
+    onMouseDownPoint(callback: CallbackFunc): void {
+        this._events.mouseDownPoint = callback;
+    };
+
+    onMouseUpPoint(callback: CallbackFunc): void {
+        this._events.mouseUpPoint = callback;
+    };
+}
+
+export default class EventManager extends EventAPIManager implements EventManagerInterface {
     private _app: AppInterface;
 
     constructor(app: AppInterface) {
+        super();
         this._app = app;
+        //初始化_events
+        this._events = {
+            clickGraph: () => { },
+            mouseEnterShape: () => { },
+            mouseLeaveShape: () => { },
+            mouseMoveShape: () => { },
+            mouseDownShape: () => { },
+            mouseUpShape: () => { },
+            mouseDownLine: () => { },
+            mouseUpLine: () => { },
+            mouseDownPoint: () => { },
+            mouseUpPoint: () => { }
+        }
     }
-    //点击最外面的一层Container
-    onClickGraph(callback: CallbackFunc): void {
-        this._app.graphManager.graphContainer.on("click", (event: PIXI.interaction.InteractionEvent) => {
-            callback([], {
-                x: event.data.global.x,//触发事件位置
-                y: event.data.global.y
+
+    bindClickGraph(editType: EditEnum): void {
+        let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+            this._events.clickGraph([], {
+                x: event.data.global.x,
+                y: event.data.global.y,
+                editType: editType
             })
-        })
-    };
-    //shapeLayer
-    onMouseEnterShape(callback: CallbackFunc): void {
+        }
+        this._app.graphManager.graphContainer.off("click", func).on("click", func);
+    }
+
+    bindMouseEnterShape(editType: EditEnum): void {
         let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
         shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
-            item.on('mouseover', (event: PIXI.interaction.InteractionEvent) => {
-                callback([item.shapeIndex], {
-                    x: event.data.global.x,//触发事件位置
-                    y: event.data.global.y
+            let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+                this._events.mouseEnterShape([item.shapeIndex], {
+                    x: event.data.global.x,
+                    y: event.data.global.y,
+                    editType: editType
                 })
-            })
+            }
+            item.off('mouseover', func).on('mouseover', func);
         })
     };
-    //shapeLayer
-    onMouseLeaveShape(callback: CallbackFunc): void {
+
+    bindMouseLeaveShape(editType: EditEnum): void {
         let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
         shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
-            item.on('mouseout', (event: PIXI.interaction.InteractionEvent) => {
-                callback([item.shapeIndex], {
-                    x: event.data.global.x,//触发事件位置
-                    y: event.data.global.y
+            let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+                this._events.mouseLeaveShape([item.shapeIndex], {
+                    x: event.data.global.x,
+                    y: event.data.global.y,
+                    editType: editType
                 })
-            })
+            }
+            item.off('mouseout', func).on('mouseout', func);
         })
     };
-    //shapeLayer
-    onMouseMoveShape(callback: CallbackFunc): void {
+
+    bindMouseMoveShape(editType: EditEnum): void {
         let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
         shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
-            item.on('mousemove', (event: PIXI.interaction.InteractionEvent) => {
-                callback([item.shapeIndex], {
-                    x: event.data.global.x,//触发事件位置
-                    y: event.data.global.y
+            let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+                this._events.mouseMoveShape([item.shapeIndex], {
+                    x: event.data.global.x,
+                    y: event.data.global.y,
+                    editType: editType
                 })
-            })
+            }
+            item.off('mousemove', func).on('mousemove', func);
         })
     };
-    //shapeLayer
-    onMouseDownShape(callback: CallbackFunc): void {
+
+    bindMouseDownShape(editType: EditEnum): void {
         let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
         shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
-            item.on('mousedown', (event: PIXI.interaction.InteractionEvent) => {
-                callback([item.shapeIndex], {
-                    x: event.data.global.x,//触发事件位置
-                    y: event.data.global.y
+            let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+                this._events.mouseDownShape([item.shapeIndex], {
+                    x: event.data.global.x,
+                    y: event.data.global.y,
+                    editType: editType
                 })
-            })
+            }
+            item.off('mousedown', func).on('mousedown', func);
         })
     };
 
     //extraLayer： pointerdown的时候shapeLayer的时候出现extraLayer生成editShape
-    onMouseUpShape(callback: CallbackFunc): void {
-        this._app.graphManager.graphContainer.getChildByName("extraLayer").on("mouseup", (event: PIXI.interaction.InteractionEvent) => {
-            let currentTarget: PIXI.Container = <PIXI.Container>event.currentTarget;
-            let curContainer: PIXI.Container = <PIXI.Container>currentTarget.children[0];
-            let curGraph: ShapeGraphics = <ShapeGraphics>curContainer.getChildByName("editShape");
-            callback([curGraph.shapeIndex], {
-                x: event.data.global.x,//触发事件位置
-                y: event.data.global.y
-            })
-            curGraph.on("mouseup", (e: PIXI.interaction.InteractionEvent) => {
-                callback([curGraph.shapeIndex], {
-                    x: e.data.global.x,//触发事件位置
-                    y: e.data.global.y
+    bindMouseUpShape(editType: EditEnum): void {
+        let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
+        shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
+            let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+                this._events.mouseUpShape([item.shapeIndex], {
+                    x: event.data.global.x,
+                    y: event.data.global.y,
+                    editType: editType
                 })
-            })
+            }
+            item.off("mouseup", func).on("mouseup", func);
+            let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
+            let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
+            let curGraph: ShapeGraphics = <ShapeGraphics>layer.getChildByName("editShape");
+            curGraph.off("mouseup", func).on("mouseup", func);
+
         })
     };
 
     //shapeLayer的shape pointerdown 才会有line point
-    onMouseDownLine(callback: CallbackFunc): void {
+    bindMouseDownLine(editType: EditEnum): void {
         this._app.graphManager.graphContainer.getChildByName("shapeLayer").on("mouseup", () => {
             let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
             let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
             layer.children.forEach((item: LineGraphics, inedex: number) => {
+                let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+                    let index: number = Number(item.name.substring(5));
+                    this._events.mouseDownLine([index], {
+                        x: event.data.global.x,
+                        y: event.data.global.y,
+                        editType: editType
+                    })
+                }
                 if (item.name.indexOf("line") > -1) {
-                    item.on("mousedown", (event: PIXI.interaction.InteractionEvent) => {
-                        let index: number = Number(item.name.substring(5));
-                        callback([index], {
-                            x: event.data.global.x,
-                            y: event.data.global.y
-                        })
-                    })
+                    item.off("mousedown", func).on("mousedown", func);
                 }
             })
         })
     };
 
-    onMouseUpLine(callback: CallbackFunc): void {
+    bindMouseUpLine(editType: EditEnum): void {
         this._app.graphManager.graphContainer.getChildByName("shapeLayer").on("mouseup", () => {
             let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
             let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
             layer.children.forEach((item: LineGraphics, inedex: number) => {
+                let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+                    let index: number = Number(item.name.substring(5));
+                    this._events.mouseUpLine([index], {
+                        x: event.data.global.x,
+                        y: event.data.global.y,
+                        editType: editType
+                    })
+                }
                 if (item.name.indexOf("line") > -1) {
-                    item.on("mouseup", (event: PIXI.interaction.InteractionEvent) => {
-                        let index: number = Number(item.name.substring(5));
-                        callback([index], {
-                            x: event.data.global.x,
-                            y: event.data.global.y
-                        })
-                    })
+                    item.on("mouseup", func);
                 }
             })
         })
     };
 
-    onMouseDownPoint(callback: CallbackFunc): void {
+    bindMouseDownPoint(editType: EditEnum): void {
         this._app.graphManager.graphContainer.getChildByName("shapeLayer").on("mouseup", () => {
             let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
             let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
             layer.children.forEach((item: LineGraphics, inedex: number) => {
-                if (item.name.indexOf("point") > -1) {
-                    item.on("mousedown", (event: PIXI.interaction.InteractionEvent) => {
-                        let index: number = Number(item.name.substring(5));
-                        callback([index], {
-                            x: event.data.global.x,
-                            y: event.data.global.y
-                        })
+                let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+                    let index: number = Number(item.name.substring(5));
+                    this._events.mouseDownPoint([index], {
+                        x: event.data.global.x,
+                        y: event.data.global.y,
+                        editType: editType
                     })
+                }
+                if (item.name.indexOf("point") > -1) {
+                    item.on("mousedown", func);
                 }
             })
         })
     };
 
-    onMouseUpPoint(callback: CallbackFunc): void {
+    bindMouseUpPoint(editType: EditEnum): void {
         this._app.graphManager.graphContainer.getChildByName("shapeLayer").on("mouseup", () => {
             let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
             let layer: PIXI.Container = <PIXI.Container>extraLayer.children[0];
             layer.children.forEach((item: LineGraphics, inedex: number) => {
-                if (item.name.indexOf("point") > -1) {
-                    item.on("mouseup", (event: PIXI.interaction.InteractionEvent) => {
-                        let index: number = Number(item.name.substring(5));
-                        callback([index], {
-                            x: event.data.global.x,
-                            y: event.data.global.y
-                        })
+                let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
+                    let index: number = Number(item.name.substring(5));
+                    this._events.mouseUpPoint([index], {
+                        x: event.data.global.x,
+                        y: event.data.global.y,
+                        editType: editType
                     })
+                }
+                if (item.name.indexOf("point") > -1) {
+                    item.on("mouseup", func);
                 }
             })
         })

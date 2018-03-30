@@ -7,13 +7,16 @@ import EventAPI from "../event/EventAPI";
 import { StateManagerInterface } from '../state/StateInterface';
 import { ActionManagerInterface } from "../action/ActionInterface";
 import { GraphManagerInterface } from "../graph/GraphInterface";
+import { EventManagerInterface } from "../event/EventInterface";
 import GraphManager from '../graph/GraphManager';
 import OperationManager from '../operation/OperationManager';
 import EventManager from '../event/EventManager';
 import ActionManager from '../action/ActionManager';
 import StateManager from "../state/StateManager";
 import { Graph, GraphCache } from "../common/Graph";
+
 interface ActionCombine extends ActionAPI, ActionManagerInterface { }
+interface EventCombine extends EventAPI, EventManagerInterface { }
 
 
 export default class App implements AppInterface, AppAPI {
@@ -24,7 +27,7 @@ export default class App implements AppInterface, AppAPI {
     stateManager: StateManagerInterface;
     graphManager: GraphManagerInterface;
     operationManager: OperationAPI;
-    eventManager: EventAPI;
+    eventManager: EventCombine;
 
     constructor(el: HTMLElement) {
         this.pixiApp = this.init(el);
@@ -54,7 +57,7 @@ export default class App implements AppInterface, AppAPI {
     public get graph(): Graph {
         return this._graph;
     }
-    
+
     public get cache(): GraphCache {
         return this._cache;
     }

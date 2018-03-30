@@ -1,9 +1,5 @@
 import { GraphManagerInterface } from "../graph/GraphInterface";
-
-export enum EditEnum {
-    Nomal = 'Nomal',
-    Editing = 'Editing',
-}
+import { EventManagerInterface } from "../event/EventInterface";
 
 export enum SelectEnum {
     None = 'None',
@@ -20,5 +16,5 @@ export interface StateManagerInterface {
 
 export interface StateInterface {
     isChangingSelect: boolean;
-    processGraph(graphManager: GraphManagerInterface): void;
+    processGraph(graphManager: GraphManagerInterface, eventManager: EventManagerInterface): void;
 }
