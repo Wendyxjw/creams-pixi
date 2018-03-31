@@ -48,3 +48,8 @@ export class PointGraphics extends PIXI.Graphics {
     public pointIndex?: number; // 第几个
     public point?: Point;
 }
+
+export enum EditEnum {
+    Nomal = 'Nomal',
+    Editing = 'Editing',
+}

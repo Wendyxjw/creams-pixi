@@ -1,6 +1,7 @@
 import StateFactory from './StateFactory';
-import { EditEnum, SelectEnum, StateManagerInterface, StateInterface } from "./StateInterface";
+import { SelectEnum, StateManagerInterface, StateInterface } from "./StateInterface";
 import AppInterface from "../app/AppInterface";
+import { EditEnum } from '../common/Graph';
 
 // app状态管理
 export default class StateManager implements StateManagerInterface {
@@ -24,12 +25,13 @@ export default class StateManager implements StateManagerInterface {
 
     private _activeState(isChange: boolean = true) {
         const graphManager = this._app.graphManager;
+        const eventManager = this._app.eventManager;
 
         this._currentState = StateFactory(
             this._editEnum, this._selectEnum, this._isEnableEraser, this._selectIndex
         );
         this._currentState.isChangingSelect = isChange;
-        this._currentState.processGraph(graphManager);
+        this._currentState.processGraph(graphManager, eventManager);
     }
 
     enableEdit(isEnabled: boolean) {

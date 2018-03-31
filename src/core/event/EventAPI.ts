@@ -1,7 +1,10 @@
+import { EditEnum } from "../common/Graph";
+
 type MouseEvent = {
     // TODO: 应该外部定义导入
     x: number,//shape的定位
-    y: number
+    y: number,
+    editType: EditEnum
 }
 
 export type CallbackFunc = {
@@ -12,72 +15,85 @@ export type CallbackFunc = {
      */
     (index: Array<number>, event: MouseEvent): void;
 }
-
+export type Events = {
+    clickGraph: CallbackFunc;
+    mouseEnterShape: CallbackFunc;
+    mouseLeaveShape: CallbackFunc;
+    mouseMoveShape: CallbackFunc;
+    mouseDownShape: CallbackFunc;
+    mouseUpShape: CallbackFunc;
+    mouseDownLine: CallbackFunc;
+    mouseUpLine: CallbackFunc;
+    mouseDownPoint: CallbackFunc;
+    mouseUpPoint: CallbackFunc;
+}
 // 事件接口
 export default interface EventAPI {
     /**
-     * 整个图形 click
+     * 整个图形 click :普通模式 编辑模式
      * @param  {CallbackFunc} callback
      * @returns void
      */
     onClickGraph(callback: CallbackFunc): void;
 
     /**
-     * 单个图形 MouseEnter
+     * 单个图形 MouseEnter：普通模式（出现popup） 编辑模式（shape的颜色根据shadowShape设置）
      * @param  {CallbackFunc} callback
      * @returns void
      */
     onMouseEnterShape(callback: CallbackFunc): void;
 
     /**
-     * 单个图形 MouseLeave
+     * 单个图形 MouseLeave：普通模式（popup消失） 编辑模式（shape的颜色恢复原来的颜色）
      * @param  {CallbackFunc} callback
      * @returns void
      */
     onMouseLeaveShape(callback: CallbackFunc): void;
 
     /**
+     * 单个图形 MouseMove：普通模式（popup跟随鼠标移动）
      * @param  {CallbackFunc} callback
      * @returns void
      */
     onMouseMoveShape(callback: CallbackFunc): void;
 
     /**
-     * 单个图形 MouseDown
+     * 单个图形 MouseDown：普通模式（弹出右侧店铺介绍）
      * @param  {CallbackFunc} callback
      * @returns void
      */
     onMouseDownShape(callback: CallbackFunc): void;
 
     /**
-     * 单个图形 MouseUp
+     * 单个图形 MouseUp：编辑模式（点击shape出现‘编辑、拷贝、橡皮擦’;shadowShape开启，如果在shape上面mouseup，需要updateShape）
      * @param  {CallbackFunc} callback
      * @returns void
      */
     onMouseUpShape(callback: CallbackFunc): void;
 
     /**
+     * 图形的线 MouseDown： 编辑模式
      * @param  {CallbackFunc} callback
      * @returns void
      */
     onMouseDownLine(callback: CallbackFunc): void;
 
     /**
-     * 图形的线 MouseUp
+     * 图形的线 MouseUp：编辑模式（出现添加点按钮）
      * @param  {CallbackFunc} callback
      * @returns void
      */
     onMouseUpLine(callback: CallbackFunc): void;
 
     /**
-     * 图形的点 MouseDown
+     * 图形的点 MouseDown：编辑模式
      * @param  {CallbackFunc} callback
      * @returns void
      */
     onMouseDownPoint(callback: CallbackFunc): void;
 
     /**
-     * 图形的点 MouseUp
+     * 图形的点 MouseUp：编辑模式（出现删除点按钮）
      * @param  {CallbackFunc} callback
      * @returns void
      */

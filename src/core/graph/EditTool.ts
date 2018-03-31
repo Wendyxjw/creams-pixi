@@ -16,7 +16,7 @@ export default class EditTool implements EditToolInterface {
     private _content: ShapeContent;
     private _container: PIXI.Container;
 
-    constructor(container: PIXI.Container) { 
+    constructor(container: PIXI.Container) {
         this._container = container;
         this._buildLayer();
     }
@@ -24,7 +24,9 @@ export default class EditTool implements EditToolInterface {
     private _buildLayer() {
         this._backShape = new ShapeGraphics();
         this._pointLayer = new PIXI.Container();
+        this._pointLayer.name = "pointLayer";
         this._lineLayer = new PIXI.Container();
+        this._lineLayer.name = "lineLayer";
         this._layer = new PIXI.Container();
         this._layer.addChild(this._backShape);
         this._layer.addChild(this._lineLayer);
@@ -34,10 +36,10 @@ export default class EditTool implements EditToolInterface {
 
     erasePoints(points: Array<number>): void {
         let newShape: Shape = this._shape;
-        points.forEach( item => {
+        points.forEach(item => {
             newShape[item] = null;
         });
-        newShape = newShape.filter(function (n) { return n !== null }); 
+        newShape = newShape.filter(function (n) { return n !== null });
         this.init(newShape, this._content);
         this._updateHandler(newShape);
     }
@@ -203,7 +205,6 @@ function addPointDragHandler(
         buildLine(nextLine, [point.x, point.y], nextLineEnd);
     }
     const onDragEnd = function() {
-        console.log(point.x, point.y, 'end');
         handler([point.x, point.y]);
         point.off('pointermove', onDragMove)
             .off('pointerup', onDragEnd)

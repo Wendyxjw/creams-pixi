@@ -6,7 +6,8 @@ import {
     EditingNoneState,
     EditingEraserState,
 } from './State';
-import { EditEnum, SelectEnum } from './StateInterface';
+import { SelectEnum } from './StateInterface';
+import { EditEnum } from '../common/Graph';
 
 export default function StateFactory(
     eEnum: EditEnum, sEnum: SelectEnum, enableEraser: boolean, index: Array<number>
