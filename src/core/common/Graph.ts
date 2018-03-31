@@ -33,9 +33,13 @@ export interface GraphCache {
     shapesContent?: Array<ShapeContent>;
 }
 
-//graph添加shapeIndex属性，用于识别graphContainer.children类型
+// graph添加shapeIndex属性，用于识别graphContainer.children类型
 export class ShapeGraphics extends PIXI.Graphics {
-    public shapeIndex?: number//第几个
+    public shapeIndex?: number; //第几个
+    public xMin?: number;
+    public xMax?: number;
+    public yMin?: number;
+    public yMax?: number;
 }
 
 export class LineGraphics extends PIXI.Graphics {
@@ -52,4 +56,11 @@ export class PointGraphics extends PIXI.Graphics {
 export enum EditEnum {
     Nomal = 'Nomal',
     Editing = 'Editing',
+}
+
+export enum SelectEnum {
+    None = 'None',
+    Shape = 'Shape',
+    Line = 'Line',
+    Point = 'Point',
 }

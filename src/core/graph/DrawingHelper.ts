@@ -1,7 +1,7 @@
-import { Shape, ShapeContent, Point, LineGraphics, PointGraphics } from "../common/Graph";
+import { Shape, ShapeContent, Point, LineGraphics, PointGraphics, ShapeGraphics } from "../common/Graph";
 import { defultGraphStyle } from "./constant";
 
-export function drawShape(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent = defultGraphStyle) {
+export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeContent = defultGraphStyle) {
     graphics.removeChildren();
     // set a fill and line style
     graphics.beginFill(content.backgroundColor, content.alpha);
@@ -19,6 +19,11 @@ export function drawShape(graphics: PIXI.Graphics, shape: Shape, content: ShapeC
         yMin = yMin > shape[i][1] ? shape[i][1] : yMin;
         yMax = yMax < shape[i][1] ? shape[i][1] : yMax;
     }
+    graphics.xMin = xMin;
+    graphics.xMax = xMax;
+    graphics.yMin = yMin;
+    graphics.yMax = yMax;
+
     graphics.lineTo(shape[0][0], shape[0][1]);
     graphics.endFill();
 

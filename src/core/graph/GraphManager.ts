@@ -1,7 +1,6 @@
 import { GraphManagerInterface, EraserInterface, EditToolInterface } from "./GraphInterface";
-import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache, Point, PointGraphics, } from "../common/Graph";
+import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache, Point, PointGraphics, SelectEnum, } from "../common/Graph";
 import DragHelper from "./DragHelper";
-import { SelectEnum } from "../state/StateInterface";
 import AppInterface from "../app/AppInterface";
 import Eraser from "./Eraser"
 import GraphDrawing from './GraphDrawing'

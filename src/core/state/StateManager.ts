@@ -1,7 +1,7 @@
 import StateFactory from './StateFactory';
-import { SelectEnum, StateManagerInterface, StateInterface } from "./StateInterface";
+import { StateManagerInterface, StateInterface } from "./StateInterface";
 import AppInterface from "../app/AppInterface";
-import { EditEnum } from '../common/Graph';
+import { EditEnum, SelectEnum } from '../common/Graph';
 
 // app状态管理
 export default class StateManager implements StateManagerInterface {
