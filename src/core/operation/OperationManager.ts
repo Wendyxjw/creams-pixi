@@ -50,7 +50,7 @@ export default class OperationManager implements OperationAPI {
         this._app.stateManager.enableEdit(isEnabled);
     }
 
-    setShapeContent(index: Array<number>, content?: ShapeContent): void {
+    setShapeContent(index: number, content?: ShapeContent): void {
         this._app.graphManager.setShapeContent(index, content);
     }
 

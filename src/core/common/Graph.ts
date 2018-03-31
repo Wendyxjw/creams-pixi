@@ -24,7 +24,7 @@ export type ShapeContent = {
     content: string; // 显示的文字内容
     hasMark?: boolean; // 是否需要角标
     alpha?: number; // 透明度
-    shapeIndex: String; //与Graph匹配
+    //shapeIndex: String; //与Graph匹配
 }
 
 export interface GraphCache {

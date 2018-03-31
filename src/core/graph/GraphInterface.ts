@@ -1,4 +1,4 @@
-import { Graph, ShapeContent, GraphCache, Shape, SelectEnum } from '../common/Graph';
+import { Graph, ShapeContent, GraphCache, Shape, SelectEnum, ShapeGraphics } from '../common/Graph';
 
 // 项目基础对外API
 export interface GraphManagerInterface {
@@ -14,11 +14,11 @@ export interface GraphManagerInterface {
 
     /**
      * 给图块设置显示参数
-     * @param  {Array<number>} index, 图块序号
+     * @param  {number} index, 图块序号
      * @param  {ShapeContent} content?, 显示参数
      * @returns void
      */
-    setShapeContent(index: Array<number>, content?: ShapeContent): void;
+    setShapeContent(index: number, content?: ShapeContent): void;
 
     /**
      * 触发绘图
@@ -68,21 +68,28 @@ export interface GraphManagerInterface {
      * @param  {number} shapeIndex
      * @param  {ShapeContent} content?
      */
-    buildShapes(shape: Shape, shapeIndex: number, content?: ShapeContent): void;
+    buildShapes(shape: Shape, shapeIndex: number, content?: ShapeContent): ShapeGraphics;
+
+    /**
+     * 删除shape
+     * @param  {string} name
+     * @returns void
+     */
+    deleteShapes(name: string): void
 
     /**
      * 隐藏shape
      * @param  {number} shapeIndex
      * @returns void
      */
-    hideShapes(shapeIndex: number): void;
+    // hideShapes(shapeIndex: number): void;
 
     /**
      * 显示shape
      * @param  {number} shapeIndex
      * @returns void
      */
-    showShapes(shapeIndex: number): void;
+    // showShapes(shapeIndex: number): void;
 
     /**
      * 更新shape

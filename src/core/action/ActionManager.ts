@@ -69,14 +69,6 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
     }
 
     getCurrentData(): Graph {
-        let newCurrentData: Array<Shape>;
-        for (let i = 0; i < this._currentData.shapes.length; i++) {
-            let item: Shape = this._currentData.shapes[i];
-            //删除空数组
-            if (item.length != 0) {
-                newCurrentData.push(item);
-            }
-        }
         return this._currentData;
     }
 
@@ -85,6 +77,7 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
         pointArr = [[x, y], [x, y + height], [x + width, y + height], [x + width, y]];
         let action: ActionInterface = new CreateShapeAction(pointArr, this._app);
         this.addAction(action)
+
     };
 
     copyShape(shapeIndex: number) {

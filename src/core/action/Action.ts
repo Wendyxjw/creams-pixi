@@ -1,5 +1,5 @@
 import { ActionInterface } from "./ActionInterface";
-import { ShapeContent, Shape, Graph, Point } from "../common/Graph";
+import { ShapeContent, Shape, Graph, Point, SelectEnum } from "../common/Graph";
 import AppInterface from "../app/AppInterface";
 
 export class CreateShapeAction implements ActionInterface {
@@ -14,13 +14,14 @@ export class CreateShapeAction implements ActionInterface {
 
     do(data: Graph): Graph {
         this._addShapeIndex = data.shapes.length;
-        this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
+        let shape = this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
+        this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
         data.shapes.push(this._pointArr);
         return data;
     };
     unDo(data: Graph): Graph {
-        this._app.graphManager.hideShapes(this._addShapeIndex);
-        data.shapes[this._addShapeIndex] = [];
+        this._app.graphManager.deleteShapes(this._addShapeIndex.toString());
+        data.shapes[this._addShapeIndex] = []; // 不能删除该元素，要和content一一对应
         return data;
     };
 }
@@ -36,7 +37,7 @@ export class DeleteShapeAction implements ActionInterface {
     }
 
     do(data: Graph): Graph {
-        this._app.graphManager.hideShapes(this._deleteShapeIndex);
+        this._app.graphManager.deleteShapes(this._deleteShapeIndex.toString());
         //将对应的点阵置空 保留占位
         this._pointArr = data.shapes[this._deleteShapeIndex];//保存删除的点阵
         data.shapes[this._deleteShapeIndex] = [];
@@ -44,8 +45,8 @@ export class DeleteShapeAction implements ActionInterface {
         return data;
     };
     unDo(data: Graph): Graph {
-        this._app.graphManager.showShapes(this._deleteShapeIndex);
-        data.shapes[this._deleteShapeIndex] = this._pointArr;
+        this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
+        data.shapes.push(this._pointArr);
         //回滚的时 不会滚匹配状态
         return data;
     };
@@ -71,13 +72,13 @@ export class CopyShapeAction implements ActionInterface {
             return newItem;
         })
         this._addShapeIndex = data.shapes.length
-        this._app.graphManager.buildShapes(newPointArr, this._addShapeIndex);
-
+        let shape = this._app.graphManager.buildShapes(newPointArr, this._addShapeIndex);
+        this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
         data.shapes.push(newPointArr);
         return data;
     };
     unDo(data: Graph): Graph {
-        this._app.graphManager.hideShapes(this._addShapeIndex);
+        this._app.graphManager.deleteShapes(this._addShapeIndex.toString())
         data.shapes[this._addShapeIndex] = [];
         return data;
     };

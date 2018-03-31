@@ -69,8 +69,9 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         }
     }
 
-    setShapeContent(index: Array<number>, content?: ShapeContent): void {
-
+    setShapeContent(index: number, content?: ShapeContent): void {
+        let shape: Shape = this._app.actionManager.getCurrentShape(index);
+        this.updateShapes(shape, index);
     }
 
     render(): void {

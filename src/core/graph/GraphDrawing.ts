@@ -36,7 +36,7 @@ export default class GraphDrawing {
         this._addContainerEvent();
     }
 
-    buildShapes(shape: Shape, index: number, content: ShapeContent = defultGraphStyle): void {
+    buildShapes(shape: Shape, index: number, content: ShapeContent = defultGraphStyle): ShapeGraphics {
         let graphics = new ShapeGraphics();
 
         graphics = drawShape(graphics, shape, content);
@@ -44,15 +44,20 @@ export default class GraphDrawing {
         graphics.name = index.toString();
         graphics.shapeIndex = index;
         this._shapeLayer.addChild(graphics);
+        return graphics;
     }
 
-    hideShapes(shapeIndex: number): void {
-        this._shapeLayer.getChildByName(shapeIndex.toString()).visible = false;
+    deleteShapes(name: string) {
+        this._shapeLayer.removeChild(this._shapeLayer.getChildByName(name));
     }
 
-    showShapes(shapeIndex: number): void {
-        this._shapeLayer.getChildByName(shapeIndex.toString()).visible = true;
-    }
+    // hideShapes(shapeIndex: number): void {
+    //     this._shapeLayer.getChildByName(shapeIndex.toString()).visible = false;
+    // }
+
+    // showShapes(shapeIndex: number): void {
+    //     this._shapeLayer.getChildByName(shapeIndex.toString()).visible = true;
+    // }
 
     updateShapes(shape: Shape, shapeIndex: number, content?: ShapeContent) {
         let curShape: PIXI.Graphics;
