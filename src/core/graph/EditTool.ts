@@ -7,6 +7,7 @@ import AppInterface from "../app/AppInterface";
 
 export default class EditTool implements EditToolInterface {
     private _layer: PIXI.Container; // 编辑层，负责拖拽
+    private _backShape: ShapeGraphics; // 背景
     private _pointLayer: PIXI.Container; // 点层
     private _lineLayer: PIXI.Container; // 线层
     private _selectHandler: SelectHandler;
@@ -21,9 +22,11 @@ export default class EditTool implements EditToolInterface {
     }
 
     private _buildLayer() {
+        this._backShape = new ShapeGraphics();
         this._pointLayer = new PIXI.Container();
         this._lineLayer = new PIXI.Container();
         this._layer = new PIXI.Container();
+        this._layer.addChild(this._backShape);
         this._layer.addChild(this._lineLayer);
         this._layer.addChild(this._pointLayer);
         this._container.addChild(this._layer);
@@ -44,9 +47,7 @@ export default class EditTool implements EditToolInterface {
         this._shape = shape;
         this._content = content;
         if (isDisplay) {
-            const backShape = new ShapeGraphics();
-            drawShape(backShape, this._shape, this._content);
-            this._layer.addChild(backShape);
+            drawShape(this._backShape, this._shape, this._content);
         } else {
             this._drawEditLayer();
         }
@@ -56,13 +57,14 @@ export default class EditTool implements EditToolInterface {
         const element = this._shape[index];
         const point = new PointGraphics();
         buildPoint(point, element);
+        this._pointLayer.addChild(point);
         point.pointIndex = index;
         point.name = `point_${index}`;
         point.interactive = true;
         point.on('pointerdown', () => {
             this._selectHandler(SelectEnum.Point, index);
         });
-        this._pointLayer.addChild(point);
+        DragHelper(point);
     }
 
     private _drawLine(index: number) {
@@ -71,24 +73,25 @@ export default class EditTool implements EditToolInterface {
         const endPoint = (index == this._shape.length - 1) ?
             this._shape[0] : this._shape[index + 1];
         buildLine(line, startPoint, endPoint);
+        this._lineLayer.addChild(line);
         line.lineIndex = index;
         line.name = `line_${index}`;
         line.interactive = true;
         line.on('pointerdown', () => {
             this._selectHandler(SelectEnum.Line, index);
         });
-        this._lineLayer.addChild(line);
+        DragHelper(line);
     }
 
     private _drawBackShape() {
-        const backShape = new ShapeGraphics();
+        const backShape = this._backShape;
         drawShape(backShape, this._shape, this._content);
         backShape.name = "editShape";
         backShape.interactive = true;
         backShape.on('pointerdown', () => {
             this._selectHandler(SelectEnum.Shape);
         });
-        this._layer.addChild(backShape);
+        this._layer.addChildAt(backShape, 0);
     }
 
     private _drawEditLayer() {
@@ -126,7 +129,7 @@ export default class EditTool implements EditToolInterface {
         let prePoint: PointGraphics;
         let nextPoint: PointGraphics;
         let nextLine: LineGraphics;
-
+        this._layer.interactive = false;
         switch (type) {
             case SelectEnum.Point:
                 const targetPoint = <PointGraphics>this._pointLayer.getChildByName(`point_${index}`);
@@ -137,15 +140,8 @@ export default class EditTool implements EditToolInterface {
                 nextLine = <LineGraphics>this._lineLayer.getChildAt(targetIndex);
                 addPointDragHandler(preLine, targetPoint, nextLine, (point: Point) => {
                     this._shape[targetPoint.pointIndex] = point;
+                    drawShape(this._backShape.clear(), this._shape, this._content);
                     this._updateHandler(this._shape);
-                    targetPoint.off('pointerdown')
-                        .off('pointerup')
-                        .off('pointerupoutside')
-                        .off('pointermove')
-                        .on('pointerdown', () => {
-                            this._selectHandler(SelectEnum.Point, index);
-                        });
-
                 });
                 break;
             case SelectEnum.Line:
@@ -163,18 +159,11 @@ export default class EditTool implements EditToolInterface {
                         this._shape[prePoint.pointIndex] = pP;
                         this._shape[nextPoint.pointIndex] = nP;
                         this._updateHandler(this._shape);
-                        targetLine.off('pointerdown')
-                            .off('pointerup')
-                            .off('pointerupoutside')
-                            .off('pointermove')
-                            .on('pointerdown', () => {
-                                this._selectHandler(SelectEnum.Line, index);
-                            });
                     }
                 );
                 break;
             case SelectEnum.Shape:
-                
+                this._layer.interactive = true;
             default:
                 break;
         }
@@ -204,9 +193,9 @@ function addPointDragHandler(
     preLine: LineGraphics, point: PointGraphics, nextLine: LineGraphics,
     handler: { (point: Point): void }
 ) {
-    DragHelper(point);
     const onDragMove = function() {
         const preLineStart = preLine.startPoint;
+        console.log(point.x, point.y, 'moving');
         preLine.clear();
         buildLine(preLine, preLineStart, [point.x, point.y]);
         const nextLineEnd = nextLine.endPoint;
@@ -214,7 +203,11 @@ function addPointDragHandler(
         buildLine(nextLine, [point.x, point.y], nextLineEnd);
     }
     const onDragEnd = function() {
+        console.log(point.x, point.y, 'end');
         handler([point.x, point.y]);
+        point.off('pointermove', onDragMove)
+            .off('pointerup', onDragEnd)
+            .off('pointerupoutside', onDragEnd)
     }
     point.on('pointermove', onDragMove)
         .on('pointerup', onDragEnd)
@@ -227,7 +220,6 @@ function addLineDragHandler(
     nextPoint: PointGraphics, nextLine: LineGraphics,
     handler: { (point: Point, nextPoint: Point): void }
 ) {
-    DragHelper(line);
     const onDragMove = function() {
         const dLine = <DragableObj>line;
         const dx = dLine.x - dLine.dragObjStart.x;
