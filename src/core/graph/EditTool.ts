@@ -111,6 +111,7 @@ export default class EditTool implements EditToolInterface {
                     newShape.push([item[0] + x, item[1] + y]);
                 });
                 this._updateHandler(newShape);
+                this._shape = newShape;
             }
         });
     }
@@ -181,13 +182,13 @@ function addShapeDragHandler(
     shape: PIXI.Container, handler: { (startPoint: PIXI.Point, endPoint: PIXI.Point): void }
 ) {
     DragHelper(shape);
-    let startPoint: PIXI.Point;
-    shape.on("pointerdown", (event: PIXI.interaction.InteractionEvent) => {
-        startPoint = new PIXI.Point();
-        startPoint.copy(event.data.global);
-    }).on("pointerup", (event: PIXI.interaction.InteractionEvent) => {
-        startPoint = startPoint ? startPoint : event.data.global
-        handler(startPoint, event.data.global);
+    let startPoint: PIXI.Point = new PIXI.Point();
+    let endPoint: PIXI.Point = new PIXI.Point();
+    shape.on("pointerdown", () => {
+        startPoint.copy(shape.position);
+    }).on("pointerup", () => {
+        endPoint.copy(shape.position);
+        handler(startPoint, endPoint);
     });
 }
 
