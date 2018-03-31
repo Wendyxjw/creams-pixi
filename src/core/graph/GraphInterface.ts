@@ -37,7 +37,7 @@ export interface GraphManagerInterface {
 
     /**
      * 增加编辑图层
-     * @param  {boolean} isNeedInit
+     * @param  {boolean} isNeedInit, // 更换shape时 需要重绘
      * @param  {Array<number>} index
      * @param  {SelectEnum} select
      * @param  {boolean} enableEraser?

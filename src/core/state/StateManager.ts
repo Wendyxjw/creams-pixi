@@ -50,8 +50,9 @@ export default class StateManager implements StateManagerInterface {
             return;
         }
         this._selectEnum = state;
-        const isEqual = this._selectIndex.length == index.length &&
-            this._selectIndex.every((v, i) => v === index[i]);
+        // const isEqual = this._selectIndex.length == index.length &&
+        //     this._selectIndex.every((v, i) => v === index[i]);
+        const isEqual = this._selectIndex[0] === index[0]; // 只需要判断shapeIndex
 
         this._selectIndex = index;
         this._activeState(!isEqual);
