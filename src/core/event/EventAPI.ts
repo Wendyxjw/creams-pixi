@@ -4,7 +4,12 @@ type MouseEvent = {
     // TODO: 应该外部定义导入
     x: number,//shape的定位
     y: number,
-    editType: EditEnum
+    target?: {
+        xMin: number,
+        xMax: number,
+        yMin: number,
+        yMax: number
+    }
 }
 
 export type CallbackFunc = {
@@ -13,19 +18,14 @@ export type CallbackFunc = {
      * @param  {MouseEvent} event, PIXI的点击事件
      * @returns void
      */
-    (index: Array<number>, event: MouseEvent): void;
+    (index: Array<number>, event: MouseEvent, editType?: EditEnum): void;
 }
 export type Events = {
     clickGraph: CallbackFunc;
     mouseEnterShape: CallbackFunc;
     mouseLeaveShape: CallbackFunc;
-    mouseMoveShape: CallbackFunc;
     mouseDownShape: CallbackFunc;
-    mouseUpShape: CallbackFunc;
     mouseDownLine: CallbackFunc;
-    mouseUpLine: CallbackFunc;
-    mouseDownPoint: CallbackFunc;
-    mouseUpPoint: CallbackFunc;
 }
 // 事件接口
 export default interface EventAPI {
@@ -51,13 +51,6 @@ export default interface EventAPI {
     onMouseLeaveShape(callback: CallbackFunc): void;
 
     /**
-     * 单个图形 MouseMove：普通模式（popup跟随鼠标移动）
-     * @param  {CallbackFunc} callback
-     * @returns void
-     */
-    onMouseMoveShape(callback: CallbackFunc): void;
-
-    /**
      * 单个图形 MouseDown：普通模式（弹出右侧店铺介绍）
      * @param  {CallbackFunc} callback
      * @returns void
@@ -69,7 +62,7 @@ export default interface EventAPI {
      * @param  {CallbackFunc} callback
      * @returns void
      */
-    onMouseUpShape(callback: CallbackFunc): void;
+    // onMouseUpShape(callback: CallbackFunc): void;
 
     /**
      * 图形的线 MouseDown： 编辑模式
@@ -83,19 +76,5 @@ export default interface EventAPI {
      * @param  {CallbackFunc} callback
      * @returns void
      */
-    onMouseUpLine(callback: CallbackFunc): void;
-
-    /**
-     * 图形的点 MouseDown：编辑模式
-     * @param  {CallbackFunc} callback
-     * @returns void
-     */
-    onMouseDownPoint(callback: CallbackFunc): void;
-
-    /**
-     * 图形的点 MouseUp：编辑模式（出现删除点按钮）
-     * @param  {CallbackFunc} callback
-     * @returns void
-     */
-    onMouseUpPoint(callback: CallbackFunc): void;
+    // onMouseUpLine(callback: CallbackFunc): void;
 }

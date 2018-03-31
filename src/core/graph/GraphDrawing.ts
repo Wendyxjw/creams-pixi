@@ -1,7 +1,6 @@
-import { ShapeContent, Shape, ShapeGraphics, GraphCache } from "../common/Graph";
+import { ShapeContent, Shape, ShapeGraphics, GraphCache, SelectEnum } from "../common/Graph";
 import { defultGraphStyle } from "./constant";
 import AppInterface from "../app/AppInterface";
-import { SelectEnum } from "../state/StateInterface";
 import { drawShape } from "./DrawingHelper";
 import { ShadowShapeInterface } from "./GraphInterface";
 import ShadowShape from "./ShadowShape";

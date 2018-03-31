@@ -1,5 +1,4 @@
-import { Graph, ShapeContent, GraphCache, Shape } from '../common/Graph';
-import { SelectEnum } from '../state/StateInterface';
+import { Graph, ShapeContent, GraphCache, Shape, SelectEnum } from '../common/Graph';
 
 // 项目基础对外API
 export interface GraphManagerInterface {

@@ -1,6 +1,5 @@
 import { EditToolInterface, SelectHandler, UpdateHandler } from "./GraphInterface";
-import { Shape, ShapeContent, PointGraphics, LineGraphics, ShapeGraphics, Point } from "../common/Graph";
-import { SelectEnum } from "../state/StateInterface";
+import { Shape, ShapeContent, PointGraphics, LineGraphics, ShapeGraphics, Point, SelectEnum } from "../common/Graph";
 import { buildPoint, buildLine, drawShape } from "./DrawingHelper";
 import DragHelper, { DragableObj } from "./DragHelper";
 import AppInterface from "../app/AppInterface";
@@ -196,7 +195,7 @@ function addPointDragHandler(
     preLine: LineGraphics, point: PointGraphics, nextLine: LineGraphics,
     handler: { (point: Point): void }
 ) {
-    const onDragMove = function() {
+    const onDragMove = function () {
         const preLineStart = preLine.startPoint;
         console.log(point.x, point.y, 'moving');
         preLine.clear();
@@ -205,7 +204,7 @@ function addPointDragHandler(
         nextLine.clear();
         buildLine(nextLine, [point.x, point.y], nextLineEnd);
     }
-    const onDragEnd = function() {
+    const onDragEnd = function () {
         handler([point.x, point.y]);
         point.off('pointermove', onDragMove)
             .off('pointerup', onDragEnd)
@@ -222,7 +221,7 @@ function addLineDragHandler(
     nextPoint: PointGraphics, nextLine: LineGraphics,
     handler: { (point: Point, nextPoint: Point): void }
 ) {
-    const onDragMove = function() {
+    const onDragMove = function () {
         const dLine = <DragableObj>line;
         const dx = dLine.x - dLine.dragObjStart.x;
         const dy = dLine.y - dLine.dragObjStart.y;
@@ -238,7 +237,7 @@ function addLineDragHandler(
         nextLine.clear();
         buildLine(nextLine, [nextPoint.x, nextPoint.y], nextLineEnd);
     }
-    const onDragEnd = function() {
+    const onDragEnd = function () {
         line.clear();
         const pP: Point = [prePoint.x, prePoint.y];
         const nP: Point = [nextPoint.x, nextPoint.y];
