@@ -12,8 +12,8 @@ export default class ShadowShape implements ShadowShapeInterface {
     constructor(app: AppInterface) {
         this._app = app;
     }
-    buildShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
-        this.deleteShadowShape();
+    buildShadowShape(width: number, height: number, content?: ShapeContent) {
+        this.destroyShadowShape();
 
         let shape: Shape;
         shape = [[0, 0], [0, height], [width, height], [width, 0]];
@@ -21,13 +21,15 @@ export default class ShadowShape implements ShadowShapeInterface {
         this._shadowMatchingCon = content;
 
         this._shadowShape = this._app.graphManager.buildShadowShapes(shape, content);
-        this._shadowShape.on("mouseup", () => {
-            console.log(12)
-        })
-        this._app.graphManager.graphContainer.addChild(this._shadowShape);
+        //如果放在Container 放大缩小会对它有影响
+        this._app.pixiApp.stage.addChild(this._shadowShape);
         //跟着鼠标走
         this._shadowTicker = new PIXI.ticker.Ticker();
         this._shadowTicker.add(() => {
+            // if (this._app.pixiApp.renderer.plugins.interaction.eventData.type == "pointertap") {
+            //     this._deleteShadowShape();
+            //     return;
+            // }
             let mousePosition = this._app.pixiApp.renderer.plugins.interaction.mouse.global;
             this._shadowShape.x = mousePosition.x - width;
             this._shadowShape.y = mousePosition.y - height;
@@ -66,7 +68,7 @@ export default class ShadowShape implements ShadowShapeInterface {
     //         this.deleteShadowShape();
     //     }
     // }
-    deleteShadowShape() {
+    destroyShadowShape() {
         if (!this._shadowTicker) {
             return
         }

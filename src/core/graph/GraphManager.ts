@@ -126,7 +126,11 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._eraser.setSize(size);
     }
 
-    setShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
-        this._shadowShape.buildShadowShape(x, y, width, height, content);
+    setShadowShape(width: number, height: number, content?: ShapeContent) {
+        this._shadowShape.buildShadowShape(width, height, content);
+    }
+
+    deleteShadowShape() {
+        this._shadowShape.destroyShadowShape();
     }
 }

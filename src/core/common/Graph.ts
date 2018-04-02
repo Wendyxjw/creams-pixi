@@ -11,20 +11,18 @@ export type Graph = {
 // 缓存数据结构，运行时的数据结构，用于展示。
 // Shape样式
 export type ShapeContent = {
-    backgroundColor: number; // color
+    backgroundColor: number; // 背景颜色：0xffffff(十六进制)
     border: {
         lineWidth: number,
         color: number,
-        //alpha:number//默认为1
-    }; // size, color, style
+    };
     font: {
         fontSize: number,
-        fill: Array<string>,//填充颜色
-    }; // size, color
-    content: string; // 显示的文字内容
-    hasMark?: boolean; // 是否需要角标
-    alpha?: number; // 透明度
-    //shapeIndex: String; //与Graph匹配
+        fill: Array<number>,//填充颜色：[0x000000,0xffffff]填一个就是纯色，多个就是渐变效果
+    };
+    content: string; // 显示的文字内容，换行："\n"
+    hasMark?: boolean; // 是否需要角标，默认false：匹配店铺时出现的shadowShape使用
+    alpha?: number; // 透明度，默认1
 }
 
 export interface GraphCache {
