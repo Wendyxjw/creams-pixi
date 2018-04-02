@@ -27,9 +27,9 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
     graphics.lineTo(shape[0][0], shape[0][1]);
     graphics.endFill();
 
-    let maskGraph = graphics.clone();
     //文字
     if (content.content) {
+        let maskGraph = graphics.clone();
         let textStyle = new PIXI.TextStyle({
             fontSize: content.font.fontSize,
             fill: content.font.fill,//填充颜色
@@ -41,10 +41,8 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
         text.position.x = (xMin + xMax) / 2 - text.width / 2;
         text.position.y = (yMin + yMax) / 2 - text.height / 2;
         graphics.addChild(maskGraph)
-        if (!content.hasMark) {
-            //拖出来的shadowshape文字不需要遮住
-            text.mask = maskGraph;
-        }
+        // 文字超出后隐藏
+        text.mask = maskGraph;
         graphics.addChild(text);
     }
 
@@ -69,7 +67,7 @@ export function buildLine(line: LineGraphics, start: Point, end: Point) {
     line.beginFill(0xa7acb2, 1)
     // TODO: 绘图方法需要修改
     let poly = new PIXI.Polygon(
-        new PIXI.Point(start[0]-2, start[1]-2),
+        new PIXI.Point(start[0] - 2, start[1] - 2),
         new PIXI.Point(end[0] - 2, end[1] - 2),
         new PIXI.Point(end[0] + 2, end[1] + 2),
         new PIXI.Point(start[0] + 2, start[1] + 2),
@@ -94,7 +92,6 @@ export function buildPoint(graphics: PointGraphics, point: Point) {
 //编辑状态下 添加灰度
 export function addColorFilter(shapeLayer: PIXI.Container) {
     var filter = new PIXI.filters.ColorMatrixFilter();
-    shapeLayer.filters = [filter];
     //数值越大 灰度越高
     var matrix: Array<number> = filter.matrix;
     matrix[0] = .55;
@@ -106,6 +103,7 @@ export function addColorFilter(shapeLayer: PIXI.Container) {
     matrix[10] = .55;
     matrix[11] = .55;
     matrix[12] = .55;
+    shapeLayer.filters = [filter];
 }
 
 export function deleteColorFilter(shapeLayer: PIXI.Container) {
