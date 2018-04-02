@@ -30,6 +30,11 @@ class EventAPIManager implements EventAPI {
         this._initBindShape(callback, "mousedown");
     };
 
+    onMouseUpShape(callback: CallbackFunc): void {
+        this._events.mouseDownShape = callback;
+        this._initBindShape(callback, "mouseup");
+    };
+
     onMouseDownLine(callback: CallbackFunc): void {
         this._events.mouseDownLine = callback;
         // 初始化的时候没有边
@@ -81,10 +86,10 @@ class EventAPIManager implements EventAPI {
         shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
             item.on('mouseover', this._bindShapeFunc(this._events.mouseEnterShape, item))
                 .on('mouseout', this._bindShapeFunc(this._events.mouseLeaveShape, item))
-                .on('mousedown', this._bindShapeFunc(this._events.mouseDownShape, item));
+                .on('mousedown', this._bindShapeFunc(this._events.mouseDownShape, item))
+                .on('mouseup', this._bindShapeFunc(this._events.mouseUpShape, item));
         })
     }
-
 
 }
 
@@ -98,6 +103,7 @@ export default class EventManager extends EventAPIManager implements EventManage
             mouseEnterShape: () => { },
             mouseLeaveShape: () => { },
             mouseDownShape: () => { },
+            mouseUpShape: () => { },
             mouseDownLine: () => { },
         }
     }
@@ -116,7 +122,8 @@ export default class EventManager extends EventAPIManager implements EventManage
             case SelectEnum.Shape:
                 target.on('mouseover', this._bindShapeFunc(this._events.mouseEnterShape, target))
                     .on('mouseout', this._bindShapeFunc(this._events.mouseLeaveShape, target))
-                    .on('mousedown', this._bindShapeFunc(this._events.mouseDownShape, target));
+                    .on('mousedown', this._bindShapeFunc(this._events.mouseDownShape, target))
+                    .on('mouseup', this._bindShapeFunc(this._events.mouseUpShape, target));
                 break;
             case SelectEnum.Line:
                 target.on("mousedown", this._bindLineFunc(this._events.mouseDownLine, target));

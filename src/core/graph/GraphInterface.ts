@@ -209,21 +209,21 @@ export interface ShadowShapeInterface {
      * @param  {number} shapeIndex
      * @returns void
      */
-    shapeOver(shapeIndex: number): void
+    //shapeOver(shapeIndex: number): void
 
     /**
      * 鼠标离开shape
      * @param  {number} shapeIndex
      * @returns void
      */
-    shapeOut(shapeIndex: number): void
+    //shapeOut(shapeIndex: number): void
 
     /**
      * 在shape上mouseup
      * @param  {number} shapeIndex
      * @returns void
      */
-    shapePionterUp(shapeIndex: number): void
+    //shapePionterUp(shapeIndex: number): void
 
     /**
      * @returns void

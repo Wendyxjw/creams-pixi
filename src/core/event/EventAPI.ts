@@ -25,6 +25,7 @@ export type Events = {
     mouseEnterShape: CallbackFunc;
     mouseLeaveShape: CallbackFunc;
     mouseDownShape: CallbackFunc;
+    mouseUpShape: CallbackFunc;
     mouseDownLine: CallbackFunc;
 }
 // 事件接口
@@ -58,11 +59,11 @@ export default interface EventAPI {
     onMouseDownShape(callback: CallbackFunc): void;
 
     /**
-     * 单个图形 MouseUp：编辑模式（点击shape出现‘编辑、拷贝、橡皮擦’;shadowShape开启，如果在shape上面mouseup，需要updateShape）
+     * 单个图形 MouseUp：编辑模式（shadowShape开启，如果在shape上面mouseup，需要updateShape）
      * @param  {CallbackFunc} callback
      * @returns void
      */
-    // onMouseUpShape(callback: CallbackFunc): void;
+    onMouseUpShape(callback: CallbackFunc): void;
 
     /**
      * 图形的线 MouseDown： 编辑模式

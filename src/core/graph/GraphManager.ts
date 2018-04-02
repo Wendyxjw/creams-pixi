@@ -32,6 +32,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._eraser = new Eraser(
             this._app.pixiApp.renderer.plugins.interaction,
             this._extraLayer,
+            this._shapeLayer,
             this._editTool.erasePoints
         );
     }
@@ -71,7 +72,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
     setShapeContent(index: number, content?: ShapeContent): void {
         let shape: Shape = this._app.actionManager.getCurrentShape(index);
-        this.updateShapes(shape, index);
+        this.updateShapes(shape, index, content);
     }
 
     render(): void {
