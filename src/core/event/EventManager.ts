@@ -84,11 +84,15 @@ class EventAPIManager implements EventAPI {
     protected _bindShapes() {
         let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
         shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
-            item.on('mouseover', this._bindShapeFunc(this._events.mouseEnterShape, item))
-                .on('mouseout', this._bindShapeFunc(this._events.mouseLeaveShape, item))
-                .on('mousedown', this._bindShapeFunc(this._events.mouseDownShape, item))
-                .on('mouseup', this._bindShapeFunc(this._events.mouseUpShape, item));
+            this._bindShapeEvents(item);
         })
+    }
+
+    protected _bindShapeEvents(item: ShapeGraphics, ) {
+        item.on('mouseover', this._bindShapeFunc(this._events.mouseEnterShape, item))
+            .on('mouseout', this._bindShapeFunc(this._events.mouseLeaveShape, item))
+            .on('mousedown', this._bindShapeFunc(this._events.mouseDownShape, item))
+            .on('mouseup', this._bindShapeFunc(this._events.mouseUpShape, item));
     }
 
 }
@@ -120,10 +124,7 @@ export default class EventManager extends EventAPIManager implements EventManage
     bindHandler(selectType: SelectEnum, target: PIXI.Graphics): void {
         switch (selectType) {
             case SelectEnum.Shape:
-                target.on('mouseover', this._bindShapeFunc(this._events.mouseEnterShape, target))
-                    .on('mouseout', this._bindShapeFunc(this._events.mouseLeaveShape, target))
-                    .on('mousedown', this._bindShapeFunc(this._events.mouseDownShape, target))
-                    .on('mouseup', this._bindShapeFunc(this._events.mouseUpShape, target));
+                this._bindShapeEvents(target);
                 break;
             case SelectEnum.Line:
                 target.on("mousedown", this._bindLineFunc(this._events.mouseDownLine, target));
