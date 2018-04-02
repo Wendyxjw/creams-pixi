@@ -62,11 +62,20 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
 
     return graphics
 }
+
 //line
 export function buildLine(line: LineGraphics, start: Point, end: Point) {
-    line.lineStyle(4, 0xa7acb2, 1);
-    line.moveTo(start[0], start[1]);
-    line.lineTo(end[0], end[1]);
+    line.lineStyle(1, 0xa7acb2, 1);
+    line.beginFill(0xa7acb2, 1)
+    // TODO: 绘图方法需要修改
+    let poly = new PIXI.Polygon(
+        new PIXI.Point(start[0]-2, start[1]-2),
+        new PIXI.Point(end[0] - 2, end[1] - 2),
+        new PIXI.Point(end[0] + 2, end[1] + 2),
+        new PIXI.Point(start[0] + 2, start[1] + 2),
+    );
+    line.drawPolygon(poly);
+    line.hitArea = poly;
     line.endFill();
     line.startPoint = start;
     line.endPoint = end;
@@ -81,6 +90,7 @@ export function buildPoint(graphics: PointGraphics, point: Point) {
     graphics.endFill();
     graphics.point = point;
 }
+
 //编辑状态下 添加灰度
 export function addColorFilter(shapeLayer: PIXI.Container) {
     var filter = new PIXI.filters.ColorMatrixFilter();

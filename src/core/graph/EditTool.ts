@@ -160,6 +160,7 @@ export default class EditTool implements EditToolInterface {
                     (pP: Point, nP: Point) => {
                         this._shape[prePoint.pointIndex] = pP;
                         this._shape[nextPoint.pointIndex] = nP;
+                        drawShape(this._backShape.clear(), this._shape, this._content);
                         this._updateHandler(this._shape);
                     }
                 );
@@ -221,14 +222,21 @@ function addLineDragHandler(
     nextPoint: PointGraphics, nextLine: LineGraphics,
     handler: { (point: Point, nextPoint: Point): void }
 ) {
+    let pPoint = <DragableObj>prePoint;
+    pPoint.dragObjStart = new PIXI.Point();
+    pPoint.dragObjStart.copy(pPoint.position);
+    let nPoint = <DragableObj>nextPoint;
+    nPoint.dragObjStart = new PIXI.Point();
+    nPoint.dragObjStart.copy(nPoint.position);
+
     const onDragMove = function () {
         const dLine = <DragableObj>line;
         const dx = dLine.x - dLine.dragObjStart.x;
         const dy = dLine.y - dLine.dragObjStart.y;
-        prePoint.x += dx;
-        prePoint.y += dy;
-        nextPoint.x += dx;
-        nextPoint.y += dy;
+        prePoint.x = dx + pPoint.dragObjStart.x;
+        prePoint.y = dy + pPoint.dragObjStart.y;
+        nextPoint.x = dx + nPoint.dragObjStart.x;
+        nextPoint.y = dy + nPoint.dragObjStart.y;
 
         const preLineStart = preLine.startPoint;
         preLine.clear();
@@ -239,10 +247,15 @@ function addLineDragHandler(
     }
     const onDragEnd = function () {
         line.clear();
+        line.x = 0;
+        line.y = 0;
         const pP: Point = [prePoint.x, prePoint.y];
         const nP: Point = [nextPoint.x, nextPoint.y];
         buildLine(line, pP, nP);
         handler(pP, nP);
+        line.off('pointermove', onDragMove)
+            .off('pointerup', onDragEnd)
+            .off('pointerupoutside', onDragEnd)
     }
     line.on('pointermove', onDragMove)
         .on('pointerup', onDragEnd)
