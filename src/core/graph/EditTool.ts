@@ -107,7 +107,7 @@ export default class EditTool implements EditToolInterface {
                 let y = endPoint.y - startPoint.y;
                 let newShape: Shape = [];
                 this._shape.forEach((item, i) => {
-                    newShape.push([item[0] + x, item[1] + y]);
+                    newShape.push([Math.round(item[0] + x), Math.round(item[1] + y)]);
                 });
                 this._updateHandler(newShape);
                 this._shape = newShape;
@@ -127,7 +127,10 @@ export default class EditTool implements EditToolInterface {
         let newShape: Shape = this._shape;
         let pre = newShape[lineIndex];
         let next = newShape[lineIndex === (newShape.length - 1) ? 0 : (lineIndex + 1)];
-        let newPoint = [(next[0] - pre[0]) / 2, (next[1] - pre[1]) / 2];
+        let newPoint = [
+            Math.round((next[0] - pre[0]) / 2),
+            Math.round((next[1] - pre[1]) / 2)
+        ];
         newShape.splice(lineIndex, 0, <Point>newPoint);
         this.init(newShape, this._content);
         this._updateHandler(newShape);
@@ -209,7 +212,6 @@ function addPointDragHandler(
 ) {
     const onDragMove = function () {
         const preLineStart = preLine.startPoint;
-        console.log(point.x, point.y, 'moving');
         preLine.clear();
         buildLine(preLine, preLineStart, [point.x, point.y]);
         const nextLineEnd = nextLine.endPoint;
@@ -217,7 +219,10 @@ function addPointDragHandler(
         buildLine(nextLine, [point.x, point.y], nextLineEnd);
     }
     const onDragEnd = function () {
-        handler([point.x, point.y]);
+        handler([
+            Math.round(point.x),
+            Math.round(point.y)
+        ]);
         point.off('pointermove', onDragMove)
             .off('pointerup', onDragEnd)
             .off('pointerupoutside', onDragEnd)
@@ -260,8 +265,14 @@ function addLineDragHandler(
         line.clear();
         line.x = 0;
         line.y = 0;
-        const pP: Point = [prePoint.x, prePoint.y];
-        const nP: Point = [nextPoint.x, nextPoint.y];
+        const pP: Point = [
+            Math.round(prePoint.x),
+            Math.round(prePoint.y)
+        ];
+        const nP: Point = [
+            Math.round(nextPoint.x),
+            Math.round(nextPoint.y)
+        ];
         buildLine(line, pP, nP);
         handler(pP, nP);
         line.off('pointermove', onDragMove)
