@@ -25,10 +25,13 @@ export type ShapeContent = {
     alpha?: number; // 透明度，默认1
 }
 
+interface indexableContent {
+    [index: number]: ShapeContent
+}
 export interface GraphCache {
     // 每一个Shape的绘制样式
     backgroundPic: string;
-    shapesContent?: Array<ShapeContent>;
+    shapesContent?: indexableContent;
 }
 
 // graph添加shapeIndex属性，用于识别graphContainer.children类型
