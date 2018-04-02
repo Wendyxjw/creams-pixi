@@ -8,13 +8,14 @@ export default class Eraser implements EraserInterface {
     private _cursorTicker: PIXI.ticker.Ticker; //监听橡皮擦
     private _interaction: PIXI.interaction.InteractionManager;
     private _extraLayer: PIXI.Container;
+    private _shapeLayer: PIXI.Container;
     private _eraserSize: number; //橡皮擦半径
 
     private _deletePointArr: Array<number>;//保存要删除的点的index
     private _isErase: Boolean = false; //记录是否mousedown
     private _callback: CallbackFunc;
 
-    constructor(interaction: PIXI.interaction.InteractionManager, extraLayer: PIXI.Container, callback: CallbackFunc) {
+    constructor(interaction: PIXI.interaction.InteractionManager, extraLayer: PIXI.Container, shapeLayer: PIXI.Container, callback: CallbackFunc) {
         this._interaction = interaction;
         this._extraLayer = extraLayer;
         this._callback = callback;
@@ -48,9 +49,9 @@ export default class Eraser implements EraserInterface {
             this._isErase = false;
             this._callback(this._deletePointArr);
         })
-        //todo 关闭编辑层children interactiveChildren=false
+        //eraser开启状态 禁止children事件触发
         this._extraLayer.interactiveChildren = false;
-        //todo 高亮这个shape
+        this._shapeLayer.interactiveChildren = false;
 
         //放置在编辑层
         this._extraLayer.addChild(this._circleCursor);
@@ -74,6 +75,9 @@ export default class Eraser implements EraserInterface {
         if (!this._cursorTicker.started) {
             return
         }
+        this._extraLayer.interactiveChildren = true;
+        this._shapeLayer.interactiveChildren = true;
+
         this._interaction.cursorStyles.default = "auto";
         this._cursorTicker.destroy();
         this._circleCursor.destroy();

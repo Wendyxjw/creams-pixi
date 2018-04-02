@@ -33,39 +33,39 @@ export default class ShadowShape implements ShadowShapeInterface {
             this._shadowShape.y = mousePosition.y - height;
         }).start();
     }
-    shapeOver(shapeIndex: number) {
-        if (this._shadowMatching) {
-            let shape = this._app.actionManager.getCurrentShape(shapeIndex);
-            let colorCon: ShapeContent = JSON.parse(JSON.stringify(this._shadowMatchingCon));
-            colorCon.content = "";
-            colorCon.alpha = 1;
-            colorCon.hasMark = false;
-            this._app.graphManager.updateShapes(shape, shapeIndex, colorCon)
+    // shapeOver(shapeIndex: number) {
+    //     if (this._shadowMatching) {
+    //         let shape = this._app.actionManager.getCurrentShape(shapeIndex);
+    //         let colorCon: ShapeContent = JSON.parse(JSON.stringify(this._shadowMatchingCon));
+    //         colorCon.content = "";
+    //         colorCon.alpha = 1;
+    //         colorCon.hasMark = false;
+    //         this._app.graphManager.updateShapes(shape, shapeIndex, colorCon)
 
-            // this._app.graphManager.updateShapes(shape, shapeIndex, this._app.operationShadowShape._shadowMatchingCon)
-        }
-    }
-    shapeOut(shapeIndex: number): void {
-        if (this._shadowMatching) {
-            let index = shapeIndex;
-            let shape = this._app.actionManager.getCurrentShape(index);
-            this._app.graphManager.updateShapes(shape, shapeIndex)
-        }
-    }
+    //         // this._app.graphManager.updateShapes(shape, shapeIndex, this._app.operationShadowShape._shadowMatchingCon)
+    //     }
+    // }
+    // shapeOut(shapeIndex: number): void {
+    //     if (this._shadowMatching) {
+    //         let index = shapeIndex;
+    //         let shape = this._app.actionManager.getCurrentShape(index);
+    //         this._app.graphManager.updateShapes(shape, shapeIndex)
+    //     }
+    // }
 
-    shapePionterUp(shapeIndex: number): void {
-        if (this._shadowMatching) {
-            let index = shapeIndex;
-            let shape = this._app.actionManager.getCurrentShape(shapeIndex);
-            this._shadowMatchingCon.hasMark = false;
-            this._shadowMatchingCon.alpha = 1;
-            this._app.graphManager.updateShapes(shape, shapeIndex, this._shadowMatchingCon)
-            //更新数据
-            this._app.graphManager.graph.shapesContent[index] = this._shadowMatchingCon;
-            this._shadowMatching = false;
-            this.deleteShadowShape();
-        }
-    }
+    // shapePionterUp(shapeIndex: number): void {
+    //     if (this._shadowMatching) {
+    //         let index = shapeIndex;
+    //         let shape = this._app.actionManager.getCurrentShape(shapeIndex);
+    //         this._shadowMatchingCon.hasMark = false;
+    //         this._shadowMatchingCon.alpha = 1;
+    //         this._app.graphManager.updateShapes(shape, shapeIndex, this._shadowMatchingCon)
+    //         //更新数据
+    //         this._app.graphManager.graph.shapesContent[index] = this._shadowMatchingCon;
+    //         this._shadowMatching = false;
+    //         this.deleteShadowShape();
+    //     }
+    // }
     deleteShadowShape() {
         if (!this._shadowTicker) {
             return

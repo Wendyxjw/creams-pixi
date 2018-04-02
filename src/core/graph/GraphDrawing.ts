@@ -63,7 +63,6 @@ export default class GraphDrawing {
         let curShape: PIXI.Graphics;
         curShape = <PIXI.Graphics>this._shapeLayer.getChildByName(shapeIndex.toString());
         curShape.clear();
-        content = content ? content : this._graphCache.shapesContent[shapeIndex];
         curShape = drawShape(curShape, shape, content);
         this._shapeLayer.setChildIndex(curShape, this._shapeLayer.children.length - 1);
     }
@@ -82,16 +81,17 @@ export default class GraphDrawing {
         graphics.on('pointerdown', (event: PIXI.interaction.InteractionEvent) => {
             event.stopPropagation();
             this._app.stateManager.select(SelectEnum.Shape, index);
-        }).on("mouseover", (event: PIXI.interaction.InteractionEvent) => {
-            let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
-            this._shadowShape.shapeOver(curTarget.shapeIndex);
-        }).on("mouseout", (event: PIXI.interaction.InteractionEvent) => {
-            let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
-            this._shadowShape.shapeOut(curTarget.shapeIndex);
-        }).on("pointerup", (event: PIXI.interaction.InteractionEvent) => {
-            let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
-            this._shadowShape.shapePionterUp(curTarget.shapeIndex);
         })
+        // .on("mouseover", (event: PIXI.interaction.InteractionEvent) => {
+        //     let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
+        //     this._shadowShape.shapeOver(curTarget.shapeIndex);
+        // }).on("mouseout", (event: PIXI.interaction.InteractionEvent) => {
+        //     let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
+        //     this._shadowShape.shapeOut(curTarget.shapeIndex);
+        // }).on("pointerup", (event: PIXI.interaction.InteractionEvent) => {
+        //     let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
+        //     this._shadowShape.shapePionterUp(curTarget.shapeIndex);
+        // })
 
     }
 
