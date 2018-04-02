@@ -123,6 +123,17 @@ export default class EditTool implements EditToolInterface {
         this._updateHandler = handler;
     }
 
+    addPoint(lineIndex: number): void {
+        let newShape: Shape = this._shape;
+        let pre = newShape[lineIndex];
+        let next = newShape[lineIndex === (newShape.length - 1) ? 0 : (lineIndex + 1)];
+        let newPoint = [(next[0] - pre[0]) / 2, (next[1] - pre[1]) / 2];
+        newShape.splice(lineIndex, 0, <Point>newPoint);
+        this.init(newShape, this._content);
+        this._updateHandler(newShape);
+        this.select(SelectEnum.Point, lineIndex + 1);
+    }
+
     select(type: SelectEnum, index: number): void {
         let targetIndex: number;
         let preIndex: number;

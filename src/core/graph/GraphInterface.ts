@@ -191,6 +191,13 @@ export interface EditToolInterface {
      * @returns void
      */
     destroy(): void;
+
+    /**
+     * 在边上加点
+     * @param  {number} lineIndex
+     * @returns void
+     */
+    addPoint(lineIndex: number): void;
 }
 
 export interface ShadowShapeInterface {
