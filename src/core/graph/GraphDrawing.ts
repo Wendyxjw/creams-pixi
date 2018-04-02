@@ -33,7 +33,6 @@ export default class GraphDrawing {
         app.pixiApp.stage.addChild(this.graphContainer);
         this._shadowShape = new ShadowShape(app);
 
-        this._addContainerEvent();
     }
 
     buildShapes(shape: Shape, index: number, content: ShapeContent = defultGraphStyle): ShapeGraphics {
@@ -95,9 +94,5 @@ export default class GraphDrawing {
 
     }
 
-    private _addContainerEvent() {
-        this.graphContainer.on("pointerup", () => {
-            this._shadowShape.deleteShadowShape()
-        })
-    }
+
 }

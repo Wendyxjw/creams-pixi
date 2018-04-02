@@ -109,11 +109,18 @@ export interface GraphManagerInterface {
     buildShadowShapes(shape: Shape, content?: ShapeContent): PIXI.Graphics;
 
     /**
+     * 添加跟随鼠标的shape
      * @param  {number} width
      * @param  {number} height
      * @param  {ShapeContent} content?
      */
     setShadowShape(width: number, height: number, content?: ShapeContent): void
+
+    /**
+     * 删除跟随鼠标的shape
+     * @returns void
+     */
+    deleteShadowShape(): void
 }
 
 export interface EraserInterface {
@@ -224,5 +231,5 @@ export interface ShadowShapeInterface {
     /**
      * @returns void
      */
-    deleteShadowShape(): void
+    destroyShadowShape(): void
 }

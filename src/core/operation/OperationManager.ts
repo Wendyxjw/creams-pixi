@@ -54,8 +54,12 @@ export default class OperationManager implements OperationAPI {
         this._app.graphManager.setShapeContent(index, content);
     }
 
-    addShadowShape(x: number, y: number, width: number, height: number, content?: ShapeContent) {
+    addShadowShape(width: number, height: number, content?: ShapeContent) {
         this._app.graphManager.setShadowShape(width, height, content)
+    }
+
+    deleteShadowShape() {
+        this._app.graphManager.deleteShadowShape();
     }
 
 
