@@ -63,14 +63,19 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
 
 //line
 export function buildLine(line: LineGraphics, start: Point, end: Point) {
+    const radius = 2;
     line.lineStyle(1, 0xa7acb2, 1);
     line.beginFill(0xa7acb2, 1)
-    // TODO: 绘图方法需要修改
+
+    let radians = Math.atan2(end[1] - start[1], end[0] - start[0]);
+    let dx = Math.sin(radians) * radius;
+    let dy = Math.cos(radians) * radius;
+
     let poly = new PIXI.Polygon(
-        new PIXI.Point(start[0] - 2, start[1] - 2),
-        new PIXI.Point(end[0] - 2, end[1] - 2),
-        new PIXI.Point(end[0] + 2, end[1] + 2),
-        new PIXI.Point(start[0] + 2, start[1] + 2),
+        new PIXI.Point(start[0] + dx, start[1] - dy),
+        new PIXI.Point(end[0] + dx, end[1] - dy),
+        new PIXI.Point(end[0] - dx, end[1] + dy),
+        new PIXI.Point(start[0] - dx, start[1] + dy),
     );
     line.drawPolygon(poly);
     line.hitArea = poly;
