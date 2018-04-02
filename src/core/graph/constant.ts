@@ -8,7 +8,7 @@ export const defultGraphStyle: ShapeContent = {
     },
     font: {
         fontSize: 14,
-        fill: ["#000000"]
+        fill: [0x000000]
     },
     content: "",
     hasMark: false,
