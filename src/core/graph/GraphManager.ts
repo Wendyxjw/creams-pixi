@@ -6,7 +6,7 @@ import Eraser from "./Eraser"
 import GraphDrawing from './GraphDrawing'
 import ShadowShape from "./ShadowShape"
 import EditTool from "./EditTool";
-import { addColorFilter, deleteColorFilter } from "./DrawingHelper";
+import { defultGraphStyle } from "./constant";
 
 export default class GraphManager extends GraphDrawing implements GraphManagerInterface {
     private _extraLayer: PIXI.Container;
@@ -51,15 +51,37 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         // 进入选中状态，虚化shapeLayer
         this.graphContainer.interactive = false;
         this._extraLayer.visible = true;
-        addColorFilter(this._shapeLayer);
+        this._changeAllShapesColor(true);
     }
 
     private _blur() {
         // 释放选中状态，恢复shapeLayer
         this.graphContainer.interactive = true;
         this._extraLayer.visible = false;
-        deleteColorFilter(this._shapeLayer);
+        this._changeAllShapesColor(false);
     }
+
+    private _changeAllShapesColor(isWhite: Boolean) {
+        let curShape: Array<Shape> = this._app.actionManager.getCurrentData().shapes;
+        curShape.forEach((shape: Shape, i: number) => {
+            this._changeShapeColor(shape, i, isWhite);
+        })
+    }
+    //选中shape时 修改颜色
+    private _changeShapeColor(shape: Shape, shapeIndex: number, isWhite: Boolean) {
+        if (shape.length !== 0) {
+            let content: ShapeContent = this._graphCache.shapesContent[shapeIndex];
+            let defaultStyle: ShapeContent = defultGraphStyle;
+            let con: ShapeContent = content ? content : defaultStyle;
+            let deepCopyCon: ShapeContent = JSON.parse(JSON.stringify(con));
+            if (isWhite) {
+                deepCopyCon.backgroundColor = 0xffffff;
+                deepCopyCon.border.color = 0xA7ACB2;
+            }
+            this.updateShapes(shape, shapeIndex, deepCopyCon);
+        }
+    }
+
 
     setGraph(graph: Graph, cache: GraphCache): void {
         this._graphCache = cache;
@@ -73,6 +95,8 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     setShapeContent(index: number, content?: ShapeContent): void {
         let shape: Shape = this._app.actionManager.getCurrentShape(index);
         this.updateShapes(shape, index, content);
+        //店铺匹配时保存content
+        this._graphCache.shapesContent[index] = content;
     }
 
     private _addLayer(shapeIndex: number, isDisplay: boolean) {
@@ -88,6 +112,8 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         });
         this._editTool.addUpdateHandler((shape: Shape) => {
             this._app.actionManager.updateShape(shape, shapeIndex);
+            //编辑shape后将对应shapeLayer画成白色
+            this._changeShapeColor(shape, shapeIndex, true);
         });
     }
 
@@ -123,6 +149,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     }
 
     setShadowShape(width: number, height: number, content?: ShapeContent) {
+        this._app.stateManager.select(SelectEnum.None, []);
         this._shadowShape.buildShadowShape(width, height, content);
     }
 

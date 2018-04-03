@@ -93,24 +93,3 @@ export function buildPoint(graphics: PointGraphics, point: Point) {
     graphics.endFill();
     graphics.point = point;
 }
-
-//编辑状态下 添加灰度
-export function addColorFilter(shapeLayer: PIXI.Container) {
-    var filter = new PIXI.filters.ColorMatrixFilter();
-    //数值越大 灰度越高
-    var matrix: Array<number> = filter.matrix;
-    matrix[0] = .55;
-    matrix[1] = .55;
-    matrix[2] = .55;
-    matrix[5] = .55;
-    matrix[6] = .55;
-    matrix[7] = .55;
-    matrix[10] = .55;
-    matrix[11] = .55;
-    matrix[12] = .55;
-    shapeLayer.filters = [filter];
-}
-
-export function deleteColorFilter(shapeLayer: PIXI.Container) {
-    shapeLayer.filters = null;
-}

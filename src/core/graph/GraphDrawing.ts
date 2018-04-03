@@ -23,7 +23,7 @@ export default class GraphDrawing {
         this._app = app;
         this._graphCache = {
             backgroundPic: "",
-            shapesContent: []
+            shapesContent: {}
         };
         this.graphContainer = new PIXI.Container();
         this._shapeLayer = new PIXI.Container();

@@ -25,4 +25,9 @@ export interface ActionManagerInterface {
      * @returns Shape
      */
     getCurrentShape(shapeIndex: number): Shape;
+
+    /**
+    * @returns GraphCache
+    */
+    getCurrentData(): Graph;
 }
