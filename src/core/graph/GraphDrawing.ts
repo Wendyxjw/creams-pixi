@@ -4,6 +4,7 @@ import AppInterface from "../app/AppInterface";
 import { drawShape } from "./DrawingHelper";
 import { ShadowShapeInterface } from "./GraphInterface";
 import ShadowShape from "./ShadowShape";
+
 export default class GraphDrawing {
     protected _shapeLayer: PIXI.Container;
     protected _graphCache: GraphCache; //保存修改的graph
@@ -75,6 +76,7 @@ export default class GraphDrawing {
         this.graphContainer.addChild(graphics);
         return graphics;
     }
+
     private _addSelectHandler(graphics: PIXI.Graphics, index: Array<number>) {
         graphics.interactive = true;
         graphics.on('pointerdown', (event: PIXI.interaction.InteractionEvent) => {
@@ -91,8 +93,5 @@ export default class GraphDrawing {
         //     let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
         //     this._shadowShape.shapePionterUp(curTarget.shapeIndex);
         // })
-
     }
-
-
 }

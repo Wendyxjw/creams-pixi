@@ -4,6 +4,11 @@ import { buildPoint, buildLine, drawShape } from "./DrawingHelper";
 import DragHelper, { DragableObj } from "./DragHelper";
 import AppInterface from "../app/AppInterface";
 
+type Highlight = boolean | {
+    select: SelectEnum,
+    index: number
+}
+
 export default class EditTool implements EditToolInterface {
     private _layer: PIXI.Container; // 编辑层，负责拖拽
     private _backShape: ShapeGraphics; // 背景
@@ -50,69 +55,88 @@ export default class EditTool implements EditToolInterface {
         if (isDisplay) {
             drawShape(this._backShape, this._shape, this._content);
         } else {
-            this._drawEditLayer();
+            this._drawEditLayer(true, false);
         }
     }
 
-    private _drawPoint(index: number) {
+    private _drawPoint(index: number, isInit: boolean, isHighlight: Highlight) {
         const element = this._shape[index];
-        const point = new PointGraphics();
+        let point: PointGraphics;
+        if (isInit) {
+            point = new PointGraphics();
+            point.pointIndex = index;
+            point.name = `point_${index}`;
+            this._pointLayer.addChild(point);
+            point.interactive = true;
+            point.on('pointerdown', () => {
+                this._selectHandler(SelectEnum.Point, index);
+            });
+            DragHelper(point);
+        } else {
+            point = <PointGraphics>this._pointLayer.getChildByName(`point_${index}`);
+            point.clear();
+        }
+        if (typeof isHighlight === 'boolean') {
+            point.isHighlight = isHighlight;
+        } else {
+            point.isHighlight = isHighlight.select === SelectEnum.Point
+                && isHighlight.index === point.pointIndex;
+        }
         buildPoint(point, element);
-        this._pointLayer.addChild(point);
-        point.pointIndex = index;
-        point.name = `point_${index}`;
-        point.interactive = true;
-        point.on('pointerdown', () => {
-            this._selectHandler(SelectEnum.Point, index);
-        });
-        DragHelper(point);
     }
 
-    private _drawLine(index: number) {
+    private _drawLine(index: number, isInit: boolean, isHighlight: Highlight) {
         const startPoint = this._shape[index];
-        const line = new LineGraphics();
         const endPoint = (index == this._shape.length - 1) ?
             this._shape[0] : this._shape[index + 1];
-        buildLine(line, startPoint, endPoint);
-        this._lineLayer.addChild(line);
-        line.lineIndex = index;
-        line.name = `line_${index}`;
-        line.interactive = true;
-        line.on('pointerdown', () => {
-            this._selectHandler(SelectEnum.Line, index);
-        });
-        DragHelper(line);
-    }
-
-    private _drawBackShape() {
-        const backShape = this._backShape;
-        drawShape(backShape, this._shape, this._content);
-        backShape.name = "editShape";
-        backShape.interactive = true;
-        backShape.on('pointerdown', () => {
-            this._selectHandler(SelectEnum.Shape);
-        });
-        this._layer.addChildAt(backShape, 0);
-    }
-
-    private _drawEditLayer() {
-        this._drawBackShape();
-        for (let i = 0; i < this._shape.length; i++) {
-            this._drawPoint(i);
-            this._drawLine(i);
+        let line: LineGraphics;
+        if (isInit) {
+            line = new LineGraphics();
+            line.lineIndex = index;
+            line.name = `line_${index}`;
+            this._lineLayer.addChild(line);
+            line.interactive = true;
+            line.on('pointerdown', () => {
+                this._selectHandler(SelectEnum.Line, index);
+            });
+            DragHelper(line);
+        } else {
+            line = <LineGraphics>this._lineLayer.getChildByName(`line_${index}`);
+            line.clear();
         }
-        addShapeDragHandler(this._layer, (startPoint: PIXI.Point, endPoint: PIXI.Point) => {
-            if ((startPoint.x !== endPoint.x) || (startPoint.y != endPoint.y)) {
-                let x = endPoint.x - startPoint.x;
-                let y = endPoint.y - startPoint.y;
-                let newShape: Shape = [];
-                this._shape.forEach((item, i) => {
-                    newShape.push([Math.round(item[0] + x), Math.round(item[1] + y)]);
-                });
-                this._updateHandler(newShape);
-                this._shape = newShape;
-            }
-        });
+        if (typeof isHighlight === 'boolean') {
+            line.isHighlight = isHighlight;
+        } else {
+            line.isHighlight = isHighlight.select === SelectEnum.Line
+                && isHighlight.index === line.lineIndex;
+        }
+        buildLine(line, startPoint, endPoint);
+    }
+
+    private _drawBackShape(isInit: boolean) {
+        const backShape = this._backShape;
+        if (isInit) {
+            backShape.name = "editShape";
+            backShape.interactive = true;
+            backShape.on('pointerdown', () => {
+                this._selectHandler(SelectEnum.Shape);
+            });
+            this._layer.addChildAt(backShape, 0);
+        } else {
+            backShape.clear();
+        }
+        drawShape(backShape, this._shape, this._content);
+    }
+
+    private _drawEditLayer(isInit: boolean, isHighlight: Highlight) {
+        this._drawBackShape(isInit);
+        for (let i = 0; i < this._shape.length; i++) {
+            this._drawPoint(i, isInit, isHighlight);
+            this._drawLine(i, isInit, isHighlight);
+        }
+        if (isInit) {
+            DragHelper(this._layer);
+        }
     }
 
     addSelectHandler(handler: SelectHandler): void {
@@ -137,7 +161,7 @@ export default class EditTool implements EditToolInterface {
         this.select(SelectEnum.Point, lineIndex + 1);
     }
 
-    select(type: SelectEnum, index: number): void {
+    select(select: SelectEnum, index: number): void {
         let targetIndex: number;
         let preIndex: number;
         let nextIndex: number;
@@ -146,8 +170,9 @@ export default class EditTool implements EditToolInterface {
         let nextPoint: PointGraphics;
         let nextLine: LineGraphics;
         this._layer.interactive = false;
-        switch (type) {
+        switch (select) {
             case SelectEnum.Point:
+                this._drawEditLayer(false, { select, index });
                 const targetPoint = <PointGraphics>this._pointLayer.getChildByName(`point_${index}`);
                 // 只关心在layer里面的队形，不关心name里的index
                 targetIndex = this._pointLayer.getChildIndex(targetPoint);
@@ -156,11 +181,12 @@ export default class EditTool implements EditToolInterface {
                 nextLine = <LineGraphics>this._lineLayer.getChildAt(targetIndex);
                 addPointDragHandler(preLine, targetPoint, nextLine, (point: Point) => {
                     this._shape[targetPoint.pointIndex] = point;
-                    drawShape(this._backShape.clear(), this._shape, this._content);
+                    this._drawEditLayer(false, { select, index });
                     this._updateHandler(this._shape);
                 });
                 break;
             case SelectEnum.Line:
+                this._drawEditLayer(false, { select, index });
                 const targetLine = <LineGraphics>this._lineLayer.getChildByName(`line_${index}`);
                 // 只关心在layer里面的队形，不关心name里的index
                 targetIndex = this._lineLayer.getChildIndex(targetLine);
@@ -174,13 +200,28 @@ export default class EditTool implements EditToolInterface {
                     (pP: Point, nP: Point) => {
                         this._shape[prePoint.pointIndex] = pP;
                         this._shape[nextPoint.pointIndex] = nP;
-                        drawShape(this._backShape.clear(), this._shape, this._content);
+                        this._drawEditLayer(false, { select, index });
                         this._updateHandler(this._shape);
                     }
                 );
                 break;
             case SelectEnum.Shape:
                 this._layer.interactive = true;
+                this._drawEditLayer(false, true);
+                addShapeDragHandler(this._layer, (startPoint: PIXI.Point, endPoint: PIXI.Point) => {
+                    if ((startPoint.x !== endPoint.x) || (startPoint.y != endPoint.y)) {
+                        let x = endPoint.x - startPoint.x;
+                        let y = endPoint.y - startPoint.y;
+                        let newShape: Shape = [];
+                        this._shape.forEach((item, i) => {
+                            newShape.push([Math.round(item[0] + x), Math.round(item[1] + y)]);
+                        });
+                        this._shape = newShape;
+                        
+                        this._drawEditLayer(false, true);
+                        this._updateHandler(newShape);
+                    }
+                });
             default:
                 break;
         }
@@ -195,15 +236,20 @@ export default class EditTool implements EditToolInterface {
 function addShapeDragHandler(
     shape: PIXI.Container, handler: { (startPoint: PIXI.Point, endPoint: PIXI.Point): void }
 ) {
-    DragHelper(shape);
     let startPoint: PIXI.Point = new PIXI.Point();
+    startPoint.copy(shape.position);
     let endPoint: PIXI.Point = new PIXI.Point();
-    shape.on("pointerdown", () => {
-        startPoint.copy(shape.position);
-    }).on("pointerup", () => {
+
+    const onDragEnd = function () {
         endPoint.copy(shape.position);
         handler(startPoint, endPoint);
-    });
+        shape.x = 0;
+        shape.y = 0;
+        shape.off('pointerup', onDragEnd)
+            .off('pointerupoutside', onDragEnd)
+    }
+    shape.on("pointerup", onDragEnd)
+        .on('pointerupoutside', onDragEnd);
 }
 
 function addPointDragHandler(

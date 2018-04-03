@@ -44,11 +44,13 @@ export class LineGraphics extends PIXI.Graphics {
     public lineIndex?: number; // 第几个
     public startPoint?: Point; // 起点
     public endPoint?: Point; // 终点
+    public isHighlight?: boolean; // 是否高亮
 }
 
 export class PointGraphics extends PIXI.Graphics {
     public pointIndex?: number; // 第几个
     public point?: Point;
+    public isHighlight?: boolean; // 是否高亮
 }
 
 export enum EditEnum {

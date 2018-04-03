@@ -65,9 +65,10 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
 
 //line
 export function buildLine(line: LineGraphics, start: Point, end: Point) {
+    const color = line.isHighlight ? 0x7ed321 : 0xa7acb2;
     const radius = 2;
-    line.lineStyle(1, 0xa7acb2, 1);
-    line.beginFill(0xa7acb2, 1)
+    line.lineStyle(1, color, 1);
+    line.beginFill(color, 1)
 
     let radians = Math.atan2(end[1] - start[1], end[0] - start[0]);
     let dx = Math.sin(radians) * radius;
@@ -88,7 +89,8 @@ export function buildLine(line: LineGraphics, start: Point, end: Point) {
 
 //point
 export function buildPoint(graphics: PointGraphics, point: Point) {
-    graphics.beginFill(0xa7acb2, 1)
+    const color = graphics.isHighlight ? 0x548f14 : 0xa7acb2;
+    graphics.beginFill(color, 1)
     graphics.drawCircle(0, 0, 3);
     graphics.x = point[0];
     graphics.y = point[1];
