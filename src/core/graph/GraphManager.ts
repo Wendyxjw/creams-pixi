@@ -75,10 +75,6 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this.updateShapes(shape, index, content);
     }
 
-    render(): void {
-
-    }
-
     private _addLayer(shapeIndex: number, isDisplay: boolean) {
         const shape: Shape = this._app.actionManager.getCurrentShape(shapeIndex);
         const content: ShapeContent = this._graphCache.shapesContent[shapeIndex];

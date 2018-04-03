@@ -21,12 +21,6 @@ export interface GraphManagerInterface {
     setShapeContent(index: number, content?: ShapeContent): void;
 
     /**
-     * 触发绘图
-     * @returns void
-     */
-    render(): void;
-
-    /**
      * 增加显示图层
      * @param  {boolean} isNeedInit
      * @param  {Array<number>} index
