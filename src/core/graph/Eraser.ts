@@ -48,6 +48,7 @@ export default class Eraser implements EraserInterface {
         }).on("mouseup", (event: PIXI.interaction.InteractionEvent) => {
             this._isErase = false;
             this._callback(this._deletePointArr);
+            this._deletePointArr = [];
         })
         //eraser开启状态 禁止children事件触发
         this._extraLayer.interactiveChildren = false;
@@ -91,8 +92,11 @@ export default class Eraser implements EraserInterface {
         let pointR: number = 3;//编辑点圆点半径
         let eraserR: number = this._eraserSize;
         let minSize: number = pointR + eraserR;
-
+        // 如果只有三个点 不能擦除
         for (let i = 0; i < this._extraLayer.children.length; i++) {
+            if (this._extraLayer.children.length - this._deletePointArr.length === 3) {
+                break;
+            }
             let item: PointGraphics = <PointGraphics>this._extraLayer.children[i];
             //如果已经是要删除的点 就不需要再次判断
             if (item.alpha == 0.3) {

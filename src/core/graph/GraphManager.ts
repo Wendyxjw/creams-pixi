@@ -38,6 +38,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     }
 
     private _buildBackground(url: string) {
+        this._backgroundLayer.removeChildren();
         let background = PIXI.Sprite.fromImage(url);
         background.alpha = 0.2;
         background.interactive = true;

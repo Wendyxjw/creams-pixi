@@ -11,7 +11,7 @@ export type Graph = {
 // 缓存数据结构，运行时的数据结构，用于展示。
 // Shape样式
 export enum LineStyle {
-    Dotted = "dotted",
+    Dashed = "dashed",
     Solid = "solid"
 }
 export type ShapeContent = {

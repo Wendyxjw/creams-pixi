@@ -14,7 +14,7 @@ export class CreateShapeAction implements ActionInterface {
 
     do(data: Graph): Graph {
         this._addShapeIndex = data.shapes.length;
-        let shape = this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
+        let shape: PIXI.Graphics = this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
         this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
         data.shapes.push(this._pointArr);
         return data;
@@ -45,7 +45,8 @@ export class DeleteShapeAction implements ActionInterface {
         return data;
     };
     unDo(data: Graph): Graph {
-        this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
+        let shape: PIXI.Graphics = this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
+        this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
         data.shapes.push(this._pointArr);
         //回滚的时 不会滚匹配状态
         return data;
@@ -72,7 +73,7 @@ export class CopyShapeAction implements ActionInterface {
             return newItem;
         })
         this._addShapeIndex = data.shapes.length
-        let shape = this._app.graphManager.buildShapes(newPointArr, this._addShapeIndex);
+        let shape: PIXI.Graphics = this._app.graphManager.buildShapes(newPointArr, this._addShapeIndex);
         this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
         data.shapes.push(newPointArr);
         return data;

@@ -1,6 +1,6 @@
 import ActionAPI from "./ActionAPI"
 import { ActionInterface, ActionManagerInterface } from "./ActionInterface";
-import { Graph, ShapeContent, Shape, ShapeGraphics } from "../common/Graph";
+import { Graph, ShapeContent, Shape, ShapeGraphics, SelectEnum } from "../common/Graph";
 import { CreateShapeAction, DeleteShapeAction, CopyShapeAction, UpdateShapeAction } from "./Action"
 import AppInterface from "../app/AppInterface";
 
@@ -42,6 +42,8 @@ class Manager {
         //this._currentData = action.unDo(data);
         this._actionIndex--;
         this._currentData = action.unDo(this._currentData);
+        // 取消选中
+        this._app.stateManager.select(SelectEnum.None, []);
     }
 
     reDo() {
@@ -53,6 +55,8 @@ class Manager {
         let action = list[index + 1];
         this._actionIndex++;
         this._currentData = action.do(this._currentData);
+        // 取消选中
+        this._app.stateManager.select(SelectEnum.None, []);
     }
     emptyDoingList() {
         this._actionList = [];

@@ -1,17 +1,23 @@
-import { Shape, ShapeContent, Point, LineGraphics, PointGraphics, ShapeGraphics } from "../common/Graph";
+import { Shape, ShapeContent, Point, LineGraphics, PointGraphics, ShapeGraphics, LineStyle } from "../common/Graph";
 import { defultGraphStyle } from "./constant";
 
 export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeContent = defultGraphStyle) {
     graphics.removeChildren();
     // set a fill and line style
     graphics.beginFill(content.backgroundColor, content.alpha);
-    graphics.lineStyle(content.border.lineWidth, content.border.color, 1);
+
+    if (content.border.lineStyle === LineStyle.Solid) {
+        graphics.lineStyle(content.border.lineWidth, content.border.color, 1);
+    }
+
     graphics.alpha = content.alpha; //透明度
 
     let xMin: number = shape[0][0], xMax: number = shape[0][0], yMin: number = shape[0][1], yMax: number = shape[0][1];
     // draw a shape
     graphics.moveTo(shape[0][0], shape[0][1]);
     for (let i = 1; i < shape.length; i++) {
+        //borderAlpha = Math.abs(borderAlpha - 1);
+        //graphics.lineStyle(content.border.lineWidth, content.border.color, borderAlpha);
         graphics.lineTo(shape[i][0], shape[i][1]);
         //查找shape的边界
         xMin = xMin > shape[i][0] ? shape[i][0] : xMin;
@@ -26,6 +32,11 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
 
     graphics.lineTo(shape[0][0], shape[0][1]);
     graphics.endFill();
+    //画虚线
+    if (content.border.lineStyle === LineStyle.Dashed) {
+        drawDashed(graphics, shape, content);
+    }
+
 
     //文字
     if (content.content) {
@@ -59,6 +70,65 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
     }
 
     return graphics
+}
+
+function drawDashed(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent) {
+    let dashLength: number = 5; // 虚线每段长度 
+    let borderAlpha: number = 1; // 虚线的透明度
+    let excessLength: number = 0; // 亮点之间多余的虚线长度
+    graphics.moveTo(shape[0][0], shape[0][1]);
+    for (let i = 1; i < shape.length; i++) {
+        let point1 = shape[i - 1]; // 上一个点
+        let point2 = shape[i];
+        // 两点之间的长度
+        let line: number = Math.sqrt(Math.pow(point1[0] - point2[0], 2) + Math.pow(point1[1] - point2[1], 2));
+        let mulriple: number = line / dashLength;
+
+        let drawLineto = (x: number, y: number) => {
+            borderAlpha = Math.abs(borderAlpha - 1);
+            graphics.lineTo(x, y);
+            graphics.lineStyle(content.border.lineWidth, content.border.color, borderAlpha);
+        }
+
+        if (mulriple > 1) {
+            let x: number = point1[0];
+            let y: number = point1[1];
+            if (excessLength) {
+                let addLine = dashLength - excessLength; // 需要补的长度
+                let addMul = line / addLine;
+                x = point1[0] + (point2[0] - point1[0]) / addMul;
+                y = point1[1] + (point2[1] - point1[1]) / addMul;
+                drawLineto(x, y);
+                line = line - addLine;
+            }
+            for (let j = line / dashLength; j >= 1; j--) {
+                x += (point2[0] - point1[0]) / mulriple;
+                y += (point2[1] - point1[1]) / mulriple;
+                drawLineto(x, y);
+            }
+            if (x !== point2[0]) {
+                graphics.lineTo(point2[0], point2[1]);
+                excessLength = line % dashLength;
+            }
+        } else {
+            //  excessLength += line;
+            if (excessLength + line > dashLength) {
+                let addLine = dashLength - excessLength; // 需要补的长度
+                let addMul = line / addLine;
+                let x: number = point1[0] + (point2[0] - point1[0]) / addMul;
+                let y: number = point1[1] + (point2[1] - point1[1]) / addMul;
+                drawLineto(x, y);
+                excessLength = excessLength + line - dashLength;
+                if (x !== point2[0]) {
+                    graphics.lineTo(point2[0], point2[1]);
+                }
+            } else {
+                excessLength += line;
+                graphics.lineTo(point2[0], point2[1]);
+            }
+        }
+    }
+    graphics.endFill();
 }
 
 //line
