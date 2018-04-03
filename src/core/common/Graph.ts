@@ -10,11 +10,16 @@ export type Graph = {
 
 // 缓存数据结构，运行时的数据结构，用于展示。
 // Shape样式
+export enum LineStyle {
+    Dotted = "dotted",
+    Solid = "solid"
+}
 export type ShapeContent = {
     backgroundColor: number; // 背景颜色：0xffffff(十六进制)
     border: {
         lineWidth: number,
         color: number,
+        lineStyle: LineStyle //虚线：dotted 实线：solid
     };
     font: {
         fontSize: number,
