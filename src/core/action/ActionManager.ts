@@ -42,7 +42,8 @@ class Manager {
         //this._currentData = action.unDo(data);
         this._actionIndex--;
         this._currentData = action.unDo(this._currentData);
-        // 取消选中
+        // 取消选中和橡皮擦状态
+        this._app.stateManager.enableEraser(false);
         this._app.stateManager.select(SelectEnum.None, []);
     }
 
@@ -55,7 +56,8 @@ class Manager {
         let action = list[index + 1];
         this._actionIndex++;
         this._currentData = action.do(this._currentData);
-        // 取消选中
+        // 取消选中和橡皮擦状态
+        this._app.stateManager.enableEraser(false);
         this._app.stateManager.select(SelectEnum.None, []);
     }
     emptyDoingList() {

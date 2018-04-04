@@ -12,12 +12,16 @@ export default class Eraser implements EraserInterface {
     private _deletePointArr: Array<number> = [];//保存要删除的点的index
     private _isErase: Boolean = false; //记录是否mousedown
     private _callback: Function;
+    private _state: PIXI.Container;
+    private _graphContainer: PIXI.Container;
 
-    constructor(interaction: PIXI.interaction.InteractionManager, extraLayer: PIXI.Container, shapeLayer: PIXI.Container, callback: Function) {
+    constructor(interaction: PIXI.interaction.InteractionManager, extraLayer: PIXI.Container, shapeLayer: PIXI.Container, callback: Function, state: PIXI.Container, graphContainer: PIXI.Container) {
         this._interaction = interaction;
         this._extraLayer = extraLayer;
         this._callback = callback;
         this._shapeLayer = shapeLayer;
+        this._state = state;
+        this._graphContainer = graphContainer;
     }
     private buildCircle(radius: number = 10): PIXI.Graphics {
         //画个圆
@@ -50,14 +54,14 @@ export default class Eraser implements EraserInterface {
         }).on("mouseup", (event: PIXI.interaction.InteractionEvent) => {
             this._isErase = false;
             this._callback(this._deletePointArr);
-            this._extraLayer.setChildIndex(this._circleCursor, this._extraLayer.children.length - 1);
+            //this._extraLayer.setChildIndex(this._circleCursor, this._extraLayer.children.length - 1);
             this._deletePointArr = [];
         })
         //eraser开启状态 禁止children事件触发.interactiveChildren = false;
         this._changeInteractive(false);
 
         //放置在编辑层
-        this._extraLayer.addChild(this._circleCursor);
+        this._state.addChild(this._circleCursor);
 
         //隐藏默认的鼠标指针 修改的其实是css
         this._interaction.cursorStyles.default = "none";
@@ -99,8 +103,10 @@ export default class Eraser implements EraserInterface {
         this._shapeLayer.interactiveChildren = state;
     }
     private _findDeletePoints(x: number, y: number) {
+        x = (x - this._graphContainer.position.x) / this._graphContainer.scale.x;
+        y = (y - this._graphContainer.position.y) / this._graphContainer.scale.y;
         let pointR: number = 3;//编辑点圆点半径
-        let eraserR: number = this._eraserSize;
+        let eraserR: number = Number(this._eraserSize);
         let minSize: number = pointR + eraserR;
 
         // 如果只有三个点 不能擦除

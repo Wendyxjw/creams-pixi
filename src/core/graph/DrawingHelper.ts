@@ -2,6 +2,16 @@ import { Shape, ShapeContent, Point, LineGraphics, PointGraphics, ShapeGraphics,
 import { defultGraphStyle } from "./constant";
 
 export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeContent = defultGraphStyle) {
+    if (!shape) {
+        return;
+    }
+    if (shape.length < 1) {
+        return;
+    }
+    let hasMoveTo: boolean = false;
+    let moveToPoint: Point = [0, 0];
+    let xMin: number = 0, xMax: number = 0, yMin: number = 0, yMax: number = 0;
+
     graphics.removeChildren();
     // set a fill and line style
     graphics.beginFill(content.backgroundColor, content.alpha);
@@ -12,14 +22,19 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
 
     graphics.alpha = content.alpha; //透明度
 
-    let xMin: number = shape[0][0], xMax: number = shape[0][0], yMin: number = shape[0][1], yMax: number = shape[0][1];
+
     // draw a shape
-    graphics.moveTo(shape[0][0], shape[0][1]);
-    for (let i = 1; i < shape.length; i++) {
+    for (let i = 0; i < shape.length; i++) {
         if (!shape[i]) {
             continue;
         }
-        graphics.lineTo(shape[i][0], shape[i][1]);
+        if (!hasMoveTo) {
+            graphics.moveTo(shape[i][0], shape[i][1]);
+            moveToPoint = shape[i];
+            hasMoveTo = true;
+        } else {
+            graphics.lineTo(shape[i][0], shape[i][1]);
+        }
         //查找shape的边界
         xMin = xMin > shape[i][0] ? shape[i][0] : xMin;
         xMax = xMax < shape[i][0] ? shape[i][0] : xMax;
@@ -31,7 +46,7 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
     graphics.yMin = yMin;
     graphics.yMax = yMax;
 
-    graphics.lineTo(shape[0][0], shape[0][1]);
+    graphics.lineTo(moveToPoint[0], moveToPoint[1]);
     graphics.endFill();
     //画虚线
     if (content.border.lineStyle === LineStyle.Dashed) {
@@ -77,17 +92,24 @@ function drawDashed(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent
     let dashLength: number = 5; // 虚线每段长度 
     let borderAlpha: number = 1; // 虚线的透明度
     let excessLength: number = 0; // 亮点之间多余的虚线长度
+    let hasMoveTo: boolean = false;
+    let moveToPoint: Point = [0, 0];
     graphics.beginFill(content.backgroundColor, 0);
-    graphics.moveTo(shape[0][0], shape[0][1]);
     for (let i = 1; i <= shape.length; i++) {
         if (!shape[i]) {
             continue;
+        }
+        if (!hasMoveTo) {
+            graphics.moveTo(shape[i][0], shape[i][1]);
+            moveToPoint = shape[i];
+            hasMoveTo = true;
+            continue
         }
         let point1 = shape[i - 1]; // 上一个点
         let point2 = shape[i];
         if (i == shape.length) {
             point1 = shape[i - 1];
-            point2 = shape[0];
+            point2 = moveToPoint;
         }
         // 两点之间的长度
         let line: number = Math.sqrt(Math.pow(point1[0] - point2[0], 2) + Math.pow(point1[1] - point2[1], 2));
