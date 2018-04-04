@@ -31,7 +31,7 @@ class EventAPIManager implements EventAPI {
     };
 
     onMouseUpShape(callback: CallbackFunc): void {
-        this._events.mouseDownShape = callback;
+        this._events.mouseUpShape = callback;
         this._initBindShape(callback, "mouseup");
     };
 

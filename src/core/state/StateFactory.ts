@@ -22,6 +22,8 @@ export default function StateFactory(
         case ((eEnum === ee.Editing) && (sEnum === se.Line)):
         case ((eEnum === ee.Editing) && (sEnum === se.Point)):
             return new EditingSelectState(index, sEnum);
+        case ((eEnum === ee.Nomal) && enableEraser):
+            return new NomalNoneState(index, sEnum);
         case ((eEnum === ee.Nomal) && (sEnum === se.Shape)):
             return new NomalSelectState(index, sEnum);
         case ((eEnum === ee.Nomal) && (sEnum === se.None)):

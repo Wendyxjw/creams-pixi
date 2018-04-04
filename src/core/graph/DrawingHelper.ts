@@ -76,10 +76,15 @@ function drawDashed(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent
     let dashLength: number = 5; // 虚线每段长度 
     let borderAlpha: number = 1; // 虚线的透明度
     let excessLength: number = 0; // 亮点之间多余的虚线长度
+    graphics.beginFill(content.backgroundColor, 0);
     graphics.moveTo(shape[0][0], shape[0][1]);
-    for (let i = 1; i < shape.length; i++) {
+    for (let i = 1; i <= shape.length; i++) {
         let point1 = shape[i - 1]; // 上一个点
         let point2 = shape[i];
+        if (i == shape.length) {
+            point1 = shape[i - 1];
+            point2 = shape[0];
+        }
         // 两点之间的长度
         let line: number = Math.sqrt(Math.pow(point1[0] - point2[0], 2) + Math.pow(point1[1] - point2[1], 2));
         let mulriple: number = line / dashLength;
@@ -88,6 +93,7 @@ function drawDashed(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent
             borderAlpha = Math.abs(borderAlpha - 1);
             graphics.lineTo(x, y);
             graphics.lineStyle(content.border.lineWidth, content.border.color, borderAlpha);
+
         }
 
         if (mulriple > 1) {

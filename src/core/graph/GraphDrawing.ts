@@ -80,19 +80,9 @@ export default class GraphDrawing {
 
     private _addSelectHandler(graphics: PIXI.Graphics, index: Array<number>) {
         graphics.interactive = true;
-        graphics.on('pointerdown', (event: PIXI.interaction.InteractionEvent) => {
+        graphics.on('pointerup', (event: PIXI.interaction.InteractionEvent) => {
             event.stopPropagation();
             this._app.stateManager.select(SelectEnum.Shape, index);
         })
-        // .on("mouseover", (event: PIXI.interaction.InteractionEvent) => {
-        //     let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
-        //     this._shadowShape.shapeOver(curTarget.shapeIndex);
-        // }).on("mouseout", (event: PIXI.interaction.InteractionEvent) => {
-        //     let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
-        //     this._shadowShape.shapeOut(curTarget.shapeIndex);
-        // }).on("pointerup", (event: PIXI.interaction.InteractionEvent) => {
-        //     let curTarget: ShapeGraphics = <ShapeGraphics>event.currentTarget;
-        //     this._shadowShape.shapePionterUp(curTarget.shapeIndex);
-        // })
     }
 }

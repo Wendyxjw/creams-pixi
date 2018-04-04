@@ -95,9 +95,10 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
     setShapeContent(index: number, content?: ShapeContent): void {
         let shape: Shape = this._app.actionManager.getCurrentShape(index);
-        this.updateShapes(shape, index, content);
         //店铺匹配时保存content
         this._graphCache.shapesContent[index] = content;
+        this.updateShapes(shape, index, content);
+
     }
 
     private _addLayer(shapeIndex: number, isDisplay: boolean) {
