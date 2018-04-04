@@ -33,7 +33,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
             this._app.pixiApp.renderer.plugins.interaction,
             this._extraLayer,
             this._shapeLayer,
-            this._editTool.erasePoints
+            this._editTool.erasePoints()
         );
     }
 

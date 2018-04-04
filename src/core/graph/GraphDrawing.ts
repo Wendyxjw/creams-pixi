@@ -63,6 +63,7 @@ export default class GraphDrawing {
         let curShape: PIXI.Graphics;
         curShape = <PIXI.Graphics>this._shapeLayer.getChildByName(shapeIndex.toString());
         curShape.clear();
+        content = content ? content : this._graphCache.shapesContent[shapeIndex];
         curShape = drawShape(curShape, shape, content);
         this._shapeLayer.setChildIndex(curShape, this._shapeLayer.children.length - 1);
     }

@@ -1,8 +1,6 @@
 import { EraserInterface } from "./GraphInterface";
 import { PointGraphics } from "../common/Graph";
-type CallbackFunc = {
-    (deletePointArr: Array<number>): void;
-}
+
 export default class Eraser implements EraserInterface {
     private _circleCursor: PIXI.Sprite; //橡皮擦
     private _cursorTicker: PIXI.ticker.Ticker; //监听橡皮擦
@@ -11,14 +9,15 @@ export default class Eraser implements EraserInterface {
     private _shapeLayer: PIXI.Container;
     private _eraserSize: number; //橡皮擦半径
 
-    private _deletePointArr: Array<number>;//保存要删除的点的index
+    private _deletePointArr: Array<number> = [];//保存要删除的点的index
     private _isErase: Boolean = false; //记录是否mousedown
-    private _callback: CallbackFunc;
+    private _callback: Function;
 
-    constructor(interaction: PIXI.interaction.InteractionManager, extraLayer: PIXI.Container, shapeLayer: PIXI.Container, callback: CallbackFunc) {
+    constructor(interaction: PIXI.interaction.InteractionManager, extraLayer: PIXI.Container, shapeLayer: PIXI.Container, callback: Function) {
         this._interaction = interaction;
         this._extraLayer = extraLayer;
         this._callback = callback;
+        this._shapeLayer = shapeLayer;
     }
     private buildCircle(radius: number = 10): PIXI.Graphics {
         //画个圆
@@ -34,9 +33,12 @@ export default class Eraser implements EraserInterface {
         //开启前先销毁 避免生成多个
         this.disable()
         this._circleCursor = new PIXI.Sprite();
+        this._circleCursor.name = "eraser";
         this._circleCursor.addChild(this.buildCircle());
         this._circleCursor.x = -1000; //让初始化位置在屏幕外
         this._circleCursor.y = -1000;
+        this._circleCursor.interactive = true;
+
         //bindEvent
         this._circleCursor.on("mousedown", (event: PIXI.interaction.InteractionEvent) => {
             this._isErase = true;
@@ -48,11 +50,11 @@ export default class Eraser implements EraserInterface {
         }).on("mouseup", (event: PIXI.interaction.InteractionEvent) => {
             this._isErase = false;
             this._callback(this._deletePointArr);
+            this._extraLayer.setChildIndex(this._circleCursor, this._extraLayer.children.length - 1);
             this._deletePointArr = [];
         })
-        //eraser开启状态 禁止children事件触发
-        this._extraLayer.interactiveChildren = false;
-        this._shapeLayer.interactiveChildren = false;
+        //eraser开启状态 禁止children事件触发.interactiveChildren = false;
+        this._changeInteractive(false);
 
         //放置在编辑层
         this._extraLayer.addChild(this._circleCursor);
@@ -76,8 +78,7 @@ export default class Eraser implements EraserInterface {
         if (!this._cursorTicker.started) {
             return
         }
-        this._extraLayer.interactiveChildren = true;
-        this._shapeLayer.interactiveChildren = true;
+        this._changeInteractive(true);
 
         this._interaction.cursorStyles.default = "auto";
         this._cursorTicker.destroy();
@@ -88,28 +89,38 @@ export default class Eraser implements EraserInterface {
         this._circleCursor.addChild(this.buildCircle(size))
     }
 
+    private _changeInteractive(state: boolean) {
+        let extraLayer: PIXI.Container = <PIXI.Container>this._extraLayer.getChildByName("editLayer");
+        extraLayer.interactive = state;
+        extraLayer.children.forEach((item: PIXI.DisplayObject) => {
+            item.interactive = state;
+            item.interactiveChildren = state;
+        })
+        this._shapeLayer.interactiveChildren = state;
+    }
     private _findDeletePoints(x: number, y: number) {
         let pointR: number = 3;//编辑点圆点半径
         let eraserR: number = this._eraserSize;
         let minSize: number = pointR + eraserR;
+
         // 如果只有三个点 不能擦除
-        for (let i = 0; i < this._extraLayer.children.length; i++) {
-            if (this._extraLayer.children.length - this._deletePointArr.length === 3) {
+        let editLayer: PIXI.Container = <PIXI.Container>this._extraLayer.getChildByName("editLayer");
+        let pointLayer: PIXI.Container = <PIXI.Container>editLayer.getChildByName("pointLayer");
+        for (let i = 0; i < pointLayer.children.length; i++) {
+            if (pointLayer.children.length - this._deletePointArr.length === 3) {
                 break;
             }
-            let item: PointGraphics = <PointGraphics>this._extraLayer.children[i];
+            let item: PointGraphics = <PointGraphics>pointLayer.children[i];
             //如果已经是要删除的点 就不需要再次判断
             if (item.alpha == 0.3) {
-                return;
+                continue;
             }
-            if (item.pointIndex) {
-                let xAbs = Math.abs(x - item.x);
-                let yAbs = Math.abs(y - item.y);
-                if ((xAbs < minSize) && (yAbs < minSize)) {
-                    //point修改透明度，表示要删除
-                    item.alpha = 0.3;
-                    this._deletePointArr.push(i);
-                }
+            let xAbs = Math.abs(x - item.x);
+            let yAbs = Math.abs(y - item.y);
+            if ((xAbs < minSize) && (yAbs < minSize)) {
+                //point修改透明度，表示要删除
+                item.alpha = 0.3;
+                this._deletePointArr.push(i);
             }
         }
     }

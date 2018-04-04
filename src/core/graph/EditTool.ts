@@ -35,17 +35,21 @@ export default class EditTool implements EditToolInterface {
         this._layer.addChild(this._backShape);
         this._layer.addChild(this._lineLayer);
         this._layer.addChild(this._pointLayer);
+        this._layer.name = "editLayer";
         this._container.addChild(this._layer);
     }
 
-    erasePoints(points: Array<number>): void {
-        let newShape: Shape = this._shape;
-        points.forEach(item => {
-            newShape[item] = null;
-        });
-        newShape = newShape.filter(function (n) { return n !== null });
-        this.init(newShape, this._content);
-        this._updateHandler(newShape);
+    erasePoints(): Function {
+        return (points: Array<number>) => {
+            let newShape: Shape = this._shape;
+            points.forEach(item => {
+                newShape[item] = null;
+            });
+            newShape = newShape.filter(function (n) { return n !== null });
+            this.init(newShape, this._content);
+            this.select(SelectEnum.Shape);
+            this._updateHandler(newShape);
+        }
     }
 
     init(shape: Shape, content: ShapeContent, isDisplay?: boolean): void {
@@ -161,7 +165,7 @@ export default class EditTool implements EditToolInterface {
         this.select(SelectEnum.Point, lineIndex + 1);
     }
 
-    select(select: SelectEnum, index: number): void {
+    select(select: SelectEnum, index?: number): void {
         let targetIndex: number;
         let preIndex: number;
         let nextIndex: number;
@@ -217,7 +221,7 @@ export default class EditTool implements EditToolInterface {
                             newShape.push([Math.round(item[0] + x), Math.round(item[1] + y)]);
                         });
                         this._shape = newShape;
-                        
+
                         this._drawEditLayer(false, true);
                         this._updateHandler(newShape);
                     }

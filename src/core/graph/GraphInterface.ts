@@ -152,7 +152,7 @@ export interface EditToolInterface {
      * @param  {Array<number>} points // point index array
      * @returns void
      */
-    erasePoints(points: Array<number>): void;
+    erasePoints(): Function;
 
     /**
      * 初始化编辑层，
