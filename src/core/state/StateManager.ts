@@ -40,6 +40,7 @@ export default class StateManager implements StateManagerInterface {
         this._isEnableEraser = false;
         this._selectIndex = [];
         this._activeState();
+        this._app.eventManager.setEditState(this._editEnum);
     }
 
     enableEraser(isEnabled: boolean) {

@@ -72,9 +72,7 @@ export default class EditTool implements EditToolInterface {
             point.name = `point_${index}`;
             this._pointLayer.addChild(point);
             point.interactive = true;
-            point.on('pointerdown', () => {
-                this._selectHandler(SelectEnum.Point, index);
-            });
+            this._selectHandler(point, SelectEnum.Point, index);
             DragHelper(point);
         } else {
             point = <PointGraphics>this._pointLayer.getChildByName(`point_${index}`);
@@ -100,9 +98,7 @@ export default class EditTool implements EditToolInterface {
             line.name = `line_${index}`;
             this._lineLayer.addChild(line);
             line.interactive = true;
-            line.on('pointerdown', () => {
-                this._selectHandler(SelectEnum.Line, index);
-            });
+            this._selectHandler(line, SelectEnum.Line, index);
             DragHelper(line);
         } else {
             line = <LineGraphics>this._lineLayer.getChildByName(`line_${index}`);
@@ -122,9 +118,7 @@ export default class EditTool implements EditToolInterface {
         if (isInit) {
             backShape.name = "editShape";
             backShape.interactive = true;
-            backShape.on('pointerdown', () => {
-                this._selectHandler(SelectEnum.Shape);
-            });
+            this._selectHandler(backShape, SelectEnum.Shape);
             this._layer.addChildAt(backShape, 0);
         } else {
             backShape.clear();

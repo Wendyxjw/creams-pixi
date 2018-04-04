@@ -111,13 +111,18 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     }
 
     private _addHandler(shapeIndex: number) {
-        this._editTool.addSelectHandler((state: SelectEnum, idx?: number) => {
-            this._app.stateManager.select(state, [shapeIndex, idx]);
-        });
         this._editTool.addUpdateHandler((shape: Shape) => {
             this._app.actionManager.updateShape(shape, shapeIndex);
             //编辑shape后将对应shapeLayer画成白色
             this._changeShapeColor(shape, shapeIndex, true);
+        });
+        this._editTool.addSelectHandler((target: PIXI.Graphics, state: SelectEnum, idx?: number) => {
+            target.on('pointerdown', () => {
+                this._app.stateManager.select(state, [shapeIndex, idx]);
+            });
+            if (state === SelectEnum.Shape || state === SelectEnum.Line) {
+                this._app.eventManager.bindHandler(state, target);
+            }
         });
     }
 
@@ -137,8 +142,8 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
             this._eraser.disable();
         }
         if (isNeedInit) {
-            this._addLayer(index[0], false);
             this._addHandler(index[0]);
+            this._addLayer(index[0], false);
         }
         this._editTool.select(select, index[1]);
     }

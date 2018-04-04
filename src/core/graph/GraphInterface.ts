@@ -138,7 +138,7 @@ export interface EraserInterface {
 }
 
 export type SelectHandler = {
-    (state: SelectEnum, index?: number): void;
+    (target: PIXI.Graphics, state: SelectEnum, index?: number): void;
 }
 
 export type UpdateHandler = {
