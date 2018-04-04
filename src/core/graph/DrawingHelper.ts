@@ -16,8 +16,9 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
     // draw a shape
     graphics.moveTo(shape[0][0], shape[0][1]);
     for (let i = 1; i < shape.length; i++) {
-        //borderAlpha = Math.abs(borderAlpha - 1);
-        //graphics.lineStyle(content.border.lineWidth, content.border.color, borderAlpha);
+        if (!shape[i]) {
+            continue;
+        }
         graphics.lineTo(shape[i][0], shape[i][1]);
         //查找shape的边界
         xMin = xMin > shape[i][0] ? shape[i][0] : xMin;
@@ -79,6 +80,9 @@ function drawDashed(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent
     graphics.beginFill(content.backgroundColor, 0);
     graphics.moveTo(shape[0][0], shape[0][1]);
     for (let i = 1; i <= shape.length; i++) {
+        if (!shape[i]) {
+            continue;
+        }
         let point1 = shape[i - 1]; // 上一个点
         let point2 = shape[i];
         if (i == shape.length) {
