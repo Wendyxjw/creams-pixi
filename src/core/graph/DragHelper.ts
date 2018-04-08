@@ -51,10 +51,20 @@ function onDragMove(event: PIXI.interaction.InteractionEvent) {
     }
 }
 
-export default function DragHelper(container: PIXI.Container) {
-    container.interactive = true;
-    container.on('pointerdown', onDragStart)
+export default function DragHelper(container: PIXI.Container, enable: boolean = true ) {
+    if (enable) {
+        container.interactive = true;
+        container.on('pointerdown', onDragStart)
         .on('pointerup', onDragEnd)
         .on('pointerupoutside', onDragEnd)
         .on('pointermove', onDragMove);
+    } else {
+        container.interactive = false;
+        container.dragging = 0;
+        container.dragData = null;
+        container.off('pointerdown', onDragStart)
+        .off('pointerup', onDragEnd)
+        .off('pointerupoutside', onDragEnd)
+        .off('pointermove', onDragMove);
+    }
 }

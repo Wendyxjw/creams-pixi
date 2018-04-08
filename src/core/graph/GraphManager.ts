@@ -53,6 +53,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     private _focus() {
         // 进入选中状态，虚化shapeLayer
         this.graphContainer.interactive = false;
+        DragHelper(this.graphContainer, false);
         this._extraLayer.visible = true;
         this._changeAllShapesColor(true);
     }
@@ -60,6 +61,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     private _blur() {
         // 释放选中状态，恢复shapeLayer
         this.graphContainer.interactive = true;
+        DragHelper(this.graphContainer, true);
         this._extraLayer.visible = false;
         this._changeAllShapesColor(false);
     }
