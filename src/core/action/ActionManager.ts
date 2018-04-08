@@ -75,7 +75,7 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
     }
 
     getCurrentData(): Graph {
-        return this._currentData;
+        return JSON.parse(JSON.stringify(this._currentData));
     }
 
     addShape(x: number, y: number, width: number, height: number) {
@@ -103,7 +103,7 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
 
     // };
     getCurrentShape(shapeIndex: number): Shape {
-        return this._currentData.shapes[shapeIndex];
+        return JSON.parse(JSON.stringify(this._currentData.shapes[shapeIndex]));
     }
 
 

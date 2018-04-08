@@ -103,11 +103,12 @@ export default class Eraser implements EraserInterface {
         this._shapeLayer.interactiveChildren = state;
     }
     private _findDeletePoints(x: number, y: number) {
+        //计算没有放大缩小、位移前的 x、y
         x = (x - this._graphContainer.position.x) / this._graphContainer.scale.x;
         y = (y - this._graphContainer.position.y) / this._graphContainer.scale.y;
         let pointR: number = 3;//编辑点圆点半径
         let eraserR: number = Number(this._eraserSize);
-        let minSize: number = pointR + eraserR;
+        let minSize: number = (pointR + eraserR) / this._graphContainer.scale.x;
 
         // 如果只有三个点 不能擦除
         let editLayer: PIXI.Container = <PIXI.Container>this._extraLayer.getChildByName("editLayer");
