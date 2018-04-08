@@ -57,7 +57,7 @@ export default class EditTool implements EditToolInterface {
         this._shape = shape;
         this._content = content;
         if (isDisplay) {
-            drawShape(this._backShape, this._shape, this._content);
+            this._drawBackShape(true);
         } else {
             this._drawEditLayer(true, false);
         }

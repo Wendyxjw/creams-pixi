@@ -129,6 +129,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     }
 
     addDisplayLayer(isNeedInit: boolean, index: Array<number>): void {
+        this._addHandler(index[0]);
         this._addLayer(index[0], true);
     }
 
