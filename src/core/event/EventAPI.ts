@@ -1,10 +1,9 @@
 import { EditEnum } from "../common/Graph";
 
 type MouseEvent = {
-    // TODO: 应该外部定义导入
-    x: number,//shape的定位
+    x: number,//mouse:position
     y: number,
-    target?: {
+    target?: { // shape:position
         xMin: number,
         xMax: number,
         yMin: number,

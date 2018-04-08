@@ -8,9 +8,12 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
     if (shape.length < 1) {
         return;
     }
-    let hasMoveTo: boolean = false;
-    let moveToPoint: Point = [0, 0];
-    let xMin: number = 0, xMax: number = 0, yMin: number = 0, yMax: number = 0;
+    let hasMoveTo: boolean = false; //判断graph是否开始画：因为第一个点有可能被擦除 是null
+    let moveToPoint: Point = [0, 0]; //记录第一个开始画的点 用于最后再画一次
+    let xMin: number,
+        xMax: number,
+        yMin: number,
+        yMax: number;
 
     graphics.removeChildren();
     // set a fill and line style
@@ -22,7 +25,6 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
 
     graphics.alpha = content.alpha; //透明度
 
-
     // draw a shape
     for (let i = 0; i < shape.length; i++) {
         if (!shape[i]) {
@@ -32,6 +34,10 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
             graphics.moveTo(shape[i][0], shape[i][1]);
             moveToPoint = shape[i];
             hasMoveTo = true;
+            xMin = moveToPoint[0];
+            xMax = moveToPoint[0];
+            yMin = moveToPoint[1];
+            yMax = moveToPoint[1];
         } else {
             graphics.lineTo(shape[i][0], shape[i][1]);
         }
@@ -53,41 +59,20 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
         drawDashed(graphics, shape, content);
     }
 
-
     //文字
     if (content.content) {
-        let maskGraph = graphics.clone();
-        let textStyle = new PIXI.TextStyle({
-            fontSize: content.font.fontSize,
-            fill: content.font.fill,//填充颜色
-            wordWrap: true,
-            wordWrapWidth: xMax - xMin,
-            breakWords: true
-        });
-        let text = new PIXI.Text(content.content, textStyle);
-        text.position.x = (xMin + xMax) / 2 - text.width / 2;
-        text.position.y = (yMin + yMax) / 2 - text.height / 2;
-        graphics.addChild(maskGraph)
-        // 文字超出后隐藏
-        text.mask = maskGraph;
-        graphics.addChild(text);
+        drawText(graphics, content)
     }
 
     //角标
     if (content.hasMark) {
         //根据右下角的点画一个三角形
-        graphics.beginFill(content.backgroundColor, 1);
-        graphics.lineStyle();
-        graphics.moveTo(xMax - 20, yMax);
-        graphics.lineTo(xMax, yMax);
-        graphics.lineTo(xMax, yMax - 20);
-        graphics.lineTo(xMax - 20, yMax);
-        graphics.endFill();
+        drawMark(graphics, content);
     }
 
     return graphics
 }
-
+//shape：画虚线
 function drawDashed(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent) {
     let dashLength: number = 5; // 虚线每段长度 
     let borderAlpha: number = 1; // 虚线的透明度
@@ -160,6 +145,34 @@ function drawDashed(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent
             }
         }
     }
+    graphics.endFill();
+}
+//shape：文字
+function drawText(graphics: ShapeGraphics, content: ShapeContent) {
+    let maskGraph = graphics.clone();
+    let textStyle = new PIXI.TextStyle({
+        fontSize: content.font.fontSize,
+        fill: content.font.fill, //填充颜色
+        wordWrap: true,
+        wordWrapWidth: graphics.xMax - graphics.xMin,
+        breakWords: true
+    });
+    let text = new PIXI.Text(content.content, textStyle);
+    text.position.x = (graphics.xMin + graphics.xMax) / 2 - text.width / 2;
+    text.position.y = (graphics.yMin + graphics.yMax) / 2 - text.height / 2;
+    graphics.addChild(maskGraph)
+    // 文字超出后隐藏
+    text.mask = maskGraph;
+    graphics.addChild(text);
+}
+//shape：角标
+function drawMark(graphics: ShapeGraphics, content: ShapeContent) {
+    graphics.beginFill(content.backgroundColor, 1);
+    graphics.lineStyle();
+    graphics.moveTo(graphics.xMax - 20, graphics.yMax);
+    graphics.lineTo(graphics.xMax, graphics.yMax);
+    graphics.lineTo(graphics.xMax, graphics.yMax - 20);
+    graphics.lineTo(graphics.xMax - 20, graphics.yMax);
     graphics.endFill();
 }
 
