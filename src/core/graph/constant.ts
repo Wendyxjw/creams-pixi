@@ -14,5 +14,6 @@ export const defultGraphStyle: ShapeContent = {
     content: "",
     hasMark: false,
     alpha: 1,
+    interactive: true
     //shapeIndex: ""
 }

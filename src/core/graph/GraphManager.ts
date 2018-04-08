@@ -118,7 +118,8 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
             //编辑shape后将对应shapeLayer画成白色
             this._changeShapeColor(shape, shapeIndex, true);
         });
-        this._editTool.addSelectHandler((target: PIXI.Graphics, state: SelectEnum, idx?: number) => {
+        this._editTool.addSelectHandler((target: ShapeGraphics, state: SelectEnum, idx?: number) => {
+            target.shapeIndex = shapeIndex;
             target.on('pointerdown', () => {
                 this._app.stateManager.select(state, [shapeIndex, idx]);
             });

@@ -89,11 +89,13 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
     copyShape(shapeIndex: number) {
         let action: ActionInterface = new CopyShapeAction(shapeIndex, this._app);
         this.addAction(action);
+        this._app.stateManager.select(SelectEnum.None, []);
     };
 
     deleteShape(shapeIndex: number) {
         let action: ActionInterface = new DeleteShapeAction(shapeIndex, this._app);
         this.addAction(action);
+        this._app.stateManager.select(SelectEnum.None, []);
     };
     updateShape(shape: Shape, shapeIndex: number) {
         let action: ActionInterface = new UpdateShapeAction(shape, shapeIndex, this._app);

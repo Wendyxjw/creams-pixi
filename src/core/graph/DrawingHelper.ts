@@ -2,12 +2,6 @@ import { Shape, ShapeContent, Point, LineGraphics, PointGraphics, ShapeGraphics,
 import { defultGraphStyle } from "./constant";
 
 export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeContent = defultGraphStyle) {
-    if (!shape) {
-        return;
-    }
-    if (shape.length < 1) {
-        return;
-    }
     let hasMoveTo: boolean = false; //判断graph是否开始画：因为第一个点有可能被擦除 是null
     let moveToPoint: Point = [0, 0]; //记录第一个开始画的点 用于最后再画一次
     let xMin: number,
@@ -24,7 +18,7 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
     }
 
     graphics.alpha = content.alpha; //透明度
-
+    graphics.interactive = content.interactive;
     // draw a shape
     for (let i = 0; i < shape.length; i++) {
         if (!shape[i]) {

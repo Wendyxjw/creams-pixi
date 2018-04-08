@@ -27,6 +27,7 @@ export default class GraphDrawing {
             shapesContent: {}
         };
         this.graphContainer = new PIXI.Container();
+        this.graphContainer.hitArea = new PIXI.Rectangle(-10000000, -10000000, 100000000000000, 100000000000000);
         this._shapeLayer = new PIXI.Container();
         this._shapeLayer.name = "shapeLayer";
 
@@ -37,6 +38,13 @@ export default class GraphDrawing {
     }
 
     buildShapes(shape: Shape, index: number, content: ShapeContent = defultGraphStyle): ShapeGraphics {
+        if (!shape) {
+            return;
+        }
+        if (shape.length < 1) {
+            return;
+        }
+
         let graphics = new ShapeGraphics();
 
         graphics = drawShape(graphics, shape, content);
@@ -80,7 +88,7 @@ export default class GraphDrawing {
 
     private _addSelectHandler(graphics: PIXI.Graphics, index: Array<number>) {
         graphics.interactive = true;
-        graphics.on('pointerup', (event: PIXI.interaction.InteractionEvent) => {
+        graphics.on('mousedown', (event: PIXI.interaction.InteractionEvent) => {
             event.stopPropagation();
             this._app.stateManager.select(SelectEnum.Shape, index);
         })

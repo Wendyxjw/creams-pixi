@@ -28,6 +28,7 @@ export type ShapeContent = {
     content: string; // 显示的文字内容，换行："\n"
     hasMark?: boolean; // 是否需要角标，默认false：匹配店铺时出现的shadowShape使用
     alpha?: number; // 透明度，默认1
+    interactive?: true; // 事件是否开启，默认true
 }
 
 interface indexableContent {
