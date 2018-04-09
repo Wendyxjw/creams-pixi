@@ -6,6 +6,9 @@ $(function () {
         backgroundPic: '/res/Model.jpg',
         shapesContent: []
     })
+    var state = {
+        hasShadowShape: false
+    }
 
     //放大缩小居中
     let dom = $("#operation");
@@ -29,26 +32,28 @@ $(function () {
     $(eraser.find("span")[2]).click(function () {
         app.operationManager.enableEraser(false);
     })
-    app.eventManager.onClickGraph((index, event) => {
-        //console.log(index + ";x:" + event.x + "y:" + event.y)
+    app.eventManager.onClickGraph((index, event, editType) => {
+        //  console.log(index + ";x:" + event.x + "y:" + event.y + "editType" + editType)
     })
-    app.eventManager.onMouseMoveShape((index, event) => {
-        // let dom = `
-        // <div style="position:absolute;left:` + event.x + `px;top:` + (event.y + 40) + `px">
-        // 我是第` + index + `个,
-        // 我的坐标是(` + event.x + `,` + event.y + `)
-        // </div>
-        // `
-        // $("#hover").html(dom)
-    })
+
+
     //添加graph
     $("#addGraph").click(() => {
         var defultGraphStyle = {
-            backgroundColor: 0xdddddd,
+            backgroundColor: 0xD1D8DF,
             border: {
-                lineWidth: 1,
-                color: 0x333333,
-            }
+                lineWidth: 2,
+                color: 0xA7ACB2,
+                lineStyle: "dotted"
+            },
+            font: {
+                fontSize: 14,
+                fill: [0x000000]
+            },
+            content: "",
+            hasMark: false,
+            alpha: 1,
+            //shapeIndex: ""
         }
         app.actionManager.addShape(100, 100, 100, 100, defultGraphStyle)
     })
@@ -56,9 +61,7 @@ $(function () {
     // $("#creams-pixi").mousemove(() => {
 
     // })
-    app.eventManager.onMouseUpShape((index, position) => {
-        bindTool(index)
-    })
+
     var bindTool = (i) => {
         let graphToolbar = $("#graphToolbar");
         graphToolbar.css({
@@ -85,28 +88,73 @@ $(function () {
     $("#redo").click(function () {
         app.actionManager.reDo()
     })
-
-    $("#addShadowShape").mousedown(() => {
-        let con = {
-            backgroundColor: 0xf5eb33,
-            border: {
-                lineWidth: 1,
-                color: 0xFFC107,
-            },
-            font: {
-                fontSize: 14,
-                fill: ["#000000"]
-            },
-            content: "5pluse \n45m/2010室 \n2017.01.12到期",
-            alpha: 0.5,
-            hasMark: true,
-            shapeIndex: ""
+    const shadowCon = {
+        backgroundColor: 0xf5eb33,
+        border: {
+            lineWidth: 1,
+            color: 0xFFC107,
+            lineStyle: "solid"
+        },
+        font: {
+            fontSize: 14,
+            fill: [0x000000, 0xffbbee]
+        },
+        content: "5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期",
+        alpha: 0.5,
+        hasMark: true,
+        shapeIndex: ""
+    }
+    const shadowDownCon = {
+        backgroundColor: 0xf5eb33,
+        border: {
+            lineWidth: 2,
+            color: 0xFFC107,
+            lineStyle: "dashed"
+        },
+        font: {
+            fontSize: 14,
+            fill: [0x333333]
+        },
+        content: "5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期5pluse \n45m/2010室 \n2017.01.12到期",
+        alpha: 1,
+        hasMark: false,
+        shapeIndex: ""
+    }
+    app.eventManager.onMouseUpShape((index, event, editType) => {
+        if (state.hasShadowShape) {
+            state.hasShadowShape = false;
+            app.operationManager.setShapeContent(index[0], shadowDownCon);
         }
+        console.log("up" + " " + index[0])
+        bindTool(index)
 
-        app.operationManager.addShadowShape(100, 100, 200, 100, con)
+    })
+    // app.eventManager.onMouseEnterShape((index, event, editType) => {
+    //     if (state.hasShadowShape) {
+    //         app.operationManager.setShapeContent(index[0], shadowCon);
+    //     }
+    // })
+    // app.eventManager.onMouseLeaveShape((index, event, editType) => {
+    //     if (state.hasShadowShape) {
+    //         app.operationManager.setShapeContent(index[0]);
+    //     }
+    // }) //
+    app.eventManager.onMouseLeaveShape((index, event, editType) => {
+        console.log("leave" + " " + index)
+    })
+    app.eventManager.onMouseDownShape((index, event, editType) => {
+        console.log("down" + " " + index)
+    })
+    $("#addShadowShape").mousedown(() => {
+        state.hasShadowShape = true;
+        app.operationManager.addShadowShape(200, 100, shadowCon)
+    })
+    $("body").on("mouseup", () => {
+        app.operationManager.deleteShadowShape();
     })
     //开启编辑模式
     $("#edit").click(() => {
         app.operationManager.enableEdit(true);
     })
+
 })
