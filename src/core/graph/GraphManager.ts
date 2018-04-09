@@ -50,18 +50,23 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._backgroundLayer.addChild(background);
     }
 
-    private _focus() {
+    private _focus(isEditing: boolean) {
         // 进入选中状态，虚化shapeLayer
-        this.graphContainer.interactive = false;
-        DragHelper(this.graphContainer, false);
+        if (isEditing) {
+            // 编辑状态时，禁用底层的拖拽
+            this.graphContainer.interactive = false;
+            DragHelper(this.graphContainer, false);
+        }
         this._extraLayer.visible = true;
         this._changeAllShapesColor(true);
     }
 
-    private _blur() {
+    private _blur(isEditing: boolean) {
         // 释放选中状态，恢复shapeLayer
-        this.graphContainer.interactive = true;
-        DragHelper(this.graphContainer, true);
+        if (isEditing) {
+            this.graphContainer.interactive = true;
+            DragHelper(this.graphContainer, true);
+        }
         this._extraLayer.visible = false;
         this._changeAllShapesColor(false);
     }
@@ -109,7 +114,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         const shape: Shape = this._app.actionManager.getCurrentShape(shapeIndex);
         const content: ShapeContent = this._graphCache.shapesContent[shapeIndex];
         this._editTool.init(shape, content, isDisplay);
-        this._focus();
+        this._focus(!isDisplay);
     }
 
     private _addHandler(shapeIndex: number) {
@@ -154,7 +159,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
     removeLayer(): void {
         this._editTool.destroy();
-        this._blur();
+        this._blur(true);
     }
 
     setEraserSize(size: number): void {
