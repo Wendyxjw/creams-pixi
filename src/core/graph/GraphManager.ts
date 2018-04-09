@@ -28,9 +28,6 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
         this.graphContainer.interactive = true;
         DragHelper(this.graphContainer);
-        this.graphContainer.on('pointerdown', () => {
-            this._app.stateManager.select(SelectEnum.None, []);
-        });
         this._editTool = new EditTool(this._extraLayer);
         this._eraser = new Eraser(
             this._app.pixiApp.renderer.plugins.interaction,
@@ -46,7 +43,11 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._backgroundLayer.removeChildren();
         let background = PIXI.Sprite.fromImage(url);
         background.alpha = 0.2;
-        // background.interactive = true;
+        background.hitArea = new PIXI.Rectangle(-10000000, -10000000, 100000000000000, 100000000000000);
+        background.interactive = true;
+        background.on('pointerdown', () => {
+            this._app.stateManager.select(SelectEnum.None, []);
+        });
         this._backgroundLayer.addChild(background);
     }
 
