@@ -1,6 +1,6 @@
 import OperationAPI from "./OperationAPI"
 import AppInterface from "../app/AppInterface";
-import { ShapeContent, Shape } from "../common/Graph";
+import { ShapeContent, Shape, SelectEnum } from "../common/Graph";
 export default class OperationManager implements OperationAPI {
     private _app: AppInterface;
     private _graphCon: PIXI.Container;
@@ -64,5 +64,9 @@ export default class OperationManager implements OperationAPI {
 
     addPoint(lineIndex: number) {
         this._app.graphManager.addPoint(lineIndex);
+    }
+
+    selectNone() {
+        this._app.stateManager.select(SelectEnum.None, []);
     }
 }

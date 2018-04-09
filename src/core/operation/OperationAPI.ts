@@ -71,4 +71,10 @@ export default interface OperationAPI {
      * @returns void
      */
     addPoint(lineIndex: number): void;
+
+    /**
+     * 取消选中
+     * @returns void
+     */
+    selectNone(): void
 }
