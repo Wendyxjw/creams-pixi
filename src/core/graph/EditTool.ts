@@ -150,13 +150,13 @@ export default class EditTool implements EditToolInterface {
         let pre = newShape[lineIndex];
         let next = newShape[lineIndex === (newShape.length - 1) ? 0 : (lineIndex + 1)];
         let newPoint = [
-            Math.round((next[0] - pre[0]) / 2),
-            Math.round((next[1] - pre[1]) / 2)
+            Math.round((next[0] + pre[0]) / 2),
+            Math.round((next[1] + pre[1]) / 2)
         ];
         newShape.splice(lineIndex, 0, <Point>newPoint);
         this.init(newShape, this._content);
         this._updateHandler(newShape);
-        this.select(SelectEnum.Point, lineIndex + 1);
+        this.select(SelectEnum.Point, lineIndex);
     }
 
     select(select: SelectEnum, index?: number): void {

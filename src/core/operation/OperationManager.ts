@@ -62,5 +62,7 @@ export default class OperationManager implements OperationAPI {
         this._app.graphManager.deleteShadowShape();
     }
 
-
+    addPoint(lineIndex: number) {
+        this._app.graphManager.addPoint(lineIndex);
+    }
 }

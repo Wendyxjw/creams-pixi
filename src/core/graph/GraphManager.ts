@@ -177,4 +177,8 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     deleteShadowShape() {
         this._shadowShape.destroyShadowShape();
     }
+
+    addPoint(lineIndex: number) {
+        this._editTool.addPoint(lineIndex);
+    }
 }

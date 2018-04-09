@@ -6,7 +6,7 @@ export enum ActionEvent {
     Update = "update" // 更新
 }
 export type CallbackFunc = {
-    (index: number, event: ActionEvent): void;
+    (shapeIndex: number, event: ActionEvent): void;
 }
 
 // Action, 操作行为

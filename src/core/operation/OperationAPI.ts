@@ -64,4 +64,11 @@ export default interface OperationAPI {
      * @returns void
      */
     addShadowShape(width: number, height: number, content?: ShapeContent): void;
+
+    /**
+     * 在边上加点
+     * @param  {number} lineIndex
+     * @returns void
+     */
+    addPoint(lineIndex: number): void;
 }
