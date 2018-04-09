@@ -1,6 +1,6 @@
 // 绑定传入事件
 import EventAPI, { CallbackFunc, Events } from "./EventAPI"
-import { ShapeGraphics, LineGraphics, EditEnum, SelectEnum } from "../common/Graph"
+import { ShapeGraphics, LineGraphics, EditEnum, SelectEnum, Point } from "../common/Graph"
 import AppInterface from "../app/AppInterface";
 import { EventFunc, EventManagerInterface } from "./EventInterface";
 
@@ -65,9 +65,16 @@ class EventAPIManager implements EventAPI {
     protected _bindLineFunc(callback: CallbackFunc, target: LineGraphics): Function {
         let index: number = Number(target.name.substring(5));
         return (event: PIXI.interaction.InteractionEvent) => {
+            let startPoint: Point = target.startPoint, endPoint: Point = target.endPoint;
             callback([index], {
                 x: event.data.global.x,
-                y: event.data.global.y
+                y: event.data.global.y,
+                target: {
+                    xMin: startPoint[0] < endPoint[0] ? startPoint[0] : endPoint[0],
+                    xMax: startPoint[0] > endPoint[0] ? startPoint[0] : endPoint[0],
+                    yMin: startPoint[1] < endPoint[1] ? startPoint[1] : endPoint[1],
+                    yMax: startPoint[1] > endPoint[1] ? startPoint[1] : endPoint[1]
+                }
             }, this._editState)
         }
     }
