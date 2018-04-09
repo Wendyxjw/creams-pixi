@@ -17,8 +17,8 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
         graphics.lineStyle(content.border.lineWidth, content.border.color, 1);
     }
 
-    graphics.alpha = content.alpha; //透明度
-    graphics.interactive = content.interactive;
+    graphics.alpha = content.alpha; // 透明度
+    graphics.interactive = content.interactive == undefined ? true : content.interactive; // 为定义则默认开启
     // draw a shape
     for (let i = 0; i < shape.length; i++) {
         if (!shape[i]) {

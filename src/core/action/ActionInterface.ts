@@ -1,8 +1,11 @@
 import { Shape, Graph } from "../common/Graph";
+import { ActionEvent } from "./ActionAPI";
 // 用户行为
 export type ActionInterface = {
     do(data: Graph): Graph;
     unDo(data: Graph): Graph;
+    shapeIndex: number;
+    actionEvent: ActionEvent;
 }
 
 export interface ActionManagerInterface {

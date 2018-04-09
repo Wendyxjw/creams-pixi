@@ -1,4 +1,4 @@
-import ActionAPI from "./ActionAPI"
+import ActionAPI, { CallbackFunc } from "./ActionAPI"
 import { ActionInterface, ActionManagerInterface } from "./ActionInterface";
 import { Graph, ShapeContent, Shape, ShapeGraphics, SelectEnum } from "../common/Graph";
 import { CreateShapeAction, DeleteShapeAction, CopyShapeAction, UpdateShapeAction } from "./Action"
@@ -32,22 +32,26 @@ class Manager {
             this._actionList = this._actionList.slice(-30);
         }
     }
-    unDo() {
+    unDo(callback?: CallbackFunc) {
         let index = this._actionIndex;
         let list = this._actionList;
         if (index === -1) {
             return;
         }
         let action = list[index];
-        //this._currentData = action.unDo(data);
         this._actionIndex--;
         this._currentData = action.unDo(this._currentData);
+
+        if (callback) {
+            callback(action.shapeIndex, action.actionEvent);
+        }
+
         // 取消选中和橡皮擦状态
         this._app.stateManager.enableEraser(false);
         this._app.stateManager.select(SelectEnum.None, []);
     }
 
-    reDo() {
+    reDo(callback?: CallbackFunc) {
         let index = this._actionIndex;
         let list = this._actionList;
         if (index === list.length - 1) {
@@ -56,13 +60,20 @@ class Manager {
         let action = list[index + 1];
         this._actionIndex++;
         this._currentData = action.do(this._currentData);
+
+        if (callback) {
+            callback(action.shapeIndex, action.actionEvent);
+        }
+
         // 取消选中和橡皮擦状态
         this._app.stateManager.enableEraser(false);
         this._app.stateManager.select(SelectEnum.None, []);
     }
+
     emptyDoingList() {
         this._actionList = [];
     }
+
 }
 
 export default class ActionManager extends Manager implements ActionAPI, ActionManagerInterface {
@@ -107,6 +118,5 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
     getCurrentShape(shapeIndex: number): Shape {
         return JSON.parse(JSON.stringify(this._currentData.shapes[shapeIndex]));
     }
-
 
 }
