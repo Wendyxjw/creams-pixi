@@ -45,6 +45,7 @@ export class DeleteShapeAction implements ActionInterface {
         return data;
     };
     unDo(data: Graph): Graph {
+        this._deleteShapeIndex = data.shapes.length;
         let shape: PIXI.Graphics = this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
         this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
         data.shapes.push(this._pointArr);
