@@ -74,8 +74,8 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
     private _changeAllShapesColor(isWhite: Boolean) {
         let curShape: Array<Shape> = this._app.actionManager.getCurrentData().shapes;
-        curShape.forEach((shape: Shape, i: number) => {
-            this._changeShapeColor(shape, i, isWhite);
+        this._shapeLayer.children.forEach((item: ShapeGraphics) => {
+            this._changeShapeColor(curShape[item.shapeIndex], item.shapeIndex, isWhite);
         })
     }
     //选中shape时 修改颜色
@@ -89,7 +89,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
                 deepCopyCon.backgroundColor = 0xffffff;
                 deepCopyCon.border.color = 0xA7ACB2;
             }
-            this.updateShapes(shape, shapeIndex, deepCopyCon);
+            this.updateShapes(shape, shapeIndex, deepCopyCon, true);
         }
     }
 

@@ -90,9 +90,10 @@ export interface GraphManagerInterface {
      * @param  {Shape} shape
      * @param  {number} shapeIndex
      * @param  {ShapeContent} content?
+     * @param  {boolean} keepIndex? 是否保持当前index
      * @returns void
      */
-    updateShapes(shape: Shape, shapeIndex: number, content?: ShapeContent): void;
+    updateShapes(shape: Shape, shapeIndex: number, content?: ShapeContent, keepIndex?: boolean): void;
 
     /**
      * 新建shadow：用于店铺匹配

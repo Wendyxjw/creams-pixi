@@ -67,13 +67,15 @@ export default class GraphDrawing {
     //     this._shapeLayer.getChildByName(shapeIndex.toString()).visible = true;
     // }
 
-    updateShapes(shape: Shape, shapeIndex: number, content?: ShapeContent) {
+    updateShapes(shape: Shape, shapeIndex: number, content?: ShapeContent, keepIndex?: boolean) {
         let curShape: PIXI.Graphics;
         curShape = <PIXI.Graphics>this._shapeLayer.getChildByName(shapeIndex.toString());
         curShape.clear();
         content = content ? content : this._graphCache.shapesContent[shapeIndex];
         curShape = drawShape(curShape, shape, content);
-        this._shapeLayer.setChildIndex(curShape, this._shapeLayer.children.length - 1);
+        if (!keepIndex) {
+            this._shapeLayer.setChildIndex(curShape, this._shapeLayer.children.length - 1);
+        }
     }
 
     //shadowShape
