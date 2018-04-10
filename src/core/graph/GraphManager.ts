@@ -43,7 +43,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._backgroundLayer.removeChildren();
         let background = PIXI.Sprite.fromImage(url);
         background.alpha = 0.2;
-        //background.hitArea = new PIXI.Rectangle(-10000000, -10000000, 100000000000000, 100000000000000);
+        background.hitArea = new PIXI.Rectangle(-10000000, -10000000, 100000000000000, 100000000000000);
         background.interactive = true;
         background.on('pointerdown', () => {
             this._app.stateManager.select(SelectEnum.None, []);
