@@ -153,10 +153,10 @@ export default class EditTool implements EditToolInterface {
             Math.round((next[0] + pre[0]) / 2),
             Math.round((next[1] + pre[1]) / 2)
         ];
-        newShape.splice(lineIndex, 0, <Point>newPoint);
+        newShape.splice(lineIndex + 1, 0, <Point>newPoint);
         this.init(newShape, this._content);
         this._updateHandler(newShape);
-        this.select(SelectEnum.Point, lineIndex);
+        this.select(SelectEnum.Point, lineIndex + 1);
     }
 
     select(select: SelectEnum, index?: number): void {
