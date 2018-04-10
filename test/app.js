@@ -65,8 +65,8 @@ $(function () {
     var bindTool = (i) => {
         let graphToolbar = $("#graphToolbar");
         graphToolbar.css({
-            "left": event.x,
-            "top": event.y
+            "left": event.x + 10,
+            "top": event.y + 10
         }).show();
         $(graphToolbar.find('span')[0]).unbind().bind("click", () => {
             app.actionManager.deleteShape(i[0]);
@@ -83,7 +83,9 @@ $(function () {
     }
     //do undo
     $("#undo").click(function () {
-        app.actionManager.unDo()
+        app.actionManager.unDo((index, event) => {
+            console.log(index + " " + event)
+        })
     })
     $("#redo").click(function () {
         app.actionManager.reDo()
@@ -120,6 +122,22 @@ $(function () {
         hasMark: false,
         shapeIndex: ""
     }
+    const con = {
+        backgroundColor: 0xcccccc,
+        border: {
+            lineWidth: 1,
+            color: 0xcccccc,
+            lineStyle: "solid"
+        },
+        font: {
+            fontSize: 14,
+            fill: [0x333333]
+        },
+        content: "",
+        alpha: 1,
+        hasMark: false,
+        shapeIndex: ""
+    }
     app.eventManager.onMouseUpShape((index, event, editType) => {
         if (state.hasShadowShape) {
             state.hasShadowShape = false;
@@ -141,9 +159,23 @@ $(function () {
     // }) //
     app.eventManager.onMouseLeaveShape((index, event, editType) => {
         console.log("leave" + " " + index)
+        if (state.hasShadowShape) {
+            app.operationManager.setShapeContent(index[0], con);
+        }
     })
     app.eventManager.onMouseDownShape((index, event, editType) => {
         console.log("down" + " " + index)
+    })
+    app.eventManager.onMouseEnterShape((index, event, editType) => {
+        console.log("enter" + " " + index)
+        if (state.hasShadowShape) {
+            app.operationManager.setShapeContent(index[0], shadowDownCon);
+        }
+    })
+    app.eventManager.onMouseDownLine((index, event, editType) => {
+        console.log("line down" + " " + index)
+        app.operationManager.addPoint(index[0]);
+
     })
     $("#addShadowShape").mousedown(() => {
         state.hasShadowShape = true;
@@ -155,6 +187,10 @@ $(function () {
     //开启编辑模式
     $("#edit").click(() => {
         app.operationManager.enableEdit(true);
+    })
+
+    $('#selectNone').click(() => {
+        app.operationManager.selectNone();
     })
 
 })
