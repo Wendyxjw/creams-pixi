@@ -31,8 +31,8 @@ export default class ShadowShape implements ShadowShapeInterface {
             //     return;
             // }
             let mousePosition = this._app.pixiApp.renderer.plugins.interaction.mouse.global;
-            this._shadowShape.x = mousePosition.x - width;
-            this._shadowShape.y = mousePosition.y - height;
+            this._shadowShape.x = mousePosition.x - width - 5;
+            this._shadowShape.y = mousePosition.y - height - 5;
         }).start();
     }
     // shapeOver(shapeIndex: number) {

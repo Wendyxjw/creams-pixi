@@ -124,7 +124,7 @@ export default class EventManager extends EventAPIManager implements EventManage
     }
 
     bindAllHandler(): void {
-        this._bindClickGraph();
+        //this._bindClickGraph(); // new app的时候graphContainer已经生成
         this._bindShapes();
     }
 

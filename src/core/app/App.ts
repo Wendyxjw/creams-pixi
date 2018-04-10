@@ -67,5 +67,6 @@ export default class App implements AppInterface, AppAPI {
         this._cache = cache;
         this.actionManager.init(graph);
         this.graphManager.setGraph(graph, cache);
+        this.eventManager.bindAllHandler();
     }
 }
