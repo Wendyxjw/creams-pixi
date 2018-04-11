@@ -73,9 +73,9 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     }
 
     private _changeAllShapesColor(isWhite: Boolean) {
-        let curShape: Array<Shape> = this._app.actionManager.getCurrentData().shapes;
         this._shapeLayer.children.forEach((item: ShapeGraphics) => {
-            this._changeShapeColor(curShape[item.shapeIndex], item.shapeIndex, isWhite);
+            let curShape: Shape = this._app.actionManager.getCurrentShape(item.shapeIndex);
+            this._changeShapeColor(curShape, item.shapeIndex, isWhite);
         })
     }
     //选中shape时 修改颜色

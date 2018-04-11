@@ -1,4 +1,4 @@
-import { ShapeContent, Graph } from "../common/Graph";
+import { ShapeContent, Graph, Shape } from "../common/Graph";
 
 export enum ActionEvent {
     Add = "add", // 拷贝（新增的shapeIndex）和添加
@@ -9,6 +9,11 @@ export type CallbackFunc = {
     (shapeIndex: number, event: ActionEvent): void;
 }
 
+//导出CurrentData
+export type GraphOrder = {
+    shapes: Array<Shape>,
+    order: Array<number> // shape排序
+}
 // Action, 操作行为
 export default interface ActionAPI {
     // Actions

@@ -1,4 +1,4 @@
-import ActionAPI, { CallbackFunc } from "./ActionAPI"
+import ActionAPI, { CallbackFunc, GraphOrder } from "./ActionAPI"
 import { ActionInterface, ActionManagerInterface } from "./ActionInterface";
 import { Graph, ShapeContent, Shape, ShapeGraphics, SelectEnum } from "../common/Graph";
 import { CreateShapeAction, DeleteShapeAction, CopyShapeAction, UpdateShapeAction } from "./Action"
@@ -9,7 +9,7 @@ class Manager {
     protected _currentData: Graph; //因为还是需要删除shape的时候 清空con
     protected _actionIndex: number;
     protected _actionList: Array<ActionInterface>
-    public _app: AppInterface;
+    protected _app: AppInterface;
 
     constructor(app: AppInterface) {
         this._actionIndex = -1;
@@ -85,8 +85,17 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
         this._actionList = []; //?? 记录的应该是 操作类型（添加／删除／修改），shapeIndex和修改前、后的shapedata
     }
 
-    getCurrentData(): Graph {
-        return JSON.parse(JSON.stringify(this._currentData));
+    getCurrentData(): GraphOrder {
+        let order: Array<number> = [];
+        let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
+        shapeLayer.children.forEach((item: ShapeGraphics) => {
+            order.push(item.shapeIndex);
+        })
+        let newGraph: GraphOrder = {
+            shapes: JSON.parse(JSON.stringify(this._currentData.shapes)),
+            order: order
+        }
+        return newGraph;
     }
 
     addShape(x: number, y: number, width: number, height: number) {
@@ -108,13 +117,12 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
         this.addAction(action);
         this._app.stateManager.select(SelectEnum.None, []);
     };
+
     updateShape(shape: Shape, shapeIndex: number) {
         let action: ActionInterface = new UpdateShapeAction(shape, shapeIndex, this._app);
         this.addAction(action);
     };
-    // addPoint(index: Array<number>) {
 
-    // };
     getCurrentShape(shapeIndex: number): Shape {
         return JSON.parse(JSON.stringify(this._currentData.shapes[shapeIndex]));
     }
