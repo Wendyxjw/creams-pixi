@@ -128,6 +128,8 @@ export default class EditTool implements EditToolInterface {
 
     private _drawEditLayer(isInit: boolean, isHighlight: Highlight) {
         this._drawBackShape(isInit);
+        // 删除null 测试出现的bug：原因估计是项目代码更新时造成的，理应不出现null
+        this._shape = this._shape.filter(function (n) { return n !== null });
         for (let i = 0; i < this._shape.length; i++) {
             this._drawPoint(i, isInit, isHighlight);
             this._drawLine(i, isInit, isHighlight);
