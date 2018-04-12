@@ -74,8 +74,9 @@ function drawDashed(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent
     let hasMoveTo: boolean = false;
     let moveToPoint: Point = [0, 0];
     graphics.beginFill(content.backgroundColor, 0);
-    for (let i = 1; i <= shape.length; i++) {
-        if (!shape[i]) {
+    for (let i = 0; i <= shape.length; i++) {
+        // 排除删除的点和加一次循环 画成闭合曲线
+        if (!shape[i] && (i < shape.length)) {
             continue;
         }
         if (!hasMoveTo) {
