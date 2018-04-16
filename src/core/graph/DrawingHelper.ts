@@ -11,7 +11,7 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
 
     graphics.removeChildren();
     // set a fill and line style
-    graphics.beginFill(content.backgroundColor, content.alpha);
+    graphics.beginFill(content.backgroundColor, content.backgroundAlpha == undefined ? content.alpha : content.backgroundAlpha);
 
     if (content.border.lineStyle === LineStyle.Solid) {
         graphics.lineStyle(content.border.lineWidth, content.border.color, 1);

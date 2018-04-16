@@ -3,6 +3,7 @@ import { Shape, ShapeContent, PointGraphics, LineGraphics, ShapeGraphics, Point,
 import { buildPoint, buildLine, drawShape } from "./DrawingHelper";
 import DragHelper, { DragableObj } from "./DragHelper";
 import AppInterface from "../app/AppInterface";
+import { defultGraphStyle } from "./constant";
 
 type Highlight = boolean | {
     select: SelectEnum,
@@ -55,7 +56,8 @@ export default class EditTool implements EditToolInterface {
     init(shape: Shape, content: ShapeContent, isDisplay?: boolean): void {
         this.destroy();
         this._shape = shape;
-        this._content = content;
+        this._content = content ? content : JSON.parse(JSON.stringify(defultGraphStyle));
+        this._content.backgroundAlpha = 1;
         if (isDisplay) {
             this._drawBackShape(true);
         } else {

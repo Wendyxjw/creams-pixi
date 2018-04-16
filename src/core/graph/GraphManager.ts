@@ -86,6 +86,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
             let con: ShapeContent = content ? content : defaultStyle;
             let deepCopyCon: ShapeContent = JSON.parse(JSON.stringify(con));
             if (isWhite) {
+                deepCopyCon.backgroundAlpha = 1;
                 deepCopyCon.backgroundColor = 0xffffff;
                 deepCopyCon.border.color = 0xe5e5e5;
             }

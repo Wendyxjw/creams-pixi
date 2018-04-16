@@ -15,15 +15,16 @@ export enum LineStyle {
     Solid = "solid"
 }
 export type ShapeContent = {
+    backgroundAlpha?: number; // 背景透明度（默认shape使用）
     backgroundColor: number; // 背景颜色：0xffffff(十六进制)
     border: {
         lineWidth: number,
         color: number,
-        lineStyle: LineStyle //虚线：dotted 实线：solid
+        lineStyle: LineStyle // 虚线：dotted 实线：solid
     };
     font: {
         fontSize: number,
-        fill: Array<number>,//填充颜色：[0x000000,0xffffff]填一个就是纯色，多个就是渐变效果
+        fill: Array<number>,// 填充颜色：[0x000000,0xffffff]填一个就是纯色，多个就是渐变效果
     };
     content: string; // 显示的文字内容，换行："\n"
     hasMark?: boolean; // 是否需要角标，默认false：匹配店铺时出现的shadowShape使用
