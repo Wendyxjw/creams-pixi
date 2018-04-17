@@ -18,6 +18,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         super(app);
 
         this._backgroundLayer = new PIXI.Container();
+        this._backgroundLayer.name = "backgroundLayer";
         this._extraLayer = new PIXI.Container();
         this._extraLayer.visible = false;
         this._extraLayer.name = "extraLayer";
@@ -89,6 +90,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
                 deepCopyCon.backgroundAlpha = 1;
                 deepCopyCon.backgroundColor = 0xffffff;
                 deepCopyCon.border.color = 0xe5e5e5;
+                deepCopyCon.font.fill = [0xc6c6c6];
             }
             this.updateShapes(shape, shapeIndex, deepCopyCon, true);
         }

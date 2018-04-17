@@ -41,7 +41,8 @@ class EventAPIManager implements EventAPI {
     };
     // 初始化绑定shape
     private _initBindShape(callback: CallbackFunc, event: string) {
-        let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
+        let shapeLayer: PIXI.Container =
+            <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
         shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
             item.on(event, this._bindShapeFunc(callback, item));
         })
@@ -80,7 +81,10 @@ class EventAPIManager implements EventAPI {
     }
     // 绑定graph
     protected _bindClickGraph(): void {
-        this._app.graphManager.graphContainer.on("click", (event: PIXI.interaction.InteractionEvent) => {
+        let backgroundLayer: PIXI.Container =
+            <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("backgroundLayer");
+        backgroundLayer.getChildAt(0).on("click", (event: PIXI.interaction.InteractionEvent) => {
+            console.log(123)
             this._events.clickGraph([], {
                 x: event.data.global.x,
                 y: event.data.global.y
@@ -89,7 +93,8 @@ class EventAPIManager implements EventAPI {
     };
     // 绑定一个shape的所有事件
     protected _bindShapes() {
-        let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
+        let shapeLayer: PIXI.Container =
+            <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
         shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
             this._bindShapeEvents(item);
         })
