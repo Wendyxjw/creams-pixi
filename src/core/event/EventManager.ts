@@ -84,7 +84,6 @@ class EventAPIManager implements EventAPI {
         let backgroundLayer: PIXI.Container =
             <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("backgroundLayer");
         backgroundLayer.getChildAt(0).on("click", (event: PIXI.interaction.InteractionEvent) => {
-            console.log(123)
             this._events.clickGraph([], {
                 x: event.data.global.x,
                 y: event.data.global.y
