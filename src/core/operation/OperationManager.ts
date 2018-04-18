@@ -29,19 +29,57 @@ export default class OperationManager implements OperationAPI {
             return;
         }
         let appScreen = this._app.pixiApp.screen;
-        //设置graph的长宽
-        if ((this._graphCon.width / this._graphCon.height) > (appScreen.width / appScreen.height)) {
-            //以width为准
-            this._graphCon.height = this._graphCon.height / (this._graphCon.width / appScreen.width);
-            this._graphCon.width = appScreen.width;
+        let backgroundLayer: PIXI.Container = <PIXI.Container>this._graphCon.getChildByName("backgroundLayer")
+
+        if (backgroundLayer.width > 1) {
+            //设置graph的长宽
+            if ((this._graphCon.width / this._graphCon.height) > (appScreen.width / appScreen.height)) {
+                //以width为准
+                this._graphCon.height = this._graphCon.height / (this._graphCon.width / appScreen.width);
+                this._graphCon.width = appScreen.width;
+            } else {
+                //以height为准
+                this._graphCon.width = this._graphCon.width / (this._graphCon.height / appScreen.height)
+                this._graphCon.height = appScreen.height;
+            }
+            //设置graph的定位
+            this._graphCon.x = appScreen.width / 2 - this._graphCon.width / 2;
+            this._graphCon.y = appScreen.height / 2 - this._graphCon.height / 2;
         } else {
-            //以height为准
-            this._graphCon.width = this._graphCon.width / (this._graphCon.height / appScreen.height)
-            this._graphCon.height = appScreen.height;
+            let multiple: number = 0; // 缩放倍数
+            let scaleShapeWidth: number = this._graphCon.scale.x * shapeLayer.width; // 计算shapelayer的长宽
+            let scaleShapeHeight: number = this._graphCon.scale.y * shapeLayer.height;
+            let standard: string = '';
+            //设置graph的长宽
+            if ((scaleShapeWidth / scaleShapeHeight) > (appScreen.width / appScreen.height)) {
+                //以width为准
+                multiple = appScreen.width / scaleShapeWidth;
+                standard = 'width';
+            } else {
+                //以height为准
+                multiple = appScreen.height / scaleShapeHeight;
+                standard = 'height';
+            }
+            this._graphCon.width = this._graphCon.width * multiple;
+            this._graphCon.height = this._graphCon.height * multiple;
+            scaleShapeWidth = scaleShapeWidth * multiple;
+            scaleShapeHeight = scaleShapeHeight * multiple;
+
+            //设置graph的定位
+            let x, y;
+            if (standard == 'width') {
+                x = -(this._graphCon.width - scaleShapeWidth);
+                y = appScreen.height / 2 - scaleShapeHeight / 2
+            } else {
+                x = - (this._graphCon.width - scaleShapeWidth / 2 - appScreen.width / 2);
+                y = - (this._graphCon.height - scaleShapeHeight)
+            }
+
+            this._graphCon.x = x;
+            this._graphCon.y = y;
         }
-        //设置graph的定位
-        this._graphCon.x = appScreen.width / 2 - this._graphCon.width / 2;
-        this._graphCon.y = appScreen.height / 2 - this._graphCon.height / 2;
+
+
     }
     setEraserSize(size: number): void {
         this._app.graphManager.setEraserSize(size);
