@@ -27,12 +27,12 @@ class EventAPIManager implements EventAPI {
 
     onMouseDownShape(callback: CallbackFunc): void {
         this._events.mouseDownShape = callback;
-        this._initBindShape(callback, "mousedown");
+        this._initBindShape(callback, "pointerdown");
     };
 
     onMouseUpShape(callback: CallbackFunc): void {
         this._events.mouseUpShape = callback;
-        this._initBindShape(callback, "mouseup");
+        this._initBindShape(callback, "pointerup");
     };
 
     onMouseDownLine(callback: CallbackFunc): void {
@@ -102,8 +102,8 @@ class EventAPIManager implements EventAPI {
     protected _bindShapeEvents(item: ShapeGraphics, ) {
         item.on('mouseover', this._bindShapeFunc(this._events.mouseEnterShape, item))
             .on('mouseout', this._bindShapeFunc(this._events.mouseLeaveShape, item))
-            .on('mousedown', this._bindShapeFunc(this._events.mouseDownShape, item))
-            .on('mouseup', this._bindShapeFunc(this._events.mouseUpShape, item));
+            .on('pointerdown', this._bindShapeFunc(this._events.mouseDownShape, item))
+            .on('pointerup', this._bindShapeFunc(this._events.mouseUpShape, item));
     }
 
 }
@@ -138,33 +138,11 @@ export default class EventManager extends EventAPIManager implements EventManage
                 this._bindShapeEvents(target);
                 break;
             case SelectEnum.Line:
-                target.on("mousedown", this._bindLineFunc(this._events.mouseDownLine, target));
+                target.on("pointerdown", this._bindLineFunc(this._events.mouseDownLine, target));
                 break;
             default:
                 console.error("无法绑定该对象")
         }
     }
-
-
-    //extraLayer： pointerdown的时候shapeLayer的时候出现extraLayer生成editShape
-    // bindMouseUpShape(editType: EditEnum): void {
-    //     let shapeLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("shapeLayer");
-    //     shapeLayer.children.forEach((item: ShapeGraphics, index: number) => {
-    //         let func: EventFunc = (event: PIXI.interaction.InteractionEvent) => {
-    //             this._events.mouseUpShape([item.shapeIndex], {
-    //                 x: event.data.global.x,
-    //                 y: event.data.global.y
-    //             }, editType)
-    //         }
-    //         item.off("mouseup", func).on("mouseup", func);
-    //         let extraLayer: PIXI.Container = <PIXI.Container>this._app.graphManager.graphContainer.getChildByName("extraLayer");
-    //         let curGraph: ShapeGraphics = <ShapeGraphics>extraLayer.getChildByName("editShape");
-    //         if (curGraph) {
-    //             curGraph.off("mouseup", func).on("mouseup", func);
-    //         }
-    //     })
-    // };
-
-    //shapeLayer的shape pointerdown 才会有line point
 
 }

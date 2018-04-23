@@ -90,9 +90,17 @@ export default class GraphDrawing {
 
     private _addSelectHandler(graphics: PIXI.Graphics, index: Array<number>) {
         graphics.interactive = true;
-        graphics.on('mousedown', (event: PIXI.interaction.InteractionEvent) => {
-            event.stopPropagation();
-            this._app.stateManager.select(SelectEnum.Shape, index);
+        let hasMouseUp = true;
+        graphics.on('pointerdown', (event: PIXI.interaction.InteractionEvent) => {
+            hasMouseUp = true;
+            setTimeout(() => {
+                hasMouseUp = false
+            }, 500);
+        })
+        graphics.on('pointerup', (event: PIXI.interaction.InteractionEvent) => {
+            if (hasMouseUp) {
+                this._app.stateManager.select(SelectEnum.Shape, index);
+            }
         })
     }
 }

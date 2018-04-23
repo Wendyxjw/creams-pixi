@@ -44,14 +44,14 @@ export default class Eraser implements EraserInterface {
         this._circleCursor.interactive = true;
 
         //bindEvent
-        this._circleCursor.on("mousedown", (event: PIXI.interaction.InteractionEvent) => {
+        this._circleCursor.on("pointerdown", (event: PIXI.interaction.InteractionEvent) => {
             this._isErase = true;
             this._findDeletePoints(event.data.global.x, event.data.global.y);
         }).on("mousemove", (event: PIXI.interaction.InteractionEvent) => {
             if (this._isErase) {
                 this._findDeletePoints(event.data.global.x, event.data.global.y);
             }
-        }).on("mouseup", (event: PIXI.interaction.InteractionEvent) => {
+        }).on("pointerup", (event: PIXI.interaction.InteractionEvent) => {
             this._isErase = false;
             this._callback(this._deletePointArr);
             //this._extraLayer.setChildIndex(this._circleCursor, this._extraLayer.children.length - 1);

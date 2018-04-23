@@ -46,9 +46,26 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         background.alpha = 0.2;
         background.hitArea = new PIXI.Rectangle(-10000000, -10000000, 100000000000000, 100000000000000);
         background.interactive = true;
-        background.on('pointerdown', () => {
-            this._app.stateManager.select(SelectEnum.None, []);
-        });
+        // background.on('pointerdown', () => {
+        //     this._app.stateManager.select(SelectEnum.None, []);
+        // });
+
+        let hasMouseUp = true;
+        background.on('pointerdown', (event: PIXI.interaction.InteractionEvent) => {
+            hasMouseUp = true;
+            setTimeout(() => {
+                hasMouseUp = false
+            }, 500);
+        })
+        background.on('pointerup', (event: PIXI.interaction.InteractionEvent) => {
+            if (hasMouseUp) {
+                this._app.stateManager.select(SelectEnum.None, []);
+            }
+        })
+
+
+
+
         this._backgroundLayer.addChild(background);
     }
 
