@@ -3,7 +3,7 @@
  * @Description: 框选删除
  * @Date: 2018-04-24 11:24:22 
  * @Last Modified by: xujiawen
- * @Last Modified time: 2018-04-25 10:34:54
+ * @Last Modified time: 2018-04-25 12:00:44
  */
 import { RegionDeleteInterface } from "./GraphInterface";
 import AppInterface from "../app/AppInterface";
@@ -129,7 +129,7 @@ export default class RegionDelete implements RegionDeleteInterface {
 
     private _changeInteractive(state: boolean) {
         DragHelper(this._app.graphManager.graphContainer, state);
-        this._app.graphManager.graphContainer.interactive = true;
+        this._app.graphManager.graphContainer.interactive = state;
         this._shapeLayer.interactiveChildren = state;
     }
 }

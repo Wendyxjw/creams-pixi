@@ -6,7 +6,7 @@ import { ActionEvent } from "./ActionAPI";
 export class CreateShapeAction implements ActionInterface {
     private _pointArr: Shape;
     private _app: AppInterface;
-    shapeIndex: Array<number>; // addShapeIndex
+    shapeIndex: Array<number> = []; // addShapeIndex
     actionEvent: ActionEvent;
 
     constructor(pointArr: Shape, app: AppInterface) {
@@ -33,7 +33,7 @@ export class CreateShapeAction implements ActionInterface {
 export class DeleteShapeAction implements ActionInterface {
     private _pointArr: Array<Shape>;
     private _app: AppInterface;
-    shapeIndex: Array<number>; //deleteShapeIndex
+    shapeIndex: Array<number> = []; //deleteShapeIndex
     actionEvent: ActionEvent;
 
     constructor(shapeIndex: Array<number>, app: AppInterface) {
@@ -70,7 +70,7 @@ export class DeleteShapeAction implements ActionInterface {
 export class CopyShapeAction implements ActionInterface {
     private _copyShapeIndex: number;
     private _app: AppInterface;
-    shapeIndex: Array<number>; // addShapeIndex
+    shapeIndex: Array<number> = []; // addShapeIndex
     actionEvent: ActionEvent;
 
     constructor(shapeIndex: number, app: AppInterface) {
@@ -108,7 +108,7 @@ export class UpdateShapeAction implements ActionInterface {
     private _newShape: Shape;
     private _app: AppInterface;
     private _oldShape: Shape;
-    shapeIndex: Array<number>; // updateIndex
+    shapeIndex: Array<number> = []; // updateIndex
     actionEvent: ActionEvent = ActionEvent.Update;
 
     constructor(shape: Shape, shapeIndex: number, app: AppInterface) {
