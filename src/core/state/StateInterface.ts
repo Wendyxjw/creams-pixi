@@ -6,6 +6,7 @@ export interface StateManagerInterface {
     enableEdit(isEnabled: boolean): void;
     enableEraser(isEnabled: boolean): void;
     select(state: SelectEnum, index: Array<number>): void;
+    enableRegionDelete(isEnabled: boolean): void;
 }
 
 export interface StateInterface {

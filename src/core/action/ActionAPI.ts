@@ -6,7 +6,7 @@ export enum ActionEvent {
     Update = "update" // 更新
 }
 export type CallbackFunc = {
-    (shapeIndex: number, event: ActionEvent): void;
+    (shapeIndex: Array<number>, event: ActionEvent): void;
 }
 
 //导出CurrentData
@@ -30,7 +30,7 @@ export default interface ActionAPI {
 
     copyShape(shapeIndex: number): void;
 
-    deleteShape(shapeIndex: number): void;
+    deleteShape(shapeIndex: Array<number>): void;
 
     // addPoint(index: Array<number>): void;
 

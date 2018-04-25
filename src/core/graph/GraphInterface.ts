@@ -33,14 +33,12 @@ export interface GraphManagerInterface {
      * @param  {boolean} isNeedInit, // 更换shape时 需要重绘
      * @param  {Array<number>} index
      * @param  {SelectEnum} select
-     * @param  {boolean} enableEraser?
      * @returns void
      */
     addEditLayer(
         isNeedInit: boolean,
         index: Array<number>,
         select: SelectEnum,
-        enableEraser?: boolean
     ): void;
 
     /**
@@ -70,20 +68,6 @@ export interface GraphManagerInterface {
      * @returns void
      */
     deleteShapes(name: string): void
-
-    /**
-     * 隐藏shape
-     * @param  {number} shapeIndex
-     * @returns void
-     */
-    // hideShapes(shapeIndex: number): void;
-
-    /**
-     * 显示shape
-     * @param  {number} shapeIndex
-     * @returns void
-     */
-    // showShapes(shapeIndex: number): void;
 
     /**
      * 更新shape
@@ -123,6 +107,20 @@ export interface GraphManagerInterface {
      * @returns void
      */
     addPoint(lineIndex: number): void;
+
+    /**
+     * 控制橡皮擦状态
+     * @param  {boolean} isEnabled
+     * @returns void
+     */
+    enableEraser(isEnabled: boolean): void;
+
+    /**
+     * 开启关闭框选删除
+     * @param  {boolean} isEnabled
+     * @returns void
+     */
+    enableRegionDelete(isEnabled: boolean): void
 }
 
 export interface EraserInterface {
@@ -217,28 +215,15 @@ export interface ShadowShapeInterface {
     buildShadowShape(width: number, height: number, content?: ShapeContent): void;
 
     /**
-     * 鼠标经过shape
-     * @param  {number} shapeIndex
-     * @returns void
-     */
-    //shapeOver(shapeIndex: number): void
-
-    /**
-     * 鼠标离开shape
-     * @param  {number} shapeIndex
-     * @returns void
-     */
-    //shapeOut(shapeIndex: number): void
-
-    /**
-     * 在shape上mouseup
-     * @param  {number} shapeIndex
-     * @returns void
-     */
-    //shapePionterUp(shapeIndex: number): void
-
-    /**
      * @returns void
      */
     destroyShadowShape(): void
+}
+
+export interface RegionDeleteInterface {
+    /**
+     * 开启关闭框选删除模式
+     * @returns void
+     */
+    enable(isEnabled: boolean): void;
 }

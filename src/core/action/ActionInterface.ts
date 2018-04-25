@@ -4,7 +4,7 @@ import { ActionEvent } from "./ActionAPI";
 export type ActionInterface = {
     do(data: Graph): Graph;
     unDo(data: Graph): Graph;
-    shapeIndex: number;
+    shapeIndex: Array<number>;
     actionEvent: ActionEvent;
 }
 
@@ -28,4 +28,11 @@ export interface ActionManagerInterface {
      * @returns Shape
      */
     getCurrentShape(shapeIndex: number): Shape;
+
+    /**
+     * 批量删除
+     * @param  {Array<number>} shapeIndex
+     * @returns void
+     */
+    deleteShape(shapeIndex: Array<number>): void;
 }

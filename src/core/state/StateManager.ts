@@ -2,15 +2,19 @@ import StateFactory from './StateFactory';
 import { StateManagerInterface, StateInterface } from "./StateInterface";
 import AppInterface from "../app/AppInterface";
 import { EditEnum, SelectEnum } from '../common/Graph';
+import { EditingRegionDeleteState } from './State';
 
 // app状态管理
 export default class StateManager implements StateManagerInterface {
     private _app: AppInterface;
     private _editEnum: EditEnum;
+
     private _selectEnum: SelectEnum;
     private _isEnableEraser: boolean;
     private _selectIndex: Array<number>;
+
     private _currentState: StateInterface;
+    private _isEnableRegionDelete: boolean;
 
     constructor(app: AppInterface) {
         this._app = app;
@@ -39,12 +43,14 @@ export default class StateManager implements StateManagerInterface {
         this._selectEnum = SelectEnum.None;
         this._isEnableEraser = false;
         this._selectIndex = [];
+        this._isEnableRegionDelete = false;
         this._activeState();
         this._app.eventManager.setEditState(this._editEnum);
     }
 
     enableEraser(isEnabled: boolean) {
         if (this._selectIndex.length == 0) {
+            // 只有在选中状态时，才能进橡皮擦模式
             return;
         }
         this._isEnableEraser = isEnabled;
@@ -54,6 +60,7 @@ export default class StateManager implements StateManagerInterface {
 
     select(state: SelectEnum, index: Array<number>) {
         if (this._selectEnum === SelectEnum.None && state === SelectEnum.None) {
+            // 排除了，一直在空点的情况
             return;
         }
         this._selectEnum = state;
@@ -65,4 +72,20 @@ export default class StateManager implements StateManagerInterface {
         this._activeState(!isEqual);
     }
 
+    enableRegionDelete(isEnabled: boolean) {
+        if (this._editEnum === EditEnum.Nomal) {
+            // 排除了，非编辑状态
+            return;
+        }
+        this._selectEnum = SelectEnum.None;
+        this._isEnableEraser = false;
+        this._selectIndex = [];
+        this._isEnableRegionDelete = isEnabled;
+
+        const graphManager = this._app.graphManager;
+        const eventManager = this._app.eventManager;
+
+        this._currentState = new EditingRegionDeleteState(this._selectIndex, this._selectEnum, isEnabled);
+        this._currentState.processGraph(graphManager, eventManager);
+    }
 }

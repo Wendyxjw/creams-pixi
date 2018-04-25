@@ -15,8 +15,8 @@ export abstract class SelectSuperState implements StateInterface {
     public isChangingSelect: boolean = true;
 
     constructor(index: Array<number>, select: SelectEnum) {
-        this._index = index;
-        this._select = select;
+        this._index = index; // 选中shape的index
+        this._select = select; // 选中目标的类型
     }
 
     protected processLayer(graphManager: GraphManagerInterface, eventManager: EventManagerInterface): void {
@@ -24,6 +24,9 @@ export abstract class SelectSuperState implements StateInterface {
     };
 
     processGraph(graphManager: GraphManagerInterface, eventManager: EventManagerInterface): void {
+        // 选中状态时，才会执行该方法，否则该方法将被重写
+        graphManager.enableEraser(false); // 清除橡皮擦
+        graphManager.enableRegionDelete(false); // 清除框选删除
         this.processLayer(graphManager, eventManager);
     };
 }
@@ -46,8 +49,23 @@ export class EditingSelectState extends SelectSuperState {
 export class EditingEraserState extends SelectSuperState {
     protected processLayer(graphManager: GraphManagerInterface, eventManager: EventManagerInterface): void {
         const enableEraser = true;
+        // 开启橡皮擦
+        graphManager.enableEraser(enableEraser);
         graphManager.addEditLayer(
-            this.isChangingSelect, this._index, this._select, enableEraser);
+            this.isChangingSelect, this._index, this._select);
+    }
+}
+
+// 框选删除
+export class EditingRegionDeleteState extends SelectSuperState {
+    protected _enable: boolean;
+    constructor(index: Array<number>, select: SelectEnum, enable: boolean) {
+        super(index, select)
+        this._enable = enable; // 框选删除的状态
+    }
+    processGraph(graphManager: GraphManagerInterface, eventManager: EventManagerInterface): void {
+        graphManager.removeLayer();
+        graphManager.enableRegionDelete(this._enable);
     }
 }
 
@@ -55,6 +73,7 @@ export class EditingEraserState extends SelectSuperState {
 export class NomalNoneState extends SelectSuperState {
     processGraph(graphManager: GraphManagerInterface, eventManager: EventManagerInterface): void {
         graphManager.removeLayer();
+        graphManager.enableRegionDelete(false);
     }
 }
 
@@ -62,5 +81,6 @@ export class NomalNoneState extends SelectSuperState {
 export class EditingNoneState extends SelectSuperState {
     processGraph(graphManager: GraphManagerInterface, eventManager: EventManagerInterface): void {
         graphManager.removeLayer();
+        graphManager.enableRegionDelete(false);
     }
 }

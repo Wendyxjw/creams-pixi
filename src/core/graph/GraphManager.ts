@@ -1,4 +1,4 @@
-import { GraphManagerInterface, EraserInterface, EditToolInterface } from "./GraphInterface";
+import { GraphManagerInterface, EraserInterface, EditToolInterface, RegionDeleteInterface } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache, Point, PointGraphics, SelectEnum, } from "../common/Graph";
 import DragHelper from "./DragHelper";
 import AppInterface from "../app/AppInterface";
@@ -7,12 +7,14 @@ import GraphDrawing from './GraphDrawing'
 import ShadowShape from "./ShadowShape"
 import EditTool from "./EditTool";
 import { defultGraphStyle } from "./constant";
+import RegionDelete from "./RegionDelete";
 
 export default class GraphManager extends GraphDrawing implements GraphManagerInterface {
     private _extraLayer: PIXI.Container;
     private _backgroundLayer: PIXI.Container;
     private _eraser: EraserInterface;
     private _editTool: EditToolInterface;
+    private _regionDelete: RegionDeleteInterface;
 
     constructor(app: AppInterface) {
         super(app);
@@ -38,6 +40,12 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
             this._app.pixiApp.stage,
             this.graphContainer
         );
+
+        this._regionDelete = new RegionDelete(
+            this._app,
+            this._extraLayer,
+            this._shapeLayer
+        );
     }
 
     private _buildBackground(url: string) {
@@ -62,9 +70,6 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
                 this._app.stateManager.select(SelectEnum.None, []);
             }
         })
-
-
-
 
         this._backgroundLayer.addChild(background);
     }
@@ -166,13 +171,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         isNeedInit: boolean,
         index: Array<number>,
         select: SelectEnum,
-        eraser: boolean = false
     ): void {
-        if (eraser) {
-            this._eraser.enable();
-        } else {
-            this._eraser.disable();
-        }
         if (isNeedInit) {
             this._addHandler(index[0]);
             this._addLayer(index[0], false);
@@ -181,7 +180,9 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     }
 
     removeLayer(): void {
+        // 关闭编辑状态，清除橡皮擦
         this._editTool.destroy();
+        this._eraser.disable();
         this._blur(true);
     }
 
@@ -200,5 +201,17 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
 
     addPoint(lineIndex: number) {
         this._editTool.addPoint(lineIndex);
+    }
+
+    enableEraser(isEnabled: boolean): void {
+        if (isEnabled) {
+            this._eraser.enable();
+        } else {
+            this._eraser.disable();
+        }
+    }
+
+    enableRegionDelete(isEnabled: boolean): void {
+        this._regionDelete.enable(isEnabled);
     }
 }

@@ -112,4 +112,8 @@ export default class OperationManager implements OperationAPI {
     selectNone() {
         this._app.stateManager.select(SelectEnum.None, []);
     }
+
+    enableRegionDelete(isEnabled: boolean): void {
+        this._app.stateManager.enableRegionDelete(isEnabled);
+    }
 }

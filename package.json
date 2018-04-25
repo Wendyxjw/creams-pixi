@@ -1,6 +1,6 @@
 {
   "name": "creams-pixi-dev",
-  "version": "1.0.44",
+  "version": "1.0.46",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

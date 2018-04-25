@@ -112,7 +112,11 @@ export default class ActionManager extends Manager implements ActionAPI, ActionM
         this._app.stateManager.select(SelectEnum.None, []);
     };
 
-    deleteShape(shapeIndex: number) {
+    deleteShape(shapeIndex: Array<number>) {
+        // 如果传入的为number 做强转换
+        if (Object.prototype.toString.call(shapeIndex) == "[object Number]") {
+            shapeIndex = [Number(shapeIndex)];
+        }
         let action: ActionInterface = new DeleteShapeAction(shapeIndex, this._app);
         this.addAction(action);
         this._app.stateManager.select(SelectEnum.None, []);

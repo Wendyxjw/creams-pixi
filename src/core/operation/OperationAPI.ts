@@ -77,4 +77,11 @@ export default interface OperationAPI {
      * @returns void
      */
     selectNone(): void
+
+    /**
+     * 框选删除
+     * @param  {boolean} isEnabled
+     * @returns void
+     */
+    enableRegionDelete(isEnabled: boolean): void
 }

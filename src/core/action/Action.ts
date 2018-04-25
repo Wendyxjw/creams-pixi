@@ -6,7 +6,7 @@ import { ActionEvent } from "./ActionAPI";
 export class CreateShapeAction implements ActionInterface {
     private _pointArr: Shape;
     private _app: AppInterface;
-    shapeIndex: number; // addShapeIndex
+    shapeIndex: Array<number>; // addShapeIndex
     actionEvent: ActionEvent;
 
     constructor(pointArr: Shape, app: AppInterface) {
@@ -15,7 +15,7 @@ export class CreateShapeAction implements ActionInterface {
     }
 
     do(data: Graph): Graph {
-        this.shapeIndex = data.shapes.length;
+        this.shapeIndex[0] = data.shapes.length;
         this.actionEvent = ActionEvent.Add;
         let shape: PIXI.Graphics = this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
         this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
@@ -24,38 +24,44 @@ export class CreateShapeAction implements ActionInterface {
     };
     unDo(data: Graph): Graph {
         this.actionEvent = ActionEvent.Delete;
-        this._app.graphManager.deleteShapes(this.shapeIndex.toString());
-        data.shapes[this.shapeIndex] = []; // 不能删除该元素，要和content一一对应
+        this._app.graphManager.deleteShapes(this.shapeIndex[0].toString());
+        data.shapes[this.shapeIndex[0]] = []; // 不能删除该元素，要和content一一对应
         return data;
     };
 }
 
 export class DeleteShapeAction implements ActionInterface {
-    private _pointArr: Shape;
+    private _pointArr: Array<Shape>;
     private _app: AppInterface;
-    shapeIndex: number; //deleteShapeIndex
+    shapeIndex: Array<number>; //deleteShapeIndex
     actionEvent: ActionEvent;
 
-    constructor(shapeIndex: number, app: AppInterface) {
+    constructor(shapeIndex: Array<number>, app: AppInterface) {
         this.shapeIndex = shapeIndex;
         this._app = app;
     }
 
     do(data: Graph): Graph {
         this.actionEvent = ActionEvent.Delete;
-        this._app.graphManager.deleteShapes(this.shapeIndex.toString());
-        //将对应的点阵置空 保留占位
-        this._pointArr = data.shapes[this.shapeIndex];//保存删除的点阵
-        data.shapes[this.shapeIndex] = [];
-        //调用删除 shapeContent
+        this._pointArr = [];
+        this.shapeIndex.forEach((item: number) => {
+            this._app.graphManager.deleteShapes(item.toString());
+            //将对应的点阵置空 保留占位
+            this._pointArr.push(data.shapes[item]);
+            data.shapes[item] = [];
+        })
         return data;
     };
     unDo(data: Graph): Graph {
-        this.shapeIndex = data.shapes.length;
+        this.shapeIndex = [];
+        this._pointArr.forEach((item: Shape) => {
+            this.shapeIndex.push(data.shapes.length);
+            let shape: PIXI.Graphics = this._app.graphManager.buildShapes(item, data.shapes.length);
+            this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
+            data.shapes.push(item);
+        })
+
         this.actionEvent = ActionEvent.Add;
-        let shape: PIXI.Graphics = this._app.graphManager.buildShapes(this._pointArr, data.shapes.length);
-        this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
-        data.shapes.push(this._pointArr);
         //回滚的时 不会滚匹配状态
         return data;
     };
@@ -64,7 +70,7 @@ export class DeleteShapeAction implements ActionInterface {
 export class CopyShapeAction implements ActionInterface {
     private _copyShapeIndex: number;
     private _app: AppInterface;
-    shapeIndex: number; // addShapeIndex
+    shapeIndex: Array<number>; // addShapeIndex
     actionEvent: ActionEvent;
 
     constructor(shapeIndex: number, app: AppInterface) {
@@ -81,10 +87,10 @@ export class CopyShapeAction implements ActionInterface {
             newItem = [item[0] + 20, item[1] + 20]
             return newItem;
         })
-        this.shapeIndex = data.shapes.length;
+        this.shapeIndex[0] = data.shapes.length;
         this.actionEvent = ActionEvent.Add;
 
-        let shape: PIXI.Graphics = this._app.graphManager.buildShapes(newPointArr, this.shapeIndex);
+        let shape: PIXI.Graphics = this._app.graphManager.buildShapes(newPointArr, this.shapeIndex[0]);
         this._app.eventManager.bindHandler(SelectEnum.Shape, shape);
         data.shapes.push(newPointArr);
         return data;
@@ -92,7 +98,7 @@ export class CopyShapeAction implements ActionInterface {
     unDo(data: Graph): Graph {
         this.actionEvent = ActionEvent.Delete;
         this._app.graphManager.deleteShapes(this.shapeIndex.toString())
-        data.shapes[this.shapeIndex] = [];
+        data.shapes[this.shapeIndex[0]] = [];
         return data;
     };
 }
@@ -102,24 +108,24 @@ export class UpdateShapeAction implements ActionInterface {
     private _newShape: Shape;
     private _app: AppInterface;
     private _oldShape: Shape;
-    shapeIndex: number; // updateIndex
+    shapeIndex: Array<number>; // updateIndex
     actionEvent: ActionEvent = ActionEvent.Update;
 
     constructor(shape: Shape, shapeIndex: number, app: AppInterface) {
         this._newShape = shape;
-        this.shapeIndex = shapeIndex;
+        this.shapeIndex[0] = shapeIndex;
         this._app = app;
     }
 
     do(data: Graph): Graph {
-        this._app.graphManager.updateShapes(this._newShape, this.shapeIndex);
-        this._oldShape = data.shapes[this.shapeIndex];//保存一份修改前的数据
-        data.shapes[this.shapeIndex] = this._newShape;
+        this._app.graphManager.updateShapes(this._newShape, this.shapeIndex[0]);
+        this._oldShape = data.shapes[this.shapeIndex[0]];//保存一份修改前的数据
+        data.shapes[this.shapeIndex[0]] = this._newShape;
         return data;
     }
     unDo(data: Graph): Graph {
-        this._app.graphManager.updateShapes(this._oldShape, this.shapeIndex);
-        data.shapes[this.shapeIndex] = this._oldShape;
+        this._app.graphManager.updateShapes(this._oldShape, this.shapeIndex[0]);
+        data.shapes[this.shapeIndex[0]] = this._oldShape;
         return data;
     }
 }
