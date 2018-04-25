@@ -32,10 +32,19 @@
             top: 10px;
             right: 100px;
         }
+
+        #creams-pixi {
+            background-color: #fff;
+        }
+
+        body {
+            background-color: azure;
+        }
     </style>
 </head>
 
 <body>
+    <div style="height: 100px"></div>
     <div id='creams-pixi' style="height: 1200px"></div>
 
     <div id="operation" class="tool top1">
@@ -52,7 +61,8 @@
         </span>
         &nbsp;&nbsp;&nbsp;
         <span id="addShadowShape">匹配店铺（点击拖动）</span>&nbsp;&nbsp;&nbsp;
-        <span id="edit">点击开启编辑模式</span>
+        <span id="edit">开启编辑模式</span>
+        <span id="notedit">退出编辑模式</span>
         <span id="eraser">
             <!-- 设置橡皮擦大小 -->
             <span>开启橡皮擦模式</span>
@@ -60,6 +70,11 @@
             <span>确认</span>
             <span>退出橡皮擦模式</span>
         </span>
+        <div>
+            框选删除：
+            <span id="openRegionDelete">开启</span>
+            <span id="closeRegionDelete">关闭</span>
+        </div>
     </div>
 
 

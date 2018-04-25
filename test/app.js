@@ -36,7 +36,12 @@ $(function () {
         //  console.log(index + ";x:" + event.x + "y:" + event.y + "editType" + editType)
     })
 
-
+    $("#openRegionDelete").click(() => {
+        app.operationManager.enableRegionDelete(true);
+    })
+    $("#closeRegionDelete").click(() => {
+        app.operationManager.enableRegionDelete(false);
+    })
     //添加graph
     $("#addGraph").click(() => {
         var defultGraphStyle = {
@@ -160,7 +165,7 @@ $(function () {
     app.eventManager.onMouseLeaveShape((index, event, editType) => {
         console.log("leave" + " " + index)
         if (state.hasShadowShape) {
-            app.operationManager.setShapeContent(index[0], con);
+            app.operationManager.setShapeContent(index[0]);
         }
     })
     app.eventManager.onMouseDownShape((index, event, editType) => {
@@ -188,7 +193,9 @@ $(function () {
     $("#edit").click(() => {
         app.operationManager.enableEdit(true);
     })
-
+    $("#notedit").click(() => {
+        app.operationManager.enableEdit(false);
+    })
     $('#selectNone').click(() => {
         app.operationManager.selectNone();
     })
