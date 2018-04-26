@@ -1,6 +1,7 @@
 import OperationAPI from "./OperationAPI"
 import AppInterface from "../app/AppInterface";
 import { ShapeContent, Shape, SelectEnum } from "../common/Graph";
+import { RegionDeleteCallBack } from "../graph/GraphInterface";
 export default class OperationManager implements OperationAPI {
     private _app: AppInterface;
     private _graphCon: PIXI.Container;
@@ -112,7 +113,7 @@ export default class OperationManager implements OperationAPI {
         this._app.stateManager.select(SelectEnum.None, []);
     }
 
-    enableRegionDelete(isEnabled: boolean): void {
-        this._app.stateManager.enableRegionDelete(isEnabled);
+    enableRegionDelete(isEnabled: boolean, callBack?: RegionDeleteCallBack): void {
+        this._app.stateManager.enableRegionDelete(isEnabled, callBack);
     }
 }

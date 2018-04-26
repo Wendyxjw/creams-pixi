@@ -1,4 +1,5 @@
 import { ShapeContent } from "../common/Graph";
+import { RegionDeleteCallBack } from "../graph/GraphInterface";
 
 // 用户普通行为
 export type Operation = {
@@ -83,5 +84,5 @@ export default interface OperationAPI {
      * @param  {boolean} isEnabled
      * @returns void
      */
-    enableRegionDelete(isEnabled: boolean): void
+    enableRegionDelete(isEnabled: boolean, callBack?: RegionDeleteCallBack): void
 }

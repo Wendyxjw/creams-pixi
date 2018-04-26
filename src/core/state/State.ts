@@ -1,5 +1,5 @@
 import { StateInterface } from "./StateInterface";
-import { GraphManagerInterface } from "../graph/GraphInterface";
+import { GraphManagerInterface, RegionDeleteCallBack } from "../graph/GraphInterface";
 import { EventManagerInterface } from "../event/EventInterface";
 import { EditEnum, SelectEnum } from "../common/Graph";
 
@@ -59,13 +59,15 @@ export class EditingEraserState extends SelectSuperState {
 // 框选删除
 export class EditingRegionDeleteState extends SelectSuperState {
     protected _enable: boolean;
-    constructor(index: Array<number>, select: SelectEnum, enable: boolean) {
+    protected _callBack: RegionDeleteCallBack;
+    constructor(index: Array<number>, select: SelectEnum, enable: boolean, callBack?: RegionDeleteCallBack) {
         super(index, select)
         this._enable = enable; // 框选删除的状态
+        this._callBack = callBack;
     }
     processGraph(graphManager: GraphManagerInterface, eventManager: EventManagerInterface): void {
         graphManager.removeLayer();
-        graphManager.enableRegionDelete(this._enable);
+        graphManager.enableRegionDelete(this._enable, this._callBack);
     }
 }
 

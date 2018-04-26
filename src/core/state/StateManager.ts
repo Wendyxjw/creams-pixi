@@ -3,6 +3,7 @@ import { StateManagerInterface, StateInterface } from "./StateInterface";
 import AppInterface from "../app/AppInterface";
 import { EditEnum, SelectEnum } from '../common/Graph';
 import { EditingRegionDeleteState } from './State';
+import { RegionDeleteCallBack } from '../graph/GraphInterface';
 
 // app状态管理
 export default class StateManager implements StateManagerInterface {
@@ -72,7 +73,7 @@ export default class StateManager implements StateManagerInterface {
         this._activeState(!isEqual);
     }
 
-    enableRegionDelete(isEnabled: boolean) {
+    enableRegionDelete(isEnabled: boolean, callBack?: RegionDeleteCallBack) {
         if (this._editEnum === EditEnum.Nomal) {
             // 排除了，非编辑状态
             return;
@@ -85,7 +86,7 @@ export default class StateManager implements StateManagerInterface {
         const graphManager = this._app.graphManager;
         const eventManager = this._app.eventManager;
 
-        this._currentState = new EditingRegionDeleteState(this._selectIndex, this._selectEnum, isEnabled);
+        this._currentState = new EditingRegionDeleteState(this._selectIndex, this._selectEnum, isEnabled, callBack);
         this._currentState.processGraph(graphManager, eventManager);
     }
 }

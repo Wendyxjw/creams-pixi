@@ -23,7 +23,9 @@ export default class GraphDrawing {
     constructor(app: AppInterface) {
         this._app = app;
         this._graphCache = {
-            backgroundPic: "",
+            background: {
+                url: "",
+            },
             shapesContent: {}
         };
         this.graphContainer = new PIXI.Container();

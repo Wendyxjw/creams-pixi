@@ -120,7 +120,7 @@ export interface GraphManagerInterface {
      * @param  {boolean} isEnabled
      * @returns void
      */
-    enableRegionDelete(isEnabled: boolean): void
+    enableRegionDelete(isEnabled: boolean, callBack?: RegionDeleteCallBack): void
 }
 
 export interface EraserInterface {
@@ -220,10 +220,15 @@ export interface ShadowShapeInterface {
     destroyShadowShape(): void
 }
 
+export type RegionDeleteCallBack = {
+    (shapeIndex: Array<number>): void;
+}
 export interface RegionDeleteInterface {
     /**
      * 开启关闭框选删除模式
+     * @param  {boolean} isEnabled
+     * @param  {RegionDeleteCallBack} callBack?
      * @returns void
      */
-    enable(isEnabled: boolean): void;
+    enable(isEnabled: boolean, callBack?: RegionDeleteCallBack): void;
 }

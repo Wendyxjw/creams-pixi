@@ -3,9 +3,9 @@
  * @Description: 框选删除
  * @Date: 2018-04-24 11:24:22 
  * @Last Modified by: xujiawen
- * @Last Modified time: 2018-04-25 12:00:44
+ * @Last Modified time: 2018-04-26 16:23:34
  */
-import { RegionDeleteInterface } from "./GraphInterface";
+import { RegionDeleteInterface, RegionDeleteCallBack } from "./GraphInterface";
 import AppInterface from "../app/AppInterface";
 import { drawShape } from "./DrawingHelper";
 import { Shape, ShapeGraphics, ShapeContent, LineStyle, SelectEnum } from "../common/Graph";
@@ -21,6 +21,8 @@ export default class RegionDelete implements RegionDeleteInterface {
     private _startDown: boolean; // 是否开始框选（pointerdown）
     private _startX: number; // 开始框选的点
     private _startY: number;
+    private _hasOpen: boolean = false;
+    private _callBack: RegionDeleteCallBack;
 
     constructor(app: AppInterface, extraLayer: PIXI.Container, shapeLayer: PIXI.Container, ) {
         this._app = app;
@@ -31,8 +33,10 @@ export default class RegionDelete implements RegionDeleteInterface {
         this._regionLayer.interactive = true;
     }
 
-    enable(isEnabled: boolean): void {
+    enable(isEnabled: boolean, callBack?: RegionDeleteCallBack): void {
         if (isEnabled) {
+            this._callBack = callBack;
+            this._hasOpen = true;
             // 关闭所有事件
             this._changeInteractive(false);
             this._unbindEvent();
@@ -43,6 +47,11 @@ export default class RegionDelete implements RegionDeleteInterface {
                 .on("pointerup", this._endDraw)
                 .on("pointerout", this._endDraw);
         } else {
+            if (!this._hasOpen) {
+                return;
+            } else {
+                this._hasOpen = false;
+            }
             this._changeInteractive(true);
             this._unbindEvent();
             this._app.graphManager.graphContainer.removeChild(this._regionLayer);
@@ -123,6 +132,10 @@ export default class RegionDelete implements RegionDeleteInterface {
             }
 
             this._regionLayer.removeChild(this._graph);
+            if (this._callBack) {
+                this._callBack(deleteArr);
+            }
+
         }
 
     }

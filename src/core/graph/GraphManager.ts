@@ -1,4 +1,4 @@
-import { GraphManagerInterface, EraserInterface, EditToolInterface, RegionDeleteInterface } from "./GraphInterface";
+import { GraphManagerInterface, EraserInterface, EditToolInterface, RegionDeleteInterface, RegionDeleteCallBack } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache, Point, PointGraphics, SelectEnum, Background, } from "../common/Graph";
 import DragHelper from "./DragHelper";
 import AppInterface from "../app/AppInterface";
@@ -211,7 +211,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         }
     }
 
-    enableRegionDelete(isEnabled: boolean): void {
-        this._regionDelete.enable(isEnabled);
+    enableRegionDelete(isEnabled: boolean, callBack?: RegionDeleteCallBack): void {
+        this._regionDelete.enable(isEnabled, callBack);
     }
 }
