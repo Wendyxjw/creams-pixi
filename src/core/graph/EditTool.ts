@@ -1,3 +1,11 @@
+/*
+ * @Author: xujiawen 
+ * @Description: 编辑层
+ * @Date: 2018-04-26 11:02:08 
+ * @Last Modified by: xujiawen
+ * @Last Modified time: 2018-04-26 11:02:28
+ */
+
 import { EditToolInterface, SelectHandler, UpdateHandler } from "./GraphInterface";
 import { Shape, ShapeContent, PointGraphics, LineGraphics, ShapeGraphics, Point, SelectEnum } from "../common/Graph";
 import { buildPoint, buildLine, drawShape } from "./DrawingHelper";

@@ -1,3 +1,11 @@
+/*
+ * @Author: xujiawen 
+ * @Description: 跟随鼠标的透明块
+ * @Date: 2018-04-26 11:01:07 
+ * @Last Modified by: xujiawen
+ * @Last Modified time: 2018-04-26 11:01:35
+ */
+
 import { ShapeContent, Shape } from "../common/Graph";
 import { ShadowShapeInterface } from "./GraphInterface";
 import AppInterface from "../app/AppInterface";

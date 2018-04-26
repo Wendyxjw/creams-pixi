@@ -1,3 +1,11 @@
+/*
+ * @Author: xujiawen 
+ * @Description: 拖拽
+ * @Date: 2018-04-26 11:03:18 
+ * @Last Modified by:   xujiawen 
+ * @Last Modified time: 2018-04-26 11:03:18 
+ */
+
 export interface DragableObj extends PIXI.DisplayObject {
     dragData?: PIXI.interaction.InteractionData,
     dragging?: number,

@@ -1,3 +1,11 @@
+/*
+ * @Author: xujiawen 
+ * @Description: 画块、边、点
+ * @Date: 2018-04-26 11:02:55 
+ * @Last Modified by:   xujiawen 
+ * @Last Modified time: 2018-04-26 11:02:55 
+ */
+
 import { Shape, ShapeContent, Point, LineGraphics, PointGraphics, ShapeGraphics, LineStyle } from "../common/Graph";
 import { defultGraphStyle } from "./constant";
 

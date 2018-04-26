@@ -1,3 +1,11 @@
+/*
+ * @Author: xujiawen 
+ * @Description: 组件初始化
+ * @Date: 2018-04-26 10:55:00 
+ * @Last Modified by: xujiawen
+ * @Last Modified time: 2018-04-26 10:57:01
+ */
+
 import * as PIXI from "pixi.js";
 import AppInterface from './AppInterface';
 import AppAPI from "./AppAPI";

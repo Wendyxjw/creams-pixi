@@ -1,3 +1,11 @@
+/*
+ * @Author: xujiawen 
+ * @Description: 常量
+ * @Date: 2018-04-26 11:00:40 
+ * @Last Modified by:   xujiawen 
+ * @Last Modified time: 2018-04-26 11:00:40 
+ */
+
 import { ShapeContent, LineStyle } from "../common/Graph";
 
 export const defultGraphStyle: ShapeContent = {
