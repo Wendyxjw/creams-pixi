@@ -1,5 +1,5 @@
 import { GraphManagerInterface, EraserInterface, EditToolInterface, RegionDeleteInterface } from "./GraphInterface";
-import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache, Point, PointGraphics, SelectEnum, } from "../common/Graph";
+import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache, Point, PointGraphics, SelectEnum, Background, } from "../common/Graph";
 import DragHelper from "./DragHelper";
 import AppInterface from "../app/AppInterface";
 import Eraser from "./Eraser"
@@ -48,10 +48,10 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         );
     }
 
-    private _buildBackground(url: string) {
+    private _buildBackground(bg: Background) {
         this._backgroundLayer.removeChildren();
-        let background = PIXI.Sprite.fromImage(url);
-        background.alpha = 0.2;
+        let background = PIXI.Sprite.fromImage(bg.url);
+        background.alpha = bg.alpha || 1;
         background.hitArea = new PIXI.Rectangle(-10000000, -10000000, 100000000000000, 100000000000000);
         background.interactive = true;
         // background.on('pointerdown', () => {
@@ -122,7 +122,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     setGraph(graph: Graph, cache: GraphCache): void {
         this._graphCache = cache;
         this._shapeLayer.removeChildren();
-        this._buildBackground(cache.backgroundPic);
+        this._buildBackground(cache.background);
         for (let i = 0; i < graph.shapes.length; i++) {
             this.buildShapes(graph.shapes[i], i, cache.shapesContent[i]);
         }

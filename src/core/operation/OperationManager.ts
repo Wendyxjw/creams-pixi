@@ -25,12 +25,11 @@ export default class OperationManager implements OperationAPI {
     justify(): void {
         //如果shapelayer里面没有children 不做居中
         let shapeLayer: PIXI.Container = <PIXI.Container>this._graphCon.getChildByName("shapeLayer");
-        if (shapeLayer.children.length < 1) {
-            return;
-        }
         let appScreen = this._app.pixiApp.screen;
         let backgroundLayer: PIXI.Container = <PIXI.Container>this._graphCon.getChildByName("backgroundLayer")
-
+        if (shapeLayer.children.length < 1 && backgroundLayer.width < 1) {
+            return;
+        }
         if (backgroundLayer.width > 1) {
             //设置graph的长宽
             if ((this._graphCon.width / this._graphCon.height) > (appScreen.width / appScreen.height)) {

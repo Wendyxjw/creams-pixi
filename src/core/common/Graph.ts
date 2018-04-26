@@ -35,9 +35,13 @@ export type ShapeContent = {
 interface indexableContent {
     [index: number]: ShapeContent
 }
+export type Background = {
+    url: string, // 背景图地址
+    alpha?: number // 背景透明度
+}
 export interface GraphCache {
+    background: Background;
     // 每一个Shape的绘制样式
-    backgroundPic: string;
     shapesContent?: indexableContent;
 }
 
