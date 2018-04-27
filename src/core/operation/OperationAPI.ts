@@ -58,13 +58,19 @@ export default interface OperationAPI {
     setShapeContent(index: number, content?: ShapeContent): void;
 
     /**
-     * 添加阴影图块，释放鼠标即销毁
+     * 添加阴影图块
      * @param  {number} width
      * @param  {number} height
      * @param  {ShapeContent} content?
      * @returns void
      */
     addShadowShape(width: number, height: number, content?: ShapeContent): void;
+
+    /**
+     * 删除阴影图块
+     * @returns void
+     */
+    deleteShadowShape(): void
 
     /**
      * 在边上加点

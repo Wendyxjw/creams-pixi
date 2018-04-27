@@ -133,6 +133,7 @@ export default class EditTool implements EditToolInterface {
         } else {
             backShape.clear();
         }
+        this._content.backgroundAlpha = 0.8;
         drawShape(backShape, this._shape, this._content);
     }
 

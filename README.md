@@ -25,6 +25,19 @@ state：状态管理
 Interface：内部调用方法
 
 ### 数据格式：
+* 设置画布
+```javascript
+GraphCache = {
+    background: {
+        url: string, // 背景图地址
+        alpha?: number // 背景透明度
+    };
+    // 每一个Shape的绘制样式
+    shapesContent?: {
+        [index: number]: ShapeContent //每个块的样式
+    };
+}
+```
 * 设置块样式：
 ```javascript
  ShapeContent = {

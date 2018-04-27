@@ -73,7 +73,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._backgroundLayer.addChild(background);
     }
 
-    private _focus(isEditing: boolean) {
+    private _focus(isEditing: boolean, shapeIndex: number) {
         // 进入选中状态，虚化shapeLayer
         if (isEditing) {
             // 编辑状态时，禁用底层的拖拽
@@ -81,7 +81,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
             DragHelper(this.graphContainer, false);
         }
         this._extraLayer.visible = true;
-        this._changeAllShapesColor(true);
+        this._changeAllShapesColor(true, shapeIndex);
     }
 
     private _blur(isEditing: boolean) {
@@ -94,14 +94,16 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._changeAllShapesColor(false);
     }
 
-    private _changeAllShapesColor(isWhite: Boolean) {
+    // shapeIndex:要隐藏的index
+    private _changeAllShapesColor(isWhite: boolean, shapeIndex?: number) {
         this._shapeLayer.children.forEach((item: ShapeGraphics) => {
             let curShape: Shape = this._app.actionManager.getCurrentShape(item.shapeIndex);
-            this._changeShapeColor(curShape, item.shapeIndex, isWhite);
+            let isVisible: boolean = shapeIndex == item.shapeIndex ? false : true;
+            this._changeShapeColor(curShape, item.shapeIndex, isWhite, isVisible);
         })
     }
     //选中shape时 修改颜色
-    private _changeShapeColor(shape: Shape, shapeIndex: number, isWhite: Boolean) {
+    private _changeShapeColor(shape: Shape, shapeIndex: number, isWhite: boolean, isVisible: boolean = true) {
         if (shape.length !== 0) {
             let content: ShapeContent = this._graphCache.shapesContent[shapeIndex];
             let defaultStyle: ShapeContent = defultGraphStyle;
@@ -113,6 +115,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
                 deepCopyCon.border.color = 0xe5e5e5;
                 deepCopyCon.font.fill = [0xc6c6c6];
             }
+            this._shapeLayer.getChildByName(shapeIndex.toString()).visible = isVisible;
             this.updateShapes(shape, shapeIndex, deepCopyCon, true);
         }
     }
@@ -151,14 +154,12 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         const shape: Shape = this._app.actionManager.getCurrentShape(shapeIndex);
         const content: ShapeContent = this._graphCache.shapesContent[shapeIndex];
         this._editTool.init(shape, content, isDisplay);
-        this._focus(!isDisplay);
+        this._focus(!isDisplay, shapeIndex);
     }
 
     private _addHandler(shapeIndex: number) {
         this._editTool.addUpdateHandler((shape: Shape) => {
             this._app.actionManager.updateShape(shape, shapeIndex);
-            //编辑shape后将对应shapeLayer画成白色
-            this._changeShapeColor(shape, shapeIndex, true);
         });
         this._editTool.addSelectHandler((target: ShapeGraphics, state: SelectEnum, idx?: number) => {
             target.shapeIndex = shapeIndex;

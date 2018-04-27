@@ -9,7 +9,7 @@
 import { ShapeContent, LineStyle } from "../common/Graph";
 
 export const defultGraphStyle: ShapeContent = {
-    backgroundAlpha: 0.8,
+    backgroundAlpha: 0.4,
     backgroundColor: 0xD1D8DF,
     border: {
         lineWidth: 1,
