@@ -3,7 +3,7 @@
  * @Description: 组件初始化
  * @Date: 2018-04-26 10:55:00 
  * @Last Modified by: xujiawen
- * @Last Modified time: 2018-04-26 10:57:01
+ * @Last Modified time: 2018-04-27 11:04:54
  */
 
 import * as PIXI from "pixi.js";
@@ -14,7 +14,7 @@ import OperationAPI from "../operation/OperationAPI";
 import EventAPI from "../event/EventAPI";
 import { StateManagerInterface } from '../state/StateInterface';
 import { ActionManagerInterface } from "../action/ActionInterface";
-import { GraphManagerInterface } from "../graph/GraphInterface";
+import { GraphManagerInterface, setGraphCallback } from "../graph/GraphInterface";
 import { EventManagerInterface } from "../event/EventInterface";
 import GraphManager from '../graph/GraphManager';
 import OperationManager from '../operation/OperationManager';
@@ -70,11 +70,11 @@ export default class App implements AppInterface, AppAPI {
         return this._cache;
     }
 
-    setGraph(graph: Graph, cache: GraphCache) {
+    setGraph(graph: Graph, cache: GraphCache, callBack?: setGraphCallback) {
         this._graph = graph;
         this._cache = cache;
         this.actionManager.init(graph);
-        this.graphManager.setGraph(graph, cache);
+        this.graphManager.setGraph(graph, cache, callBack);
         this.eventManager.bindAllHandler();
     }
 }

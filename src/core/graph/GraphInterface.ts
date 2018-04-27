@@ -1,5 +1,9 @@
 import { Graph, ShapeContent, GraphCache, Shape, SelectEnum, ShapeGraphics } from '../common/Graph';
 
+export type setGraphCallback = {
+    (): void;
+}
+
 // 项目基础对外API
 export interface GraphManagerInterface {
 
@@ -10,7 +14,14 @@ export interface GraphManagerInterface {
      */
     graph: GraphCache;
 
-    setGraph(graph: Graph, cache: GraphCache): void;
+    /**
+     * 初始化画布
+     * @param  {Graph} graph
+     * @param  {GraphCache} cache
+     * @param  {CallbackFunc} callBack?
+     * @returns void
+     */
+    setGraph(graph: Graph, cache: GraphCache, callBack?: setGraphCallback): void;
 
     /**
      * 给图块设置显示参数

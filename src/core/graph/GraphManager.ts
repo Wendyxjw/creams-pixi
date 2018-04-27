@@ -1,4 +1,4 @@
-import { GraphManagerInterface, EraserInterface, EditToolInterface, RegionDeleteInterface, RegionDeleteCallBack } from "./GraphInterface";
+import { GraphManagerInterface, EraserInterface, EditToolInterface, RegionDeleteInterface, RegionDeleteCallBack, setGraphCallback } from "./GraphInterface";
 import { Graph, ShapeContent, Shape, ShapeGraphics, GraphCache, Point, PointGraphics, SelectEnum, Background, } from "../common/Graph";
 import DragHelper from "./DragHelper";
 import AppInterface from "../app/AppInterface";
@@ -57,7 +57,6 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         // background.on('pointerdown', () => {
         //     this._app.stateManager.select(SelectEnum.None, []);
         // });
-
         let hasMouseUp = true;
         background.on('pointerdown', (event: PIXI.interaction.InteractionEvent) => {
             hasMouseUp = true;
@@ -119,10 +118,11 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     }
 
 
-    setGraph(graph: Graph, cache: GraphCache): void {
+    setGraph(graph: Graph, cache: GraphCache, callBack?: setGraphCallback): void {
         this._graphCache = cache;
         this._shapeLayer.removeChildren();
-        this._buildBackground(cache.background);
+        // this._buildBackground(cache.background);
+        this._loaderBgImg(cache.background, callBack); // 图片加载好后 再画背景图
         for (let i = 0; i < graph.shapes.length; i++) {
             this.buildShapes(graph.shapes[i], i, cache.shapesContent[i]);
         }
@@ -134,6 +134,17 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
         this._graphCache.shapesContent[index] = content;
         this.updateShapes(shape, index, content, true);
 
+    }
+
+    // 背景图片加载
+    private _loaderBgImg(bg: Background, callBack?: setGraphCallback) {
+        const loader = new PIXI.loaders.Loader();
+        loader.add('bgimg', bg.url).load(() => {
+            this._buildBackground(bg);
+            if (callBack) {
+                callBack();
+            }
+        });
     }
 
     private _addLayer(shapeIndex: number, isDisplay: boolean) {
