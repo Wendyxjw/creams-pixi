@@ -121,11 +121,11 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     setGraph(graph: Graph, cache: GraphCache, callBack?: setGraphCallback): void {
         this._graphCache = cache;
         this._shapeLayer.removeChildren();
-        // this._buildBackground(cache.background);
-        this._loaderBgImg(cache.background, callBack); // 图片加载好后 再画背景图
+        this._buildBackground(cache.background);
         for (let i = 0; i < graph.shapes.length; i++) {
             this.buildShapes(graph.shapes[i], i, cache.shapesContent[i]);
         }
+        this._loaderBgImg(cache.background, callBack); // 背景图片加载好后执行回调
     }
 
     setShapeContent(index: number, content?: ShapeContent): void {
@@ -140,7 +140,7 @@ export default class GraphManager extends GraphDrawing implements GraphManagerIn
     private _loaderBgImg(bg: Background, callBack?: setGraphCallback) {
         const loader = new PIXI.loaders.Loader();
         loader.add('bgimg', bg.url).load(() => {
-            this._buildBackground(bg);
+            //this._buildBackground(bg);
             if (callBack) {
                 callBack();
             }
