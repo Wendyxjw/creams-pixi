@@ -28,7 +28,7 @@ export default class OperationManager implements OperationAPI {
         let shapeLayer: PIXI.Container = <PIXI.Container>this._graphCon.getChildByName("shapeLayer");
         let appScreen = this._app.pixiApp.screen;
         let backgroundLayer: PIXI.Container = <PIXI.Container>this._graphCon.getChildByName("backgroundLayer")
-        if (shapeLayer.children.length < 1 && backgroundLayer.width < 1) {
+        if (shapeLayer.children.length < 1 && backgroundLayer.width <= 1) {
             return;
         }
         if (backgroundLayer.width > 1) {
