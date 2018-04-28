@@ -3,7 +3,7 @@
  * @Description: 编辑层
  * @Date: 2018-04-26 11:02:08 
  * @Last Modified by: xujiawen
- * @Last Modified time: 2018-04-26 11:02:28
+ * @Last Modified time: 2018-04-28 17:48:08
  */
 
 import { EditToolInterface, SelectHandler, UpdateHandler } from "./GraphInterface";
@@ -133,8 +133,9 @@ export default class EditTool implements EditToolInterface {
         } else {
             backShape.clear();
         }
-        this._content.backgroundAlpha = 0.8;
-        drawShape(backShape, this._shape, this._content);
+        let con = JSON.parse(JSON.stringify(this._content))
+        con.backgroundAlpha = 0.8;
+        drawShape(backShape, this._shape, con);
     }
 
     private _drawEditLayer(isInit: boolean, isHighlight: Highlight) {
