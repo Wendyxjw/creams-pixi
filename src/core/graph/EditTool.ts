@@ -135,7 +135,8 @@ export default class EditTool implements EditToolInterface {
         }
         let con = JSON.parse(JSON.stringify(this._content))
         con.backgroundAlpha = 0.8;
-        drawShape(backShape, this._shape, con);
+        let parent: PIXI.Container = this._container.parent;
+        drawShape(backShape, this._shape, parent.scale.x, con);
     }
 
     private _drawEditLayer(isInit: boolean, isHighlight: Highlight) {

@@ -2,6 +2,7 @@ import OperationAPI from "./OperationAPI"
 import AppInterface from "../app/AppInterface";
 import { ShapeContent, Shape, SelectEnum } from "../common/Graph";
 import { RegionDeleteCallBack } from "../graph/GraphInterface";
+import { changeTextStyle } from "./OperationHelper";
 export default class OperationManager implements OperationAPI {
     private _app: AppInterface;
     private _graphCon: PIXI.Container;
@@ -16,13 +17,18 @@ export default class OperationManager implements OperationAPI {
         this._graphCon.y -= this._graphCon.height * (level - 1) / 2;
         this._graphCon.scale.x *= level;
         this._graphCon.scale.y *= level;
+        changeTextStyle(this._graphCon.scale.y, this._graphCon);
     }
+
     zoomOut(level: number = 1.25): void {
         this._graphCon.x += this._graphCon.width * (1 - 1 / level) / 2;
         this._graphCon.y += this._graphCon.height * (1 - 1 / level) / 2;
         this._graphCon.scale.x /= level;
         this._graphCon.scale.y /= level;
+        changeTextStyle(this._graphCon.scale.y, this._graphCon);
     }
+
+
     justify(): void {
         //如果shapelayer里面没有children 不做居中
         let shapeLayer: PIXI.Container = <PIXI.Container>this._graphCon.getChildByName("shapeLayer");
@@ -78,9 +84,9 @@ export default class OperationManager implements OperationAPI {
             this._graphCon.x = x;
             this._graphCon.y = y;
         }
-
-
+        changeTextStyle(this._graphCon.scale.y, this._graphCon);
     }
+
     setEraserSize(size: number): void {
         this._app.graphManager.setEraserSize(size);
     }

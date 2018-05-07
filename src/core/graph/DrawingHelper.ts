@@ -9,7 +9,7 @@
 import { Shape, ShapeContent, Point, LineGraphics, PointGraphics, ShapeGraphics, LineStyle } from "../common/Graph";
 import { defultGraphStyle } from "./constant";
 
-export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeContent = defultGraphStyle) {
+export function drawShape(graphics: ShapeGraphics, shape: Shape, textScale: number, content: ShapeContent = defultGraphStyle) {
     let hasMoveTo: boolean = false; //判断graph是否开始画：因为第一个点有可能被擦除 是null
     let moveToPoint: Point = [0, 0]; //记录第一个开始画的点 用于最后再画一次
     let xMin: number,
@@ -63,7 +63,7 @@ export function drawShape(graphics: ShapeGraphics, shape: Shape, content: ShapeC
 
     //文字
     if (content.content) {
-        drawText(graphics, content)
+        drawText(graphics, content, textScale)
     }
 
     //角标
@@ -151,7 +151,7 @@ function drawDashed(graphics: PIXI.Graphics, shape: Shape, content: ShapeContent
     graphics.endFill();
 }
 //shape：文字
-function drawText(graphics: ShapeGraphics, content: ShapeContent) {
+function drawText(graphics: ShapeGraphics, content: ShapeContent, textScale: number) {
     let maskGraph = graphics.clone();
     let textStyle = new PIXI.TextStyle({
         fontSize: content.font.fontSize,
@@ -161,11 +161,19 @@ function drawText(graphics: ShapeGraphics, content: ShapeContent) {
         breakWords: true
     });
     let text = new PIXI.Text(content.content, textStyle);
+    text.name = "text";
     text.position.x = (graphics.xMin + graphics.xMax) / 2 - text.width / 2;
     text.position.y = (graphics.yMin + graphics.yMax) / 2 - text.height / 2;
     graphics.addChild(maskGraph)
     // 文字超出后隐藏
     text.mask = maskGraph;
+
+    let newScale = 1 / textScale
+    text.scale.x = newScale;
+    text.scale.y = newScale;
+    text.position.x += text.width * (textScale - 1) / 2;
+    text.position.y += text.height * (textScale - 1) / 2;
+
     graphics.addChild(text);
 }
 //shape：角标

@@ -49,7 +49,7 @@ export default class GraphDrawing {
 
         let graphics = new ShapeGraphics();
 
-        graphics = drawShape(graphics, shape, content);
+        graphics = drawShape(graphics, shape, this.graphContainer.scale.x, content);
         this._addSelectHandler(graphics, [index]);
         graphics.name = index.toString();
         graphics.shapeIndex = index;
@@ -74,7 +74,7 @@ export default class GraphDrawing {
         curShape = <PIXI.Graphics>this._shapeLayer.getChildByName(shapeIndex.toString());
         curShape.clear();
         content = content ? content : this._graphCache.shapesContent[shapeIndex];
-        curShape = drawShape(curShape, shape, content);
+        curShape = drawShape(curShape, shape, this.graphContainer.scale.x, content);
         if (!keepIndex) {
             this._shapeLayer.setChildIndex(curShape, this._shapeLayer.children.length - 1);
         }
@@ -83,7 +83,8 @@ export default class GraphDrawing {
     //shadowShape
     buildShadowShapes(shape: Shape, content: ShapeContent = defultGraphStyle): PIXI.Graphics {
         let graphics = new PIXI.Graphics();
-        graphics = drawShape(graphics, shape, content);
+        // 放大缩小对shadowShape没有影响 所以textScale传1
+        graphics = drawShape(graphics, shape, 1, content);
         graphics.x = -1000;
         graphics.y = -1000;
         this.graphContainer.addChild(graphics);

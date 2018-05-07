@@ -3,7 +3,7 @@
  * @Description: 框选删除
  * @Date: 2018-04-24 11:24:22 
  * @Last Modified by: xujiawen
- * @Last Modified time: 2018-04-26 16:23:34
+ * @Last Modified time: 2018-05-07 17:09:50
  */
 import { RegionDeleteInterface, RegionDeleteCallBack } from "./GraphInterface";
 import AppInterface from "../app/AppInterface";
@@ -114,7 +114,8 @@ export default class RegionDelete implements RegionDeleteInterface {
                 [getPoint(moveX, "x"), getPoint(moveY, "y")],
                 [getPoint(moveX, "x"), getPoint(this._startY, "y")]
             ];
-            drawShape(this._graph, shape, conStyle)
+            // 没有文字所以textScale可以传1或者任意数字
+            drawShape(this._graph, shape, 1, conStyle)
         }
     }
 
